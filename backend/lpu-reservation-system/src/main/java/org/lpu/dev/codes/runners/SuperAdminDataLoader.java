@@ -2,7 +2,7 @@ package org.lpu.dev.codes.runners;
 
 
 
-import org.lpu.dev.codes.services.UserService;
+import org.lpu.dev.codes.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Component;
 public class SuperAdminDataLoader implements CommandLineRunner {
 
     @Autowired
-    private UserService userService;
+    private TestService testService;
 
     @Override
     public void run(String... args) {
-        userService.createSuperAdmin();
+        testService.createOtherAccount();
+    	
     }
 }

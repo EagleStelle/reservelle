@@ -25,7 +25,7 @@ public class Users {
 
 	@Column(name = "employee_id")
 	private String employeeId;
-
+	
 	@Column(name = "password_hash")
 	private String passwordHash;
 

@@ -1,8 +1,8 @@
 package org.lpu.dev.codes.controller;
 
 
+import org.lpu.dev.codes.model.apiresponse.LoginResponse;
 import org.lpu.dev.codes.model.dto.LoginRequest;
-import org.lpu.dev.codes.model.dto.LoginResponse;
 import org.lpu.dev.codes.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +21,16 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authService;
-    
-  
-    
-    
 
     @PostMapping("/login")
     public LoginResponse login(
             @RequestBody LoginRequest request) {
-
         return authService.login(request);
     }
     
     @GetMapping("/me")
     public ResponseEntity<LoginResponse> getCurrentUser(
             @RequestHeader("Authorization") String authHeader) {
-
        return  authService.validate(authHeader);
     }
 }

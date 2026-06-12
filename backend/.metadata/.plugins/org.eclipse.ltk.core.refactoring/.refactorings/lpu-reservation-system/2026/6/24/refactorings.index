@@ -7,3 +7,11 @@
 1781140506523	Rename resource 'WEB-INFF'
 1781140662148	Move compilation unit
 1781141006417	Rename resource 'spring.config.xml'
+1781154708161	Move compilation unit
+1781168856977	Move compilation unit
+1781168987906	Move compilation unit
+1781169319450	Move compilation unit
+1781235946029	Rename type 'CreateAccountResponse'
+1781236913581	Delete element
+1781236960271	Delete element
+1781236973527	Rename type 'UserService'

@@ -1,8 +1,8 @@
 package org.lpu.dev.codes.services;
 
+import org.lpu.dev.codes.model.apiresponse.LoginResponse;
 import org.lpu.dev.codes.model.data.Users;
 import org.lpu.dev.codes.model.dto.LoginRequest;
-import org.lpu.dev.codes.model.dto.LoginResponse;
 import org.lpu.dev.codes.repository.UserRepository;
 import org.lpu.dev.codes.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class AuthenticationService {
 	@Autowired
 	private JWTService jwtService;
 	@Autowired
-	private UserService userService;
+	private SuperAdminUserService userService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

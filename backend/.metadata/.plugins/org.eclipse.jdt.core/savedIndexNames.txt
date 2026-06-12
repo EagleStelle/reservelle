@@ -57,7 +57,6 @@ INDEX VERSION 1.134+/Users/norielgecolea/Desktop/Development/development/LPU/lpu
 409781834.index
 4018447532.index
 2955389005.index
-3775706822.index
 1963290559.index
 99452438.index
 305798668.index

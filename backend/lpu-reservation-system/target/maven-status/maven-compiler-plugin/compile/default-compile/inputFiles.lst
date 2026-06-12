@@ -1,8 +1,16 @@
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/RunTestRunners.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/TestService.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/controller/AuthenticationController.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/controller/UserManagementController.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/apiresponse/AccountStatementResponse.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/apiresponse/LoginResponse.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/apiresponse/PopulateUsersResponse.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/apiresponse/RegisterResponse.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/data/Users.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/dto/CreateAccountRequest.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/dto/DeleteUserRequest.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/dto/LoginRequest.java
-/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/dto/LoginResponse.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/model/dto/PopulateUserList.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/repository/UserRepository.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/runners/EmailTestRunner.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/runners/SuperAdminDataLoader.java
@@ -10,4 +18,5 @@
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/security/SecurityConfig.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/services/AuthenticationService.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/services/JWTService.java
+/Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/services/SuperAdminUserService.java
 /Users/norielgecolea/Desktop/Development/development/LPU/lpu-reservation-system/backend/lpu-reservation-system/src/main/java/org/lpu/dev/codes/services/UserService.java
