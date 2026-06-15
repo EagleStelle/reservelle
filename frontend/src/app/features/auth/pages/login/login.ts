@@ -40,7 +40,7 @@ export class Login {
       next: (res) => {
         this.loading.set(false);
         if (res.success) {
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/dashboard');
         } else {
           this.error.set(res.message || 'Login failed');
         }

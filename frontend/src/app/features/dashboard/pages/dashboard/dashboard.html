@@ -1,0 +1,98 @@
+<div class="flex h-dvh w-full overflow-hidden bg-slate-50 text-gray-900">
+  <!-- Sidebar -->
+  <aside class="flex w-56 shrink-0 flex-col bg-primary text-white">
+    <div class="flex items-center justify-center px-4 py-6">
+      <img src="/logo.svg" alt="LPU Laguna" class="h-16 w-16 object-contain" />
+    </div>
+
+    <nav class="flex flex-1 flex-col gap-1 px-3">
+      @for (item of nav; track item.label) {
+      <a href="#"
+        class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150"
+        [class.bg-secondary]="item.active"
+        [class.text-white]="item.active"
+        [class.text-white/70]="!item.active"
+        [class.hover:bg-white/10]="!item.active">
+        <ui-icon [name]="item.icon" class="text-xl" />
+        <span>{{ item.label }}</span>
+      </a>
+      }
+    </nav>
+
+    <div class="mt-auto border-t border-white/15 px-3 py-4">
+      <a href="#"
+        class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 transition-colors duration-150 hover:bg-white/10">
+        <ui-icon name="account_circle" class="text-xl" />
+        <span>Super Admin</span>
+      </a>
+      <button type="button" (click)="logout()"
+        class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 transition-colors duration-150 hover:bg-white/10">
+        <ui-icon name="logout" class="text-xl" />
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex min-h-0 flex-1 flex-col gap-4 p-4">
+    <!-- Title -->
+    <header class="shrink-0 px-1">
+      <h1 class="text-2xl font-extrabold tracking-tight text-black sm:text-3xl">
+        LPU - L RESERVATION SYSTEM
+      </h1>
+    </header>
+
+    <!-- Stat cards -->
+    <section class="grid shrink-0 grid-cols-2 gap-4 xl:grid-cols-4">
+      @for (s of stats; track s.label) {
+      <div class="rounded-xl bg-white p-4 shadow-md">
+        <div class="flex items-start justify-between">
+          <div class="flex flex-col gap-1.5">
+            <span class="text-sm font-medium text-gray-500">{{ s.label }}</span>
+            <span class="text-3xl font-extrabold" [class]="s.valueColor">{{ s.value }}</span>
+            <span class="flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold"
+              [class.bg-green-100]="s.trend === 'up'"
+              [class.text-green-700]="s.trend === 'up'"
+              [class.bg-red-100]="s.trend === 'down'"
+              [class.text-red-600]="s.trend === 'down'">
+              <ui-icon [name]="s.trend === 'up' ? 'trending_up' : 'trending_down'" class="text-sm" />
+              {{ s.delta }}
+            </span>
+          </div>
+          <div class="flex h-12 w-12 items-center justify-center rounded-lg" [class]="s.iconBg">
+            <ui-icon [name]="s.icon" class="text-2xl" [class]="s.iconFg" />
+          </div>
+        </div>
+      </div>
+      }
+    </section>
+
+    <!-- Chart -->
+    <section class="flex min-h-0 flex-1 flex-col rounded-xl bg-white p-4 shadow-md">
+      <div class="mb-4 flex flex-wrap items-center justify-end gap-3">
+        <button type="button"
+          class="flex cursor-pointer items-center gap-2 rounded-lg bg-primary px-4 py-1.5 text-sm font-medium text-white">
+          <ui-icon name="calendar_today" class="text-base" />
+          <span>2026</span>
+          <ui-icon name="expand_more" class="text-base" />
+        </button>
+
+        <div class="flex items-center gap-1 rounded-lg border border-gray-300 p-1">
+          @for (r of ranges; track r) {
+          <button type="button" (click)="selectRange(r)"
+            class="cursor-pointer rounded-md px-5 py-1.5 text-sm font-medium transition-colors duration-150"
+            [class.bg-primary]="activeRange() === r"
+            [class.text-white]="activeRange() === r"
+            [class.text-gray-600]="activeRange() !== r"
+            [class.hover:text-gray-900]="activeRange() !== r">
+            {{ r }}
+          </button>
+          }
+        </div>
+      </div>
+
+      <!-- Chart placeholder. Wire real data here later. -->
+      <div class="min-h-0 flex-1 rounded-lg border border-dashed border-gray-200 bg-gray-50"></div>
+    </section>
+  </main>
+</div>
