@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
-import { AuthService } from '../../../../core/auth/auth.service';
-import { UiIcon } from '../../../../shared/ui';
+import { SideNav } from '../../../shared/layout/side-nav/side-nav';
+import { UiIcon } from '../../../shared/ui';
 
 interface StatCard {
   label: string;
@@ -15,31 +14,15 @@ interface StatCard {
   valueColor: string;
 }
 
-interface NavItem {
-  label: string;
-  icon: string;
-  active?: boolean;
-}
-
 type Range = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [UiIcon],
+  imports: [SideNav, UiIcon],
   templateUrl: './dashboard.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard {
-  private readonly auth = inject(AuthService);
-  private readonly router = inject(Router);
-
-  protected readonly nav: NavItem[] = [
-    { label: 'Dashboard', icon: 'grid_view', active: true },
-    { label: 'Users', icon: 'group' },
-    { label: 'Equipments', icon: 'inventory_2' },
-    { label: 'Vehicles', icon: 'directions_car' },
-    { label: 'Reservation', icon: 'event_note' },
-  ];
 
   protected readonly stats: StatCard[] = [
     {
@@ -89,10 +72,5 @@ export class Dashboard {
 
   protected selectRange(r: Range): void {
     this.activeRange.set(r);
-  }
-
-  protected logout(): void {
-    this.auth.logout();
-    this.router.navigateByUrl('/login');
   }
 }

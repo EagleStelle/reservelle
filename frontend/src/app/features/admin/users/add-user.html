@@ -1,0 +1,67 @@
+<div class="flex h-dvh w-full overflow-hidden bg-slate-50 text-gray-900">
+  <app-side-nav />
+
+  <main class="flex min-h-0 flex-1 flex-col gap-4 p-4">
+    <header class="shrink-0 px-1">
+      <h1 class="text-2xl font-extrabold tracking-tight text-black sm:text-3xl">
+        LPU - L RESERVATION SYSTEM
+      </h1>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="save()"
+      class="flex min-h-0 flex-1 flex-col rounded-xl bg-white p-6 shadow-md">
+      <div class="mb-6 border-b border-primary/40 pb-3 text-right">
+        <span class="text-sm font-semibold uppercase tracking-wide text-primary">Add New User</span>
+      </div>
+
+      <div class="mx-auto grid w-full max-w-3xl grid-cols-2 gap-x-8 gap-y-5">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-800">Full Name</label>
+          <input uiInput type="text" formControlName="fullname" placeholder="Placeholder Text" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-800">User Role</label>
+          <select formControlName="role"
+            class="w-full rounded-md border border-gray-500 bg-white px-3.5 py-2.5 text-sm text-gray-900 transition-colors hover:border-secondary focus:border-primary focus:outline-none">
+            <option value="" disabled selected>Select a role</option>
+            @for (r of roles; track r) {
+            <option [value]="r">{{ r }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-800">Username</label>
+          <input uiInput type="text" formControlName="username" placeholder="Placeholder Text" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-800">Password</label>
+          <input uiInput type="password" formControlName="password" placeholder="Placeholder Text" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-800">Email</label>
+          <input uiInput type="email" formControlName="email" placeholder="Placeholder Text" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-semibold text-gray-800">Confirm Password</label>
+          <input uiInput type="password" formControlName="confirmPassword" placeholder="Placeholder Text" />
+        </div>
+      </div>
+
+      @if (error()) {
+      <p class="mx-auto mt-4 w-full max-w-3xl text-sm text-red-600">{{ error() }}</p>
+      }
+
+      <div class="mt-auto flex justify-end gap-3 border-t border-gray-200 pt-4">
+        <a routerLink="/users"
+          class="cursor-pointer rounded-md border border-gray-300 px-6 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50">
+          Cancel
+        </a>
+        <button uiButton type="submit" class="px-6" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : 'Save User' }}
+        </button>
+      </div>
+    </form>
+  </main>
+</div>
