@@ -1,5 +1,7 @@
 package org.lpu.dev.codes.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lpu.dev.codes.model.apiresponse.LoginResponse;
 import org.lpu.dev.codes.model.data.Users;
 import org.lpu.dev.codes.model.dto.LoginRequest;
@@ -9,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 @Service
 public class AuthenticationService {
-
+	private static final Logger logger =
+            LogManager.getLogger(AuthenticationService.class);
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -25,6 +27,10 @@ public class AuthenticationService {
 
 	@Autowired
 	private JWTUtil jwtUtil;
+	
+	public AuthenticationService() {
+		logger.info("Authentication Service Started");
+	}
 
 	public LoginResponse login(LoginRequest request) {
 		LoginResponse response = new LoginResponse();
@@ -34,6 +40,7 @@ public class AuthenticationService {
 		if (user == null) {
 			response.setSuccess(false);
 			response.setMessage("Invalid username or password");
+			logger.warn(String.format("Login Failed: Invalid Username or Password: User is null"));
 			return response;
 
 		}
@@ -42,6 +49,7 @@ public class AuthenticationService {
 
 			response.setSuccess(false);
 			response.setMessage("Invalid username or password");
+			logger.warn(String.format("Invalid Username: %s or Password: %s ",request.getUsername(),request.getPassword()));
 			return response;
 		}
 
@@ -53,6 +61,7 @@ public class AuthenticationService {
 
 		response.setSuccess(true);
 		response.setMessage("Login Successfull");
+		logger.info(String.format("Login Successfull username: %s token %s", request.getUsername(), token));
 
 		response.setEmail(user.getEmail());
 		response.setFullname(user.getFullname());
@@ -62,14 +71,16 @@ public class AuthenticationService {
 	}
 
 	public ResponseEntity<LoginResponse> validate(String authHeader) {
+		
 		String token = authHeader.replace("LpuL ", "");
 
 		String username = jwtService.getUsername(token);
-
+		logger.info(String.format("Validating token: %s", token));
 		if (username == null) {
 			LoginResponse response = new LoginResponse();
 			response.setSuccess(false);
 			response.setMessage("Invalid token");
+			logger.warn("Token Not Valid!");
 			return ResponseEntity.status(401).body(response);
 		}
 
@@ -79,12 +90,17 @@ public class AuthenticationService {
 		response.setToken(token);
 		response.setSuccess(true);
 		response.setMessage("User fetched successfully");
+		
 
 		response.setUsername(user.getUsername());
 		response.setRole(user.getRole());
 		response.setEmail(user.getEmail());
 		response.setFullname(user.getFullname());
 		response.setEmpId(user.getEmployeeId());
+		
+		logger.info(String.format("Token Valid! employee: %s", user.getEmployeeId()));
+		
+		
 
 		return ResponseEntity.ok(response);
 	}

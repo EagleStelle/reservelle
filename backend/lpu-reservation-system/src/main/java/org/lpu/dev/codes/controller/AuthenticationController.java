@@ -25,6 +25,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public LoginResponse login(
             @RequestBody LoginRequest request) {
+    	request.setUsername(request.getUsername().toLowerCase());
         return authService.login(request);
     }
     

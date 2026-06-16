@@ -2,6 +2,8 @@ package org.lpu.dev.codes.services;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lpu.dev.codes.model.apiresponse.AccountStatementResponse;
 import org.lpu.dev.codes.model.apiresponse.PopulateUsersResponse;
 import org.lpu.dev.codes.model.data.Users;
@@ -17,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class SuperAdminUserService {
 
+	private static final Logger logger =
+            LogManager.getLogger(SuperAdminUserService.class);
+	
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -25,56 +30,19 @@ public class SuperAdminUserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public void createSuperAdmin() {
+	
 
-		Users existingUser = userRepository.findByUsername("superadmin");
-
-		if (existingUser != null) {
-			return;
-		}
-
-		Users user = new Users();
-		user.setUsername("superadmin");
-		user.setFullname("System Super Administrator");
-		user.setRole("SUPERADMIN");
-		user.setEmail("superadmin@lpu.edu.ph");
-		user.setEmployeeId("SUPER001");
-		user.setPasswordHash(passwordEncoder.encode("SuperAdmin@123"));
-		user.setStatus("ACTIVE");
-
-		userRepository.save(user);
-
-		System.out.println("SUPERADMIN created successfully.");
-	}
-
-	public void createOtherAccount() {
-
-		Users existingUser = userRepository.findByUsername("superadmin");
-
-		if (existingUser != null) {
-			return;
-		}
-
-		Users user = new Users();
-		user.setUsername("norielgecolea");
-		user.setFullname("Noriel Gecolea");
-		user.setRole("Facilities Admin");
-		user.setEmail("admin@lpu.edu.ph");
-		user.setEmployeeId("Fac001");
-		user.setPasswordHash(passwordEncoder.encode("Lpu-1234"));
-		user.setStatus("ACTIVE");
-
-		userRepository.save(user);
-
-		System.out.println("SUPERADMIN created successfully.");
-	}
+	
 
 	@Transactional
 	public Users findByUserName(String username) {
-		Users result = userRepository.findByUsername(username);
+		Users result = userRepository.findByUsername(username.toLowerCase());
+		logger.info(String.format("Fetching username %s info", username));
 		if (result == null) {
+			logger.warn(String.format("Username %s not found", username));
 			return null;
 		} else {
+			logger.info(String.format("Fetch Username %s Success!",username));
 			return result;
 		}
 
@@ -82,7 +50,7 @@ public class SuperAdminUserService {
 
 	@Transactional
 	public String findRolebyUsername(String username) {
-		Users result = userRepository.findByUsername(username);
+		Users result = userRepository.findByUsername(username.toLowerCase());
 		if (result == null) {
 			return null;
 		} else {
@@ -112,20 +80,25 @@ public class SuperAdminUserService {
 
 	@Transactional
 	public PopulateUsersResponse getAllUsers(String token) {
+		logger.info("Getting User... Validating...");
 		PopulateUsersResponse response = new PopulateUsersResponse();
 		boolean validated = jwtservice.validateToken(token.replace("LpuL ", ""));
+		
 		try {
 			List<Users> users = userRepository.getAllUsers();
-
+			
 			if (validated) {
+				logger.info("Get User Success");
 				response.setMessage("Get User Success");
 				response.setSuccess(true);
 				response.setUsers(mappedUserList(users));
 				return response;
 
 			} else {
+				logger.info("Get User Fail: Unvalidated Session");
 				response.setSuccess(false);
 				response.setMessage("Unvalidated Session");
+				response.setUsers(null);
 				return response;
 			}
 		} catch (Exception e) {
@@ -142,13 +115,15 @@ public class SuperAdminUserService {
 	public AccountStatementResponse createAccount(String token, Users user) {
 
 		AccountStatementResponse response = new AccountStatementResponse();
-
+		logger.info("Started Account Creation Sevice");
 		try {
-			System.out.println(user.getUsername());
+			
 			// Validate token first
 			boolean validated = jwtservice.validateToken(token.replace("LpuL ", ""));
+			
 
 			if (!validated) {
+				logger.warn("Account Creation Service Closing: Not Valid Token");
 				response.setSuccess(false);
 				response.setMessage("Unvalidated Session");
 				return response;
@@ -157,6 +132,7 @@ public class SuperAdminUserService {
 			Users existingUser = userRepository.findByUsername(user.getUsername());
 
 			if (existingUser != null) {
+				logger.info(String.format("Username: %s Already Exist",user.getUsername()));
 				response.setSuccess(false);
 				response.setMessage("Username already exists");
 				return response;
@@ -174,12 +150,15 @@ public class SuperAdminUserService {
 
 			response.setSuccess(true);
 			response.setMessage("Create Account Success");
+			
+			logger.info(String.format("Account Creation Success %s %s %s %s", user.getEmployeeId(),user.getEmail(), user.getFullname(), user.getRole()));
 
 			return response;
 
 		} catch (Exception e) {
 
 			response.setSuccess(false);
+			logger.error(String.format("Failed to create account %s", e.getMessage()));
 			response.setMessage("Failed to create account: " + e.getMessage());
 
 			return response;
@@ -189,33 +168,32 @@ public class SuperAdminUserService {
 
 	@Transactional
 	public AccountStatementResponse deleteAccountbyEmpId(String token, DeleteUserRequest user) {
-		AccountStatementResponse response = new AccountStatementResponse();
-		try {
-			
-			// Validate token first
-			boolean validated = jwtservice.validateToken(token.replace("LpuL ", ""));
 
-			if (!validated) {
-				response.setSuccess(false);
-				response.setMessage("Unvalidated Session");
-				return response;
-			} else {
-				if (userRepository.deleteUserByEmpId(user.getEmpId())) {
-					response.setSuccess(true);
-					response.setMessage("Delete User Success");
-					return response;
-				} else {
-					response.setSuccess(false);
-					response.setMessage("Unvalidated Session");
-					return response;
-				}
-			}
+	    AccountStatementResponse response = new AccountStatementResponse();
 
-		} catch (Exception e) {
-			response.setSuccess(false);
-			response.setMessage("Faiure :" + e.getMessage());
-			return response;
-		}
+	    try {
 
+	        if (!jwtservice.validateToken(token.replace("LpuL ", ""))) {
+	            response.setSuccess(false);
+	            response.setMessage("Unvalidated Session");
+	            return response;
+	        }
+
+	        boolean deleted = userRepository.deleteUserByEmpId(user.getEmpId());
+
+	        if (deleted) {
+	            response.setSuccess(true);
+	            response.setMessage("Delete User Success");
+	        } else {
+	            response.setSuccess(false);
+	            response.setMessage("User not found");
+	        }
+
+	        return response;
+
+	    } catch (Exception e) {
+	        logger.error("Error deleting user: {}", user.getEmpId(), e);
+	        throw new RuntimeException("Failed to delete user", e);
+	    }
 	}
 }

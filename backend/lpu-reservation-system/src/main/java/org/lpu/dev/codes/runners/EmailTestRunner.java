@@ -1,13 +1,8 @@
 package org.lpu.dev.codes.runners;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
-
 //@Component
-public class EmailTestRunner implements CommandLineRunner {
-
+public class EmailTestRunner  {
+/*
     private final JavaMailSender mailSender;
 
     public EmailTestRunner(JavaMailSender mailSender) {
@@ -37,4 +32,5 @@ public class EmailTestRunner implements CommandLineRunner {
 
         }
     }
+    */
 }
