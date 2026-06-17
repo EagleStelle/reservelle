@@ -75,4 +75,35 @@ public class UserRepository {
 
         return rowsAffected > 0;
     }
+    
+    public Users findByEmployeeId(String employeeId) {
+
+        String hql = """
+                FROM Users u
+                WHERE u.employeeId = :employeeId
+                """;
+
+        List<Users> users = entityManager
+                .createQuery(hql, Users.class)
+                .setParameter("employeeId", employeeId)
+                .getResultList();
+
+        return users.isEmpty() ? null : users.get(0);
+    }
+    
+    public boolean updateStatus(String employeeId, String status) {
+
+        String hql = """
+                UPDATE Users u
+                SET u.status = :status
+                WHERE u.employeeId = :employeeId
+                """;
+
+        int rowsAffected = entityManager.createQuery(hql)
+                .setParameter("status", status)
+                .setParameter("employeeId", employeeId)
+                .executeUpdate();
+
+        return rowsAffected > 0;
+    }
 }

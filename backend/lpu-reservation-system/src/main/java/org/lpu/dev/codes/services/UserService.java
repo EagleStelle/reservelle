@@ -2,6 +2,8 @@ package org.lpu.dev.codes.services;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lpu.dev.codes.model.apiresponse.PopulateUsersResponse;
 import org.lpu.dev.codes.model.data.Users;
 import org.lpu.dev.codes.model.dto.PopulateUserList;
@@ -12,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
+	
+	private static final Logger logger =
+            LogManager.getLogger(UserService.class);
 
 	@Autowired
 	private UserRepository userRepository;
@@ -39,30 +44,44 @@ public class UserService {
 		return userList;
 
 	}
-
 	@Transactional
 	public PopulateUsersResponse getUsersByRole(String token) {
-		PopulateUsersResponse response = new PopulateUsersResponse();
-		boolean validated = jwtservice.validateToken(token.replace("LpuL ", ""));
-		String role = jwtservice.getRole(token);
-		try {
-			List<Users> users = userRepository.getUsersByRole(role);
-			if (validated) {
-				response.setMessage("Get User Success");
-				response.setSuccess(true);
-				response.setUsers(mappedUserList(users));
-				return response;
 
-			} else {
-				response.setSuccess(false);
-				response.setMessage("Unvalidated Session");
-				return response;
-			}
-		} catch (Exception e) {
-			response.setSuccess(false);
-			response.setMessage("Database Failure");
-			return response;
-		}
+	    PopulateUsersResponse response = new PopulateUsersResponse();
 
+	    try {
+
+	        boolean validated = jwtservice.validateToken(token.replace("LpuL ", ""));
+	        String role = jwtservice.getRole(token);
+
+	        logger.info("Populate users requested. Role: {}", role);
+
+	        if (!validated) {
+	            logger.warn("Invalid session token for role: {}", role);
+
+	            response.setSuccess(false);
+	            response.setMessage("Unvalidated Session");
+	            return response;
+	        }
+
+	        List<Users> users = userRepository.getUsersByRole(role);
+
+	        logger.info("Retrieved {} users for role {}", users.size(), role);
+
+	        response.setMessage("Get User Success");
+	        response.setSuccess(true);
+	        response.setUsers(mappedUserList(users));
+
+	        return response;
+
+	    } catch (Exception e) {
+
+	        logger.error("Failed to retrieve users", e);
+
+	        response.setSuccess(false);
+	        response.setMessage("Database Failure");
+	        return response;
+	    }
 	}
+	
 }

@@ -71,10 +71,15 @@
                     class="rounded p-1 opacity-40">
                     <ui-icon name="edit_square" class="text-lg" />
                   </button>
-                  <button type="button" title="Toggle status (coming soon)" disabled
-                    class="rounded p-1 opacity-40">
-                    <ui-icon name="play_circle" class="text-lg" />
-                  </button>
+                  <button
+  type="button"
+  (click)="toggleStatus(u)"
+  class="rounded p-1 hover:bg-blue-50 hover:text-blue-600">
+
+  <ui-icon
+    [name]="isActive(u.status) ? 'pause_circle' : 'play_circle'"
+    class="text-lg" />
+</button>
                   <button type="button" title="Delete" (click)="remove(u)"
                     class="cursor-pointer rounded p-1 transition-colors hover:bg-red-50 hover:text-red-600">
                     <ui-icon name="delete" class="text-lg" />
@@ -88,5 +93,27 @@
         </table>
       </div>
     </section>
+
+    @if (showToast()) {
+<div
+  class="fixed bottom-5 right-5 z-50 flex min-w-[320px] items-center gap-3 rounded-lg px-4 py-3 text-white shadow-lg"
+  [class.bg-green-600]="toastSuccess()"
+  [class.bg-red-600]="!toastSuccess()">
+
+  <ui-icon
+    [name]="toastSuccess() ? 'check_circle' : 'error'"
+    class="text-xl">
+  </ui-icon>
+
+  <div>
+    <p class="font-semibold">
+      {{ toastSuccess() ? 'Success' : 'Error' }}
+    </p>
+    <p class="text-sm">
+      {{ toastMessage() }}
+    </p>
+  </div>
+</div>
+}
   </main>
 </div>

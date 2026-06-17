@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 @Service
 public class AuthenticationService {
-	private static final Logger logger =
-            LogManager.getLogger(AuthenticationService.class);
+	private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -27,7 +27,7 @@ public class AuthenticationService {
 
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	public AuthenticationService() {
 		logger.info("Authentication Service Started");
 	}
@@ -49,7 +49,16 @@ public class AuthenticationService {
 
 			response.setSuccess(false);
 			response.setMessage("Invalid username or password");
-			logger.warn(String.format("Invalid Username: %s or Password: %s ",request.getUsername(),request.getPassword()));
+			logger.warn(String.format("Invalid Username: %s or Password: %s ", request.getUsername(),
+					request.getPassword()));
+			return response;
+		}
+
+		if (!user.getStatus().equalsIgnoreCase("ACTIVE")) {
+			response.setSuccess(false);
+			response.setMessage("User Status Inactive Contact Administrator");
+
+			logger.warn(String.format("User Status Inactive Contact Administrator "));
 			return response;
 		}
 
@@ -71,7 +80,7 @@ public class AuthenticationService {
 	}
 
 	public ResponseEntity<LoginResponse> validate(String authHeader) {
-		
+
 		String token = authHeader.replace("LpuL ", "");
 
 		String username = jwtService.getUsername(token);
@@ -85,22 +94,29 @@ public class AuthenticationService {
 		}
 
 		Users user = userService.findByUserName(username);
-
 		LoginResponse response = new LoginResponse();
-		response.setToken(token);
-		response.setSuccess(true);
-		response.setMessage("User fetched successfully");
-		
+		if (user.getStatus().equalsIgnoreCase("ACTIVE")) {
 
-		response.setUsername(user.getUsername());
-		response.setRole(user.getRole());
-		response.setEmail(user.getEmail());
-		response.setFullname(user.getFullname());
-		response.setEmpId(user.getEmployeeId());
-		
-		logger.info(String.format("Token Valid! employee: %s", user.getEmployeeId()));
-		
-		
+			response.setToken(token);
+			response.setSuccess(true);
+			response.setMessage("User fetched successfully");
+
+			response.setUsername(user.getUsername());
+			response.setRole(user.getRole());
+			response.setEmail(user.getEmail());
+			response.setFullname(user.getFullname());
+			response.setEmpId(user.getEmployeeId());
+
+			logger.info(String.format("Token Valid! employee: %s", user.getEmployeeId()));
+
+		} else {
+			response.setToken(token);
+			response.setSuccess(false);
+			response.setMessage("User Status Inactive Contact Administrator");
+
+			logger.warn(String.format("User Status Inactive Contact Administrator "));
+
+		}
 
 		return ResponseEntity.ok(response);
 	}

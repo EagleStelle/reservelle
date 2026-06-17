@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/")
 @CrossOrigin("*")
 public class UserManagementController {
+	
 	@Autowired
 	private SuperAdminUserService userService;
 
@@ -43,7 +45,7 @@ public class UserManagementController {
 
 	}
 
-	@PostMapping("/admin/createacc")
+	@PostMapping("/admin/createuser")
 	public AccountStatementResponse createAccount(@RequestHeader("Authorization") String authHeader,
 			@RequestBody Users user) {
 		String token = authHeader.replace("LpuL ", "");
@@ -54,7 +56,6 @@ public class UserManagementController {
 		return null;
 
 	}
-//asd
 	@DeleteMapping("/admin/deleteacc")
 	public AccountStatementResponse deleteAccount(
 	        @RequestHeader("Authorization") String authHeader,
@@ -62,19 +63,56 @@ public class UserManagementController {
 
 	    String token = authHeader.replace("LpuL ", "");
 
-	    if ("SUPERADMIN".equals(jwtService.getRole(token))) {
-
-	        DeleteUserRequest request = new DeleteUserRequest();
-	        request.setEmpId(empId);
-
-	        return userService.deleteAccountbyEmpId(authHeader, request);
+	    if (!"SUPERADMIN".equals(jwtService.getRole(token))) {
+	        AccountStatementResponse response = new AccountStatementResponse();
+	        response.setSuccess(false);
+	        response.setMessage("Unauthorized");
+	        return response;
 	    }
 
-	    AccountStatementResponse response = new AccountStatementResponse();
-	    response.setSuccess(false);
-	    response.setMessage("Unauthorized");
+	    // Employee ID of currently logged-in user
+	    String username = jwtService.getUsername(token);
+	    Users user = userService.findByUserName(username);
 
-	    return response;
+	    if (empId.equalsIgnoreCase(user.getEmployeeId())) {
+	        AccountStatementResponse response = new AccountStatementResponse();
+	        response.setSuccess(false);
+	        response.setMessage("You cannot delete your own account");
+	        return response;
+	    }
+
+	    DeleteUserRequest request = new DeleteUserRequest();
+	    request.setEmpId(empId);
+
+	    return userService.deleteAccountbyEmpId(authHeader, request);
+	}
+	
+	@PatchMapping("/admin/toggleaccstat")
+	public AccountStatementResponse toggleAccountStatus(
+	        @RequestHeader("Authorization") String authHeader,
+	        @RequestParam("empId") String empId) {
+
+	    String token = authHeader.replace("LpuL ", "");
+
+	    if (!"SUPERADMIN".equals(jwtService.getRole(token))) {
+	        AccountStatementResponse response = new AccountStatementResponse();
+	        response.setSuccess(false);
+	        response.setMessage("Unauthorized");
+	        return response;
+	    }
+
+	    // Employee ID of currently logged-in user
+	    String username = jwtService.getUsername(token);
+	    Users user = userService.findByUserName(username);
+
+	    if (empId.equalsIgnoreCase(user.getEmployeeId())) {
+	        AccountStatementResponse response = new AccountStatementResponse();
+	        response.setSuccess(false);
+	        response.setMessage("You cannot change the status of your own account");
+	        return response;
+	    }
+
+	    return userService.toggleAccountStatus(empId);
 	}
 
 	@GetMapping("/populateusers")

@@ -26,4 +26,14 @@ export class UsersService {
       params: { empId },
     });
   }
+
+    toggleStatus(empId: string) {
+    return this.http.patch<AccountStatementResponse>(
+      `${this.base}/admin/toggleaccstat`,
+      {},
+      {
+        params: { empId },
+      }
+    );
+  }
 }

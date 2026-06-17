@@ -173,7 +173,11 @@ public class SuperAdminUserService {
 
 	    try {
 
+	        logger.info("Delete account request received for Employee ID: {}", user.getEmpId());
+
 	        if (!jwtservice.validateToken(token.replace("LpuL ", ""))) {
+	            logger.warn("Delete account failed. Invalid session. Employee ID: {}", user.getEmpId());
+
 	            response.setSuccess(false);
 	            response.setMessage("Unvalidated Session");
 	            return response;
@@ -182,9 +186,13 @@ public class SuperAdminUserService {
 	        boolean deleted = userRepository.deleteUserByEmpId(user.getEmpId());
 
 	        if (deleted) {
+	            logger.info("User deleted successfully. Employee ID: {}", user.getEmpId());
+
 	            response.setSuccess(true);
 	            response.setMessage("Delete User Success");
 	        } else {
+	            logger.warn("Delete account failed. User not found. Employee ID: {}", user.getEmpId());
+
 	            response.setSuccess(false);
 	            response.setMessage("User not found");
 	        }
@@ -192,8 +200,70 @@ public class SuperAdminUserService {
 	        return response;
 
 	    } catch (Exception e) {
-	        logger.error("Error deleting user: {}", user.getEmpId(), e);
+	        logger.error("Error deleting user. Employee ID: {}", user.getEmpId(), e);
 	        throw new RuntimeException("Failed to delete user", e);
+	    }
+	}
+
+	@Transactional
+	public AccountStatementResponse toggleAccountStatus(String empId) {
+
+	    AccountStatementResponse response = new AccountStatementResponse();
+
+	    try {
+
+	        logger.info("Toggle account status request received. Employee ID: {}", empId);
+
+	        Users user = userRepository.findByEmployeeId(empId);
+
+	        if (user == null) {
+
+	            logger.warn("Toggle account status failed. User not found. Employee ID: {}", empId);
+
+	            response.setSuccess(false);
+	            response.setMessage("User not found");
+	            return response;
+	        }
+
+	        String oldStatus = user.getStatus();
+	        String newStatus = "ACTIVE";
+
+	        if ("ACTIVE".equalsIgnoreCase(oldStatus)) {
+	            newStatus = "INACTIVE";
+	        }
+
+	        boolean updated = userRepository.updateStatus(empId, newStatus);
+
+	        if (updated) {
+	            logger.info(
+	                "User status updated successfully. Employee ID: {}, Old Status: {}, New Status: {}",
+	                empId,
+	                oldStatus,
+	                newStatus
+	            );
+	        } else {
+	            logger.warn(
+	                "Failed to update status. Employee ID: {}, Requested Status: {}",
+	                empId,
+	                newStatus
+	            );
+	        }
+
+	        response.setSuccess(updated);
+	        response.setMessage(updated
+	                ? "Account status changed to " + newStatus
+	                : "Failed to update account status");
+
+	        return response;
+
+	    } catch (Exception e) {
+
+	        logger.error("Error toggling account status. Employee ID: {}", empId, e);
+
+	        response.setSuccess(false);
+	        response.setMessage("Failed to update account status");
+
+	        return response;
 	    }
 	}
 }

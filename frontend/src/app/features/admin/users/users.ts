@@ -58,24 +58,83 @@ export class Users {
     this.search.set(value);
   }
 
-  protected remove(u: UserRow): void {
-    if (!confirm(`Delete account "${u.username}"? This cannot be undone.`)) return;
-
-    this.api.remove(u.employeeId).subscribe({
-      next: (res) => {
-        if (res?.success) {
-          this.users.update((rows) => rows.filter((r) => r.employeeId !== u.employeeId));
-        } else {
-          this.error.set(res?.message ?? 'Failed to delete user');
-        }
-      },
-      error: (err) => {
-        this.error.set(err?.error?.message ?? 'Unable to reach the server');
-      },
-    });
+ protected remove(u: UserRow): void {
+  if (!confirm(`Delete account "${u.username}"? This cannot be undone.`)) {
+    return;
   }
+
+  this.api.remove(u.employeeId).subscribe({
+    next: (res) => {
+      this.showResponse(
+        res?.success ?? false,
+        res?.message ?? 'Unknown response'
+      );
+
+      if (res?.success) {
+        this.users.update((rows) =>
+          rows.filter((r) => r.employeeId !== u.employeeId)
+        );
+      }
+    },
+    error: (err) => {
+      this.showResponse(
+        false,
+        err?.error?.message ?? 'Unable to reach the server'
+      );
+    },
+  });
+}
 
   protected isActive(status: string): boolean {
     return status?.toUpperCase() === 'ACTIVE';
   }
+
+protected toggleStatus(u: UserRow): void {
+  const action = this.isActive(u.status) ? 'deactivate' : 'activate';
+
+  if (!confirm(`Are you sure you want to ${action} "${u.username}"?`)) {
+    return;
+  }
+
+  this.api.toggleStatus(u.employeeId).subscribe({
+    next: (res) => {
+      this.showResponse(
+        res?.success ?? false,
+        res?.message ?? 'Unknown response'
+      );
+
+      if (res?.success) {
+        this.users.update((rows) =>
+          rows.map((row) =>
+            row.employeeId === u.employeeId
+              ? {
+                  ...row,
+                  status: this.isActive(row.status)
+                    ? 'INACTIVE'
+                    : 'ACTIVE',
+                }
+              : row,
+          ),
+        );
+      }
+    },
+    error: (err) => {
+      this.showResponse(
+        false,
+        err?.error?.message ?? 'Unable to reach the server'
+      );
+    },
+  });
+}
+protected readonly showToast = signal(false);
+protected readonly toastMessage = signal('');
+protected readonly toastSuccess = signal(false);
+
+protected showResponse(success: boolean, message: string) {
+  this.toastSuccess.set(success);
+  this.toastMessage.set(message);
+  this.showToast.set(true);
+
+  setTimeout(() => this.showToast.set(false), 3000);
+} 
 }
