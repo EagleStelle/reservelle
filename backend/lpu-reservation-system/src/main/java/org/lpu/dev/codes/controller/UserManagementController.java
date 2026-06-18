@@ -127,7 +127,7 @@ public class UserManagementController {
 			return null;
 		}
 	}
-	
+	//update user
 	@PutMapping("/admin/updateuser")
 	public AccountStatementResponse updateUser(
 	        @RequestHeader("Authorization") String authHeader,
