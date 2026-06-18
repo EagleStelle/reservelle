@@ -10,14 +10,8 @@ import { Router, RouterLink } from '@angular/router';
 
 import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import { UiButton, UiIcon, UiInput, UiSelect } from '../../../shared/ui';
+import { USER_ROLE_OPTIONS } from './user-roles';
 import { UsersService } from './users.service';
-
-const ROLES = [
-  { label: 'Nexus Admin', value: 'NEXUSADMIN' },
-  { label: 'Facilities Admin', value: 'FACILITIESADMIN' },
-  { label: 'EO Admin', value: 'EOADMIN' },
-  { label: 'Super Admin', value: 'SUPERADMIN' },
-] as const;
 
 function passwordsMatch(group: AbstractControl): ValidationErrors | null {
   const pw = group.get('password')?.value;
@@ -36,7 +30,7 @@ export class AddUser {
   private readonly api = inject(UsersService);
   private readonly router = inject(Router);
 
-  protected readonly roles = ROLES;
+  protected readonly roles = USER_ROLE_OPTIONS;
   protected readonly saving = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly showPassword = signal(false);

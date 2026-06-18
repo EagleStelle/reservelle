@@ -3,7 +3,7 @@
     <ui-input-search class="flex-1" [value]="search()" (valueChange)="onSearch($event)" />
     <a uiButton routerLink="/users/new" class="w-full sm:w-auto">
       <ui-icon name="add" [size]="20" />
-      <span>Add User</span>
+      <span>ADD USER</span>
     </a>
   </section>
 
@@ -57,14 +57,13 @@
                 </td>
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-center gap-2 text-gray-500">
-                    <button
-                      type="button"
-                      title="Edit (coming soon)"
-                      disabled
-                      class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+                    <a
+                      title="Edit"
+                      [routerLink]="['/users', u.employeeId, 'edit']"
+                      class="cursor-pointer rounded-lg p-1.5 hover:text-primary"
                     >
                       <ui-icon name="edit_square" class="text-lg" />
-                    </button>
+                    </a>
                     <button
                       type="button"
                       (click)="toggleStatus(u)"

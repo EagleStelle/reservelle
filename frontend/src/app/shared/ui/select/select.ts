@@ -26,7 +26,7 @@ export interface UiSelectOption {
         <button
           brnSelectTrigger
           type="button"
-          class="relative w-full cursor-pointer rounded-lg bg-white px-3 py-2 pr-9 text-left text-[13px] text-gray-900 elevated-sm ring-gray-200 transition-all duration-200 ease-out hover:ring-secondary focus:ring-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-placeholder:text-gray-400 aria-expanded:ring-primary sm:px-3.5 sm:py-2.5 sm:pr-9 sm:text-sm"
+          class="relative w-full cursor-pointer rounded-lg bg-white px-3 py-2 pr-9 text-left text-[13px] text-gray-900 elevated-sm ring-gray-200 hover:ring-secondary focus:ring-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-placeholder:text-gray-400 aria-expanded:ring-primary sm:px-3.5 sm:py-2.5 sm:pr-9 sm:text-sm"
         >
           <span brnSelectValue [placeholder]="placeholder()" class="block truncate"></span>
           <ui-icon
@@ -45,7 +45,7 @@ export interface UiSelectOption {
                 brnSelectItem
                 type="button"
                 [value]="opt.value"
-                class="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-[13px] text-gray-700 transition-colors data-highlighted:bg-secondary/10 aria-selected:font-semibold aria-selected:text-primary sm:text-sm"
+                class="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-[13px] text-gray-700 data-highlighted:bg-secondary/10 aria-selected:font-semibold aria-selected:text-primary sm:text-sm"
               >
                 <span class="truncate">{{ opt.label }}</span>
                 @if (value() === opt.value) {

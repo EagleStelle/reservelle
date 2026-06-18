@@ -23,6 +23,15 @@ export interface CreateAccountRequest {
   status: string;
 }
 
+export interface UpdateUserRequest {
+  oldEmployeeId: string;
+  employeeId: string;
+  fullname: string;
+  username: string;
+  email: string;
+  role: string;
+}
+
 export interface AccountStatementResponse {
   success: boolean;
   message: string;

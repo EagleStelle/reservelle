@@ -7,9 +7,8 @@ import { BrnInput } from '@spartan-ng/brain/input';
   hostDirectives: [BrnInput],
   host: {
     class:
-      'w-full rounded-lg bg-white px-3 py-2 text-[13px] sm:px-3.5 sm:py-2.5 sm:text-sm elevated-sm ring-gray-200 ' +
+      'w-full rounded-lg bg-white px-4 py-2 text-sm sm:px-3.5 sm:py-2.5 sm:text-sm elevated-sm ring-gray-200 ' +
       'text-gray-900 placeholder:text-gray-400 ' +
-      'transition-all duration-200 ease-out ' +
       'hover:ring-secondary focus:ring-primary focus:outline-none',
   },
 })
