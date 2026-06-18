@@ -8,6 +8,15 @@ public class UpdateUserRequest {
     private String fullname;
     private String role;
     private String email;
+    private String username;
+    
+    
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public String getOldEmployeeId() {
 		return oldEmployeeId;
 	}
