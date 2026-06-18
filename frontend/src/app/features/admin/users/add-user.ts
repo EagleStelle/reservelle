@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { SideNav } from '../../../shared/layout/side-nav/side-nav';
-import { UiButton, UiIcon, UiInput } from '../../../shared/ui';
+import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
+import { UiButton, UiIcon, UiInput, UiSelect } from '../../../shared/ui';
 import { UsersService } from './users.service';
 
 const ROLES = [
@@ -27,7 +27,7 @@ function passwordsMatch(group: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, RouterLink, SideNav, UiButton, UiIcon, UiInput],
+  imports: [ReactiveFormsModule, RouterLink, AdminShell, UiButton, UiIcon, UiInput, UiSelect],
   templateUrl: './add-user.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -92,10 +92,5 @@ export class AddUser {
           this.error.set(err?.error?.message ?? 'Unable to reach the server');
         },
       });
-  }
-
-  protected selectedRoleLabel(): string {
-    const selected = this.form.controls.role.value;
-    return this.roles.find((role) => role.value === selected)?.label ?? 'Not selected';
   }
 }

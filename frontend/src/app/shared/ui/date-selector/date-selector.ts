@@ -13,7 +13,7 @@ import { UiIcon } from '../icon/icon';
       brnButton
       type="button"
       (click)="open.emit()"
-      class="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-white px-2.5 text-sm font-bold leading-none text-gray-600 shadow-sm ring-1 ring-inset ring-black/5 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-secondary hover:text-white hover:ring-transparent active:scale-[0.97] sm:px-4"
+      class="flex h-9 cursor-pointer items-center gap-1.5 rounded-lg bg-white px-2.5 text-sm font-bold leading-none text-gray-600 elevated-sm transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-secondary hover:text-white hover:ring-transparent active:scale-[0.97] sm:px-4"
     >
       <ui-icon name="calendar_today" class="text-sm" />
       <span>{{ value() }}</span>

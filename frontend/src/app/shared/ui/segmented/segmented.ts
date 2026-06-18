@@ -8,7 +8,7 @@ import { BrnToggleGroupImports } from '@spartan-ng/brain/toggle-group';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <brn-toggle-group
-      class="flex items-center gap-1 rounded-lg bg-gray-100 p-0.5 shadow-sm ring-1 ring-inset ring-black/5"
+      class="elevated-sm flex items-center gap-1 rounded-lg bg-gray-100 p-0.5"
       [value]="value()"
       (valueChange)="value.set($any($event))"
     >

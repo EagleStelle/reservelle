@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
-import { SideNav } from '../../../shared/layout/side-nav/side-nav';
+import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import { UiIcon, UiSegmented, UiDateSelector } from '../../../shared/ui';
 
 interface StatCard {
@@ -19,7 +19,7 @@ type Category = 'All' | 'Van' | 'FLT' | 'Gym';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [SideNav, UiIcon, UiSegmented, UiDateSelector],
+  imports: [AdminShell, UiIcon, UiSegmented, UiDateSelector],
   templateUrl: './dashboard.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { SideNav } from '../../../shared/layout/side-nav/side-nav';
-import { UiButton, UiIcon, UiInput } from '../../../shared/ui';
+import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
+import { UiButton, UiIcon, UiInputSearch } from '../../../shared/ui';
 import { UsersService } from './users.service';
 import { UserRow } from './users.models';
 
 @Component({
   selector: 'app-users',
-  imports: [RouterLink, SideNav, UiButton, UiIcon, UiInput],
+  imports: [RouterLink, AdminShell, UiButton, UiIcon, UiInputSearch],
   templateUrl: './users.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
