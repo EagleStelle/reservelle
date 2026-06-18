@@ -46,12 +46,13 @@
             <button
               type="button"
               (click)="showPassword.set(!showPassword())"
-              [title]="showPassword() ? 'Hide password' : 'Show password'"
-              class="absolute right-2 top-1/2 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg p-1 text-gray-400 transition-colors hover:text-primary"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showPassword()"
+              class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-gray-200 hover:text-primary focus-visible:text-primary focus-visible:outline-none"
             >
               <ui-icon
                 [name]="showPassword() ? 'visibility_off' : 'visibility'"
-                class="text-lg leading-none"
+                class="text-xl leading-none"
               />
             </button>
           </div>
@@ -75,12 +76,13 @@
             <button
               type="button"
               (click)="showConfirm.set(!showConfirm())"
-              [title]="showConfirm() ? 'Hide password' : 'Show password'"
-              class="absolute right-2 top-1/2 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg p-1 text-gray-400 transition-colors hover:text-primary"
+              [attr.aria-label]="showConfirm() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showConfirm()"
+              class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-gray-200 hover:text-primary focus-visible:text-primary focus-visible:outline-none"
             >
               <ui-icon
                 [name]="showConfirm() ? 'visibility_off' : 'visibility'"
-                class="text-lg leading-none"
+                class="text-xl leading-none"
               />
             </button>
           </div>
@@ -91,14 +93,9 @@
     <div
       class="mx-5 mt-auto flex flex-col-reverse gap-3 border-t border-primary/30 py-3 sm:mx-7 sm:flex-row sm:justify-end"
     >
-      <a
-        routerLink="/users"
-        class="inline-flex cursor-pointer items-center justify-center rounded-lg border border-gray-200 px-6 py-2.5 text-sm font-bold text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50"
-      >
-        Cancel
-      </a>
-      <button uiButton type="submit" class="px-6" [disabled]="saving()">
-        <span>{{ saving() ? 'Saving...' : 'Save User' }}</span>
+      <a uiButton variant="secondary" routerLink="/users"> Cancel </a>
+      <button uiButton type="submit" [disabled]="saving()">
+        <span>{{ saving() ? 'Saving...' : 'Save' }}</span>
       </button>
     </div>
   </form>

@@ -9,7 +9,7 @@
 
   <section class="surface flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl">
     <div class="min-h-0 flex-1 overflow-auto">
-      <table class="w-full min-w-[860px] border-collapse text-left text-sm">
+      <table class="w-full min-w-215 border-collapse text-left text-sm">
         <thead class="sticky top-0 z-10">
           <tr class="bg-primary text-xs font-bold uppercase tracking-wide text-white">
             <th class="px-5 py-4">Employee ID</th>
@@ -37,7 +37,7 @@
           } @else {
             @for (u of filtered(); track u.employeeId) {
               <tr
-                class="border-b border-gray-100 odd:bg-white even:bg-gray-50/70 transition-colors hover:bg-secondary/5"
+                class="border-b border-gray-100 odd:bg-white even:bg-gray-50/70 hover:bg-secondary/5"
               >
                 <td class="px-5 py-4 text-black">{{ u.employeeId }}</td>
                 <td class="px-4 py-3 text-black">{{ u.username }}</td>
@@ -61,14 +61,14 @@
                       type="button"
                       title="Edit (coming soon)"
                       disabled
-                      class="rounded-lg p-1.5 opacity-40"
+                      class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <ui-icon name="edit_square" class="text-lg" />
                     </button>
                     <button
                       type="button"
                       (click)="toggleStatus(u)"
-                      class="cursor-pointer rounded-lg p-1.5 transition-colors hover:text-secondary"
+                      class="cursor-pointer rounded-lg p-1.5 hover:text-primary"
                     >
                       <ui-icon
                         [name]="isActive(u.status) ? 'pause_circle' : 'play_circle'"
@@ -79,7 +79,7 @@
                       type="button"
                       title="Delete"
                       (click)="remove(u)"
-                      class="cursor-pointer rounded-lg p-1.5 transition-colors hover:text-red-600"
+                      class="cursor-pointer rounded-lg p-1.5 hover:text-red-600"
                     >
                       <ui-icon name="delete" class="text-lg" />
                     </button>
