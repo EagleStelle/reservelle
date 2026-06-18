@@ -1,16 +1,31 @@
-import { Directive } from '@angular/core';
+import { computed, Directive, input } from '@angular/core';
+import { BrnButton } from '@spartan-ng/brain/button';
 
-/** Button: primary by default, secondary on hover. */
+export type UiButtonVariant = 'primary' | 'secondary';
+
+/** Shared layout/sizing so primary + secondary buttons line up at the same height. */
+const BASE =
+  'inline-flex box-border items-center justify-center gap-2 rounded-lg border ' +
+  'px-4 py-2.5 text-[13px] font-semibold leading-none sm:text-sm ' +
+  'cursor-pointer select-none ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ' +
+  'disabled:pointer-events-none disabled:opacity-50';
+
+const VARIANTS: Record<UiButtonVariant, string> = {
+  primary: 'border-primary bg-primary text-white hover:border-secondary hover:bg-secondary',
+  secondary:
+    'border-primary bg-white dark:bg-zinc-800 text-primary dark:text-zinc-100 hover:border-secondary hover:bg-secondary/10 dark:hover:bg-secondary/25',
+};
+
+/** Button: `variant="primary"` (default) or `variant="secondary"`. Built on spartan/brain button. */
 @Directive({
   selector: 'button[uiButton], a[uiButton]',
+  hostDirectives: [{ directive: BrnButton, inputs: ['disabled'] }],
   host: {
-    class:
-      'inline-flex items-center justify-center gap-2 rounded-lg ' +
-      'bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-primary/20 ' +
-      'cursor-pointer select-none transition-all duration-200 ease-out ' +
-      'hover:-translate-y-0.5 hover:bg-secondary hover:shadow-xl hover:shadow-secondary/25 active:translate-y-0 ' +
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ' +
-      'disabled:pointer-events-none disabled:opacity-50',
+    '[class]': 'classes()',
   },
 })
-export class UiButton {}
+export class UiButton {
+  readonly variant = input<UiButtonVariant>('primary');
+  protected readonly classes = computed(() => `${BASE} ${VARIANTS[this.variant()]}`);
+}

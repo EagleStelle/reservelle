@@ -20,6 +20,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/admin/users/add-user').then((m) => m.AddUser),
   },
   {
+    path: 'users/:employeeId/edit',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/admin/users/edit-user').then((m) => m.EditUser),
+  },
+  {
     path: '',
     loadChildren: () =>
       import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),

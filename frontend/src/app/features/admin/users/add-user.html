@@ -1,177 +1,145 @@
-<div class="flex min-h-dvh w-full flex-col bg-[#f6f7fb] text-gray-900 lg:flex-row">
-  <app-side-nav />
-
-  <main class="flex min-h-0 flex-1 flex-col gap-5 overflow-auto p-4 sm:p-6">
-    <header
-      class="animate-rise flex shrink-0 flex-col gap-4 rounded-3xl bg-white p-5 shadow-[0_18px_55px_rgba(15,23,42,0.07)] sm:flex-row sm:items-end sm:justify-between sm:p-6"
-    >
-      <div>
-        <p class="text-sm font-bold uppercase tracking-[0.2em] text-secondary">Create account</p>
-        <h1 class="mt-2 text-2xl font-black tracking-tight text-gray-950 sm:text-4xl">
-          LPU - L RESERVATION SYSTEM
-        </h1>
+<app-admin-shell>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="save()"
+    autocomplete="off"
+    class="surface animate-rise flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl"
+  >
+    <div class="mx-5 border-b border-primary/30 py-3.5 sm:mx-7">
+      <div class="flex items-center gap-3 text-primary">
+        <ui-icon name="person_add" class="text-2xl" />
+        <h2 class="text-xl font-black">ADD USER</h2>
       </div>
-      <a
-        routerLink="/users"
-        class="inline-flex w-fit items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-bold text-gray-700 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:text-primary hover:shadow-md"
-      >
-        <ui-icon name="arrow_back" class="text-lg" />
-        <span>Back to Users</span>
-      </a>
-    </header>
+    </div>
 
-    <form
-      [formGroup]="form"
-      (ngSubmit)="save()"
-      class="surface animate-rise flex min-h-0 flex-1 flex-col overflow-hidden rounded-3xl"
-    >
-      <div
-        class="border-b border-gray-100 bg-gradient-to-r from-primary/5 via-white to-orange-50/70 px-5 py-5 sm:px-7"
-      >
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 class="text-xl font-black text-gray-950">Add New User</h2>
-            <p class="text-sm text-gray-500">
-              Fill in the account details and assign the right admin access.
-            </p>
-          </div>
-          <div
-            class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary"
-          >
-            <ui-icon name="person_add" class="text-2xl" />
-          </div>
+    <div class="flex-1 overflow-y-auto p-5 lg:p-7">
+      <div class="grid content-start gap-5 sm:grid-cols-2">
+        <div class="flex flex-col gap-1.5 sm:col-span-2">
+          <label for="add-user-fullname" class="text-sm font-bold text-gray-800 dark:text-zinc-200">Full Name</label>
+          <input
+            uiInput
+            id="add-user-fullname"
+            name="addUserFullname"
+            type="text"
+            formControlName="fullname"
+            autocomplete="off"
+            placeholder="Juan Dela Cruz"
+          />
         </div>
-      </div>
 
-      <div class="grid flex-1 gap-6 p-5 lg:grid-cols-[1fr_20rem] lg:p-7">
-        <div class="grid content-start gap-5 sm:grid-cols-2">
-          <div class="flex flex-col gap-1.5 sm:col-span-2">
-            <label class="text-sm font-bold text-gray-800">Full Name</label>
-            <input uiInput type="text" formControlName="fullname" placeholder="Juan Dela Cruz" />
-          </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="add-user-employee-id" class="text-sm font-bold text-gray-800 dark:text-zinc-200">
+            Employee ID
+          </label>
+          <input
+            uiInput
+            id="add-user-employee-id"
+            name="addUserEmployeeId"
+            type="text"
+            formControlName="employeeId"
+            autocomplete="off"
+            placeholder="e.g. EMP-0001"
+          />
+        </div>
 
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-bold text-gray-800">Username</label>
-            <input uiInput type="text" formControlName="username" placeholder="jdelacruz" />
-          </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="add-user-email" class="text-sm font-bold text-gray-800 dark:text-zinc-200">Email</label>
+          <input
+            uiInput
+            id="add-user-email"
+            name="addUserEmail"
+            type="email"
+            formControlName="email"
+            autocomplete="off"
+            placeholder="name@lpulaguna.edu.ph"
+          />
+        </div>
 
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-bold text-gray-800">Employee ID</label>
-            <input uiInput type="text" formControlName="employeeId" placeholder="EMP-0001" />
-          </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="add-user-username" class="text-sm font-bold text-gray-800 dark:text-zinc-200">Username</label>
+          <input
+            uiInput
+            id="add-user-username"
+            name="addUserUsername"
+            type="text"
+            formControlName="username"
+            autocomplete="off"
+            placeholder="jdelacruz"
+          />
+        </div>
 
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-bold text-gray-800">User Role</label>
-            <select
-              formControlName="role"
-              class="w-full rounded-lg border border-gray-200 bg-white/90 px-3.5 py-2.5 text-sm text-gray-900 shadow-sm transition-all duration-200 hover:border-secondary/70 focus:border-primary focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10"
-            >
-              <option value="" disabled selected>Select a role</option>
-              @for (r of roles; track r.value) {
-                <option [value]="r.value">{{ r.label }}</option>
-              }
-            </select>
-          </div>
-
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-bold text-gray-800">Email</label>
+        <div class="flex flex-col gap-1.5">
+          <label for="add-user-password" class="text-sm font-bold text-gray-800 dark:text-zinc-200">Password</label>
+          <div class="relative">
             <input
               uiInput
-              type="email"
-              formControlName="email"
-              placeholder="name@lpunetwork.edu.ph"
+              id="add-user-password"
+              name="addUserPassword"
+              [type]="showPassword() ? 'text' : 'password'"
+              formControlName="password"
+              autocomplete="new-password"
+              placeholder="Minimum 6 characters"
+              class="pr-10"
             />
-          </div>
-
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-bold text-gray-800">Password</label>
-            <div class="relative">
-              <input
-                uiInput
-                [type]="showPassword() ? 'text' : 'password'"
-                formControlName="password"
-                placeholder="Minimum 6 characters"
-                class="pr-10"
+            <button
+              type="button"
+              (click)="showPassword.set(!showPassword())"
+              [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showPassword()"
+              class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-gray-200 dark:text-zinc-500 hover:text-primary focus-visible:text-primary focus-visible:outline-none"
+            >
+              <ui-icon
+                [name]="showPassword() ? 'visibility_off' : 'visibility'"
+                class="text-xl leading-none"
               />
-              <button
-                type="button"
-                (click)="showPassword.set(!showPassword())"
-                [title]="showPassword() ? 'Hide password' : 'Show password'"
-                class="absolute right-2 top-1/2 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg p-1 text-gray-500 transition-colors hover:bg-primary/5 hover:text-primary"
-              >
-                <ui-icon
-                  [name]="showPassword() ? 'visibility_off' : 'visibility'"
-                  class="text-lg leading-none"
-                />
-              </button>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-bold text-gray-800">Confirm Password</label>
-            <div class="relative">
-              <input
-                uiInput
-                [type]="showConfirm() ? 'text' : 'password'"
-                formControlName="confirmPassword"
-                placeholder="Re-enter password"
-                class="pr-10"
-              />
-              <button
-                type="button"
-                (click)="showConfirm.set(!showConfirm())"
-                [title]="showConfirm() ? 'Hide password' : 'Show password'"
-                class="absolute right-2 top-1/2 flex -translate-y-1/2 cursor-pointer items-center justify-center rounded-lg p-1 text-gray-500 transition-colors hover:bg-primary/5 hover:text-primary"
-              >
-                <ui-icon
-                  [name]="showConfirm() ? 'visibility_off' : 'visibility'"
-                  class="text-lg leading-none"
-                />
-              </button>
-            </div>
+            </button>
           </div>
         </div>
 
-        <aside class="grid content-start gap-4">
-          <div class="rounded-2xl bg-primary p-5 text-white shadow-xl shadow-primary/20">
-            <ui-icon name="admin_panel_settings" class="text-3xl" />
-            <h3 class="mt-3 text-lg font-black">Access Summary</h3>
-            <p class="mt-2 text-sm leading-6 text-white/75">
-              New users are created as active accounts and can sign in after saving.
-            </p>
-          </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="text-sm font-bold text-gray-800 dark:text-zinc-200">User Role</label>
+          <ui-select formControlName="role" placeholder="Select a role" [options]="roles" />
+        </div>
 
-          <div class="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-            <p class="text-sm font-bold uppercase tracking-[0.16em] text-gray-400">Selected Role</p>
-            <p class="mt-2 text-2xl font-black text-primary">
-              {{ selectedRoleLabel() }}
-            </p>
-          </div>
-
-          @if (error()) {
-            <p
-              class="animate-rise rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-600"
+        <div class="flex flex-col gap-1.5">
+          <label for="add-user-confirm-password" class="text-sm font-bold text-gray-800 dark:text-zinc-200">
+            Confirm Password
+          </label>
+          <div class="relative">
+            <input
+              uiInput
+              id="add-user-confirm-password"
+              name="addUserConfirmPassword"
+              [type]="showConfirm() ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              autocomplete="new-password"
+              placeholder="Re-enter password"
+              class="pr-10"
+            />
+            <button
+              type="button"
+              (click)="showConfirm.set(!showConfirm())"
+              [attr.aria-label]="showConfirm() ? 'Hide password' : 'Show password'"
+              [attr.aria-pressed]="showConfirm()"
+              class="absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 text-gray-200 dark:text-zinc-500 hover:text-primary focus-visible:text-primary focus-visible:outline-none"
             >
-              {{ error() }}
-            </p>
-          }
-        </aside>
+              <ui-icon
+                [name]="showConfirm() ? 'visibility_off' : 'visibility'"
+                class="text-xl leading-none"
+              />
+            </button>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div
-        class="mt-auto flex flex-col-reverse gap-3 border-t border-gray-100 bg-white/70 px-5 py-4 sm:flex-row sm:justify-end sm:px-7"
-      >
-        <a
-          routerLink="/users"
-          class="inline-flex cursor-pointer items-center justify-center rounded-lg border border-gray-200 px-6 py-2.5 text-sm font-bold text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50"
-        >
-          Cancel
-        </a>
-        <button uiButton type="submit" class="px-6" [disabled]="saving()">
-          <ui-icon [name]="saving() ? 'hourglass_empty' : 'save'" class="text-lg" />
-          <span>{{ saving() ? 'Saving...' : 'Save User' }}</span>
-        </button>
-      </div>
-    </form>
-  </main>
-</div>
+    <div
+      class="mx-5 mt-auto flex flex-col-reverse gap-3 border-t border-primary/30 py-3 sm:mx-7 sm:flex-row sm:justify-end"
+    >
+      <a uiButton variant="secondary" routerLink="/users"> CANCEL </a>
+      <button uiButton type="submit" [disabled]="saving()">
+        <span>SAVE</span>
+      </button>
+    </div>
+  </form>
+</app-admin-shell>
