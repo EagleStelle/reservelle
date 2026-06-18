@@ -54,6 +54,8 @@ backend/.metadata/
 # Backend - Maven build output
 backend/**/target/
 **/target/
+*.war
+*.ear
 
 # Backend - Eclipse project files
 **/.classpath

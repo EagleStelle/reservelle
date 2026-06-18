@@ -4,9 +4,14 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   selector: 'ui-icon',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<span class="material-symbols-outlined" aria-hidden="true">{{ name() }}</span>`,
+  template: `<span
+    class="material-symbols-outlined"
+    aria-hidden="true"
+    [style.font-size.px]="size()"
+  >{{ name() }}</span>`,
   host: { class: 'inline-flex' },
 })
 export class UiIcon {
   readonly name = input.required<string>();
+  readonly size = input<number>();
 }

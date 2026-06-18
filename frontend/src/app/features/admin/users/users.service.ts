@@ -6,6 +6,7 @@ import {
   AccountStatementResponse,
   CreateAccountRequest,
   PopulateUsersResponse,
+  UpdateUserRequest,
 } from './users.models';
 
 @Injectable({ providedIn: 'root' })
@@ -21,19 +22,23 @@ export class UsersService {
     return this.http.post<AccountStatementResponse>(`${this.base}/admin/createuser`, payload);
   }
 
+  update(payload: UpdateUserRequest) {
+    return this.http.put<AccountStatementResponse>(`${this.base}/admin/updateuser`, payload);
+  }
+
   remove(empId: string) {
     return this.http.delete<AccountStatementResponse>(`${this.base}/admin/deleteacc`, {
       params: { empId },
     });
   }
 
-    toggleStatus(empId: string) {
+  toggleStatus(empId: string) {
     return this.http.patch<AccountStatementResponse>(
       `${this.base}/admin/toggleaccstat`,
       {},
       {
         params: { empId },
-      }
+      },
     );
   }
 }

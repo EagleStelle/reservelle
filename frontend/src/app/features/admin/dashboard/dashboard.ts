@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 
-import { SideNav } from '../../../shared/layout/side-nav/side-nav';
-import { UiIcon } from '../../../shared/ui';
+import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
+import { UiIcon, UiSegmented, UiDateSelector } from '../../../shared/ui';
 
 interface StatCard {
   label: string;
@@ -9,16 +9,81 @@ interface StatCard {
   delta: string;
   trend: 'up' | 'down';
   icon: string;
-  iconBg: string;
-  iconFg: string;
-  valueColor: string;
+  cardBg: string; // colored glass gradient (the old accent color, now the card fill)
+  badgeBg: string; // darkest shade of the accent for the trend pill
 }
 
-type Range = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
+interface CalendarReservation {
+  id: string;
+  title: string;
+}
+
+interface CalendarDay {
+  id: string;
+  day: number | null;
+  isToday: boolean;
+  rowTone: 'muted' | 'soft';
+  reservations: CalendarReservation[];
+}
+
+interface UpcomingEvent {
+  id: string;
+  title: string;
+  date: string;
+  description?: string;
+}
+
+type Category = 'All' | 'Van' | 'FLT' | 'Gym';
+
+const DAYS_PER_WEEK = 7;
+const MIN_CALENDAR_ROWS = 5;
+const DEFAULT_YEAR_MONTH = '2026-06';
+
+function parseYearMonth(value: string): { year: number; month: number } {
+  const match = /^(\d{4})-(\d{2})$/.exec(value);
+  const year = match ? Number(match[1]) : 2026;
+  const month = match ? Number(match[2]) - 1 : 5;
+
+  if (!Number.isInteger(year) || month < 0 || month > 11) {
+    return { year: 2026, month: 5 };
+  }
+
+  return { year, month };
+}
+
+function createCalendarDays(value: string): CalendarDay[] {
+  const { year, month } = parseYearMonth(value);
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth();
+  const todayDay = today.getDate();
+  const firstWeekday = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const rowCount = Math.max(
+    MIN_CALENDAR_ROWS,
+    Math.ceil((firstWeekday + daysInMonth) / DAYS_PER_WEEK),
+  );
+  const cellCount = rowCount * DAYS_PER_WEEK;
+
+  return Array.from({ length: cellCount }, (_, index) => {
+    const row = Math.floor(index / DAYS_PER_WEEK);
+    const dayOffset = index - firstWeekday;
+    const day = dayOffset >= 0 && dayOffset < daysInMonth ? dayOffset + 1 : null;
+    const rowTone: CalendarDay['rowTone'] = row % 2 === 0 ? 'muted' : 'soft';
+
+    return {
+      id: `${value}-${index}-${day ?? 'empty'}`,
+      day,
+      isToday: day === todayDay && month === todayMonth && year === todayYear,
+      rowTone,
+      reservations: [],
+    };
+  });
+}
 
 @Component({
   selector: 'app-dashboard',
-  imports: [SideNav, UiIcon],
+  imports: [AdminShell, UiIcon, UiSegmented, UiDateSelector],
   templateUrl: './dashboard.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -31,9 +96,8 @@ export class Dashboard {
       delta: '12.5%',
       trend: 'up',
       icon: 'monitoring',
-      iconBg: 'bg-primary/10',
-      iconFg: 'text-primary',
-      valueColor: 'text-primary',
+      cardBg: 'bg-linear-to-br from-primary to-secondary',
+      badgeBg: 'bg-[#3f0f20]',
     },
     {
       label: 'Pending',
@@ -41,9 +105,8 @@ export class Dashboard {
       delta: '12.5%',
       trend: 'up',
       icon: 'pending_actions',
-      iconBg: 'bg-orange-50',
-      iconFg: 'text-orange-500',
-      valueColor: 'text-orange-500',
+      cardBg: 'bg-linear-to-br from-orange-400 to-orange-600',
+      badgeBg: 'bg-orange-800',
     },
     {
       label: 'Accepted',
@@ -51,9 +114,8 @@ export class Dashboard {
       delta: '12.5%',
       trend: 'down',
       icon: 'check_circle',
-      iconBg: 'bg-green-50',
-      iconFg: 'text-green-500',
-      valueColor: 'text-green-600',
+      cardBg: 'bg-linear-to-br from-green-400 to-green-600',
+      badgeBg: 'bg-green-800',
     },
     {
       label: 'Rejected',
@@ -61,16 +123,30 @@ export class Dashboard {
       delta: '12.5%',
       trend: 'down',
       icon: 'cancel',
-      iconBg: 'bg-red-50',
-      iconFg: 'text-red-500',
-      valueColor: 'text-red-600',
+      cardBg: 'bg-linear-to-br from-red-400 to-red-600',
+      badgeBg: 'bg-red-800',
     },
   ];
 
-  protected readonly ranges: Range[] = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
-  protected readonly activeRange = signal<Range>('Monthly');
+  protected readonly activeDate = signal(DEFAULT_YEAR_MONTH);
 
-  protected selectRange(r: Range): void {
-    this.activeRange.set(r);
+  protected readonly categories: Category[] = ['All', 'Van', 'FLT', 'Gym'];
+  protected readonly activeCategory = signal<Category>('All');
+
+  protected selectCategory(c: Category): void {
+    this.activeCategory.set(c);
   }
+
+  protected selectDate(value: string): void {
+    this.activeDate.set(value);
+  }
+
+  protected readonly weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  protected readonly calendarDays = computed(() => createCalendarDays(this.activeDate()));
+  protected readonly calendarDateRows = computed(
+    () => `repeat(${this.calendarDays().length / DAYS_PER_WEEK}, minmax(0, 1fr))`,
+  );
+
+  protected readonly upcomingEvents = signal<UpcomingEvent[]>([]);
 }

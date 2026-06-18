@@ -8,16 +8,10 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
-import { SideNav } from '../../../shared/layout/side-nav/side-nav';
-import { UiButton, UiIcon, UiInput } from '../../../shared/ui';
+import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
+import { UiButton, UiIcon, UiInput, UiSelect } from '../../../shared/ui';
+import { USER_ROLE_OPTIONS } from './user-roles';
 import { UsersService } from './users.service';
-
-const ROLES = [
-  { label: 'Nexus Admin', value: 'NEXUSADMIN' },
-  { label: 'Facilities Admin', value: 'FACILITIESADMIN' },
-  { label: 'EO Admin', value: 'EOADMIN' },
-  { label: 'Super Admin', value: 'SUPERADMIN' },
-] as const;
 
 function passwordsMatch(group: AbstractControl): ValidationErrors | null {
   const pw = group.get('password')?.value;
@@ -27,7 +21,7 @@ function passwordsMatch(group: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-add-user',
-  imports: [ReactiveFormsModule, RouterLink, SideNav, UiButton, UiIcon, UiInput],
+  imports: [ReactiveFormsModule, RouterLink, AdminShell, UiButton, UiIcon, UiInput, UiSelect],
   templateUrl: './add-user.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -36,7 +30,7 @@ export class AddUser {
   private readonly api = inject(UsersService);
   private readonly router = inject(Router);
 
-  protected readonly roles = ROLES;
+  protected readonly roles = USER_ROLE_OPTIONS;
   protected readonly saving = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly showPassword = signal(false);
@@ -92,10 +86,5 @@ export class AddUser {
           this.error.set(err?.error?.message ?? 'Unable to reach the server');
         },
       });
-  }
-
-  protected selectedRoleLabel(): string {
-    const selected = this.form.controls.role.value;
-    return this.roles.find((role) => role.value === selected)?.label ?? 'Not selected';
   }
 }
