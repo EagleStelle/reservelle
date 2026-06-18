@@ -14,8 +14,64 @@ interface StatCard {
   valueColor: string;
 }
 
-type Range = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
+interface CalendarReservation {
+  id: string;
+  title: string;
+}
+
+interface CalendarDay {
+  id: string;
+  day: number | null;
+  rowTone: 'muted' | 'soft' | 'plain';
+  reservations: CalendarReservation[];
+}
+
+interface UpcomingEvent {
+  id: string;
+  title: string;
+  date: string;
+  description?: string;
+}
+
 type Category = 'All' | 'Van' | 'FLT' | 'Gym';
+
+const calendarCellDays: Array<number | null> = [
+  null,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+  31,
+  null,
+  null,
+  null,
+];
 
 @Component({
   selector: 'app-dashboard',
@@ -68,13 +124,6 @@ export class Dashboard {
     },
   ];
 
-  protected readonly ranges: Range[] = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
-  protected readonly activeRange = signal<Range>('Monthly');
-
-  protected selectRange(r: Range): void {
-    this.activeRange.set(r);
-  }
-
   protected readonly activeYear = signal('2026');
 
   protected readonly categories: Category[] = ['All', 'Van', 'FLT', 'Gym'];
@@ -83,4 +132,23 @@ export class Dashboard {
   protected selectCategory(c: Category): void {
     this.activeCategory.set(c);
   }
+
+  protected readonly weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  protected readonly calendarDays = signal<CalendarDay[]>(
+    calendarCellDays.map((day, index) => {
+      const row = Math.floor(index / 7);
+      const rowTone: CalendarDay['rowTone'] =
+        row === 3 ? 'plain' : row === 1 ? 'soft' : 'muted';
+
+      return {
+        id: `${index}-${day ?? 'empty'}`,
+        day,
+        rowTone,
+        reservations: [],
+      };
+    }),
+  );
+
+  protected readonly upcomingEvents = signal<UpcomingEvent[]>([]);
 }
