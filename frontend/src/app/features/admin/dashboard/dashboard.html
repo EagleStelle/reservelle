@@ -28,7 +28,7 @@
       }
     </section>
 
-    <section class="surface animate-rise flex min-h-0 flex-none flex-col overflow-visible rounded-xl p-3 sm:rounded-2xl sm:p-6 lg:flex-1 lg:overflow-hidden">
+    <section class="surface animate-rise flex min-h-0 flex-none flex-col overflow-visible rounded-xl p-3 sm:rounded-2xl sm:p-6 lg:flex-1">
       <div class="mb-4 flex shrink-0 flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
         <ui-date-selector [value]="activeDate()" (valueChange)="selectDate($event)" />
         <ui-segmented
@@ -38,10 +38,10 @@
         />
       </div>
 
-      <div class="grid min-h-[34rem] flex-1 grid-rows-[minmax(24rem,1fr)_minmax(9rem,auto)] gap-3 md:min-h-[36rem] lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-none">
-        <div class="flex min-h-0 overflow-hidden rounded-lg ring-1 ring-inset ring-black/5 dark:ring-white/10">
+      <div class="grid min-h-[34rem] flex-1 grid-rows-[minmax(24rem,auto)_minmax(9rem,auto)] gap-3 md:min-h-[36rem] lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-none">
+        <div class="flex min-h-0 overflow-auto rounded-lg ring-1 ring-inset ring-black/5 dark:ring-white/10">
           <div class="min-h-0 flex-1 overflow-x-auto">
-            <div class="grid h-full min-h-0 min-w-full grid-rows-[auto_minmax(0,1fr)] md:min-w-[44rem]">
+            <div class="grid min-h-full min-w-full grid-rows-[auto_minmax(0,auto)] md:min-w-[44rem]">
               <div class="grid grid-cols-7 bg-primary text-center text-sm font-bold text-white">
                 @for (weekday of weekdays; track weekday) {
                   <div class="border-r border-white/35 px-1 py-2 last:border-r-0 sm:px-2">
@@ -51,12 +51,12 @@
               </div>
 
               <div
-                class="grid h-full min-h-0 grid-cols-7 text-center text-[11px] text-gray-900 dark:text-zinc-100 sm:text-xs"
+                class="grid grid-cols-7 text-center text-[11px] text-gray-900 dark:text-zinc-100 sm:text-xs"
                 [style.grid-template-rows]="calendarDateRows()"
               >
                 @for (day of calendarDays(); track day.id) {
                   <div
-                    class="flex min-h-0 flex-col border-r border-b border-white dark:border-zinc-700/60 p-1.5 last:border-r-0 sm:p-2"
+                    class="flex min-h-[7.5rem] flex-col border-r border-b border-white p-1.5 last:border-r-0 dark:border-zinc-700/60 sm:p-2"
                     [class.bg-gray-100]="day.rowTone === 'muted'"
                     [class.dark:bg-zinc-800]="day.rowTone === 'muted'"
                     [class.bg-gray-50]="day.rowTone === 'soft'"
@@ -73,10 +73,18 @@
                         {{ day.day }}
                       </span>
                       @if (day.reservations.length) {
-                        <ul class="mt-2 space-y-1 overflow-hidden text-left">
+                        <ul class="mt-2 space-y-1 text-left">
                           @for (reservation of day.reservations; track reservation.id) {
-                            <li class="truncate border-l-2 border-primary/40 pl-1.5 text-[11px] font-medium text-primary">
-                              {{ reservation.title }}
+                            <li
+                              class="min-w-0 rounded border-l-2 border-primary/50 bg-white/70 px-1.5 py-1 text-[11px] leading-tight text-gray-700 shadow-sm dark:bg-zinc-900/70 dark:text-zinc-200"
+                              [title]="reservation.time + ' - ' + reservation.title"
+                            >
+                              <span class="block truncate font-bold text-primary">
+                                {{ reservation.time }}
+                              </span>
+                              <span class="block truncate font-medium">
+                                {{ reservation.title }}
+                              </span>
                             </li>
                           }
                         </ul>
@@ -95,15 +103,28 @@
           </div>
           <div class="min-h-0 flex-1 overflow-y-auto p-3">
             @for (event of upcomingEvents(); track event.id) {
-              <article class="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0">
-                <h3 class="truncate text-xs font-semibold text-gray-900">{{ event.title }}</h3>
-                <time class="mt-1 block text-[11px] font-medium text-primary">{{ event.date }}</time>
+              <article class="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0 dark:border-zinc-800">
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="min-w-0 truncate text-xs font-semibold text-gray-900 dark:text-zinc-100">
+                    {{ event.title }}
+                  </h3>
+                  <span class="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+                    {{ event.category }}
+                  </span>
+                </div>
+                <time class="mt-1 block text-[11px] font-medium text-primary">
+                  {{ event.date }} - {{ event.time }}
+                </time>
                 @if (event.description) {
                   <p class="mt-1 line-clamp-2 text-[11px] leading-snug text-gray-500">
                     {{ event.description }}
                   </p>
                 }
               </article>
+            } @empty {
+              <p class="text-center text-xs font-medium text-gray-500 dark:text-zinc-400">
+                No events this month
+              </p>
             }
           </div>
         </aside>

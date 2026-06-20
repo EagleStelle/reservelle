@@ -15,6 +15,8 @@ interface StatCard {
 interface CalendarReservation {
   id: string;
   title: string;
+  time: string;
+  category: EventCategory;
 }
 
 interface CalendarDay {
@@ -29,15 +31,85 @@ interface UpcomingEvent {
   id: string;
   title: string;
   date: string;
+  time: string;
+  category: EventCategory;
   description?: string;
 }
 
 const CATEGORIES = ['All', 'Van', 'FLT', 'Gym', 'Boardroom', 'Nexus', 'Conference'] as const;
 type Category = (typeof CATEGORIES)[number];
+type EventCategory = Exclude<Category, 'All'>;
 
 const DAYS_PER_WEEK = 7;
 const MIN_CALENDAR_ROWS = 5;
 const DEFAULT_YEAR_MONTH = '2026-06';
+
+const HARDCODED_EVENTS: UpcomingEvent[] = [
+  {
+    id: 'e1',
+    title: 'Board Meeting',
+    date: '2026-06-20',
+    time: '10:00 AM',
+    category: 'Boardroom',
+    description: 'Monthly executive board discussion',
+  },
+  {
+    id: 'e2',
+    title: 'Gym Reservation',
+    date: '2026-06-21',
+    time: '3:00 PM',
+    category: 'Gym',
+    description: 'Team fitness session',
+  },
+  {
+    id: 'e3',
+    title: 'FLT Equipment Check',
+    date: '2026-06-22',
+    time: '9:30 AM',
+    category: 'FLT',
+    description: 'Maintenance and inspection',
+  },
+  {
+    id: 'e4',
+    title: 'Conference Setup',
+    date: '2026-06-25',
+    time: '1:00 PM',
+    category: 'Conference',
+    description: 'Prepare room for client meeting',
+  },
+  {
+    id: 'e5',
+    title: 'Van Dispatch',
+    date: '2026-06-25',
+    time: '8:00 AM',
+    category: 'Van',
+    description: 'Campus transport reservation',
+  },
+  {
+    id: 'e6',
+    title: 'Client Visit Prep',
+    date: '2026-06-25',
+    time: '2:30 PM',
+    category: 'Boardroom',
+    description: 'Prepare materials and room layout',
+  },
+  {
+    id: 'e7',
+    title: 'AV Equipment Setup',
+    date: '2026-06-25',
+    time: '4:00 PM',
+    category: 'Conference',
+    description: 'Projector, microphones, and display check',
+  },
+  {
+    id: 'e8',
+    title: 'Nexus Lab Booking',
+    date: '2026-07-02',
+    time: '2:00 PM',
+    category: 'Nexus',
+    description: 'Workshop preparation',
+  },
+];
 
 function parseYearMonth(value: string): { year: number; month: number } {
   const match = /^(\d{4})-(\d{2})$/.exec(value);
@@ -51,7 +123,11 @@ function parseYearMonth(value: string): { year: number; month: number } {
   return { year, month };
 }
 
-function createCalendarDays(value: string): CalendarDay[] {
+function formatDateKey(year: number, month: number, day: number): string {
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function createCalendarDays(value: string, events: UpcomingEvent[]): CalendarDay[] {
   const { year, month } = parseYearMonth(value);
   const today = new Date();
   const todayYear = today.getFullYear();
@@ -76,7 +152,12 @@ function createCalendarDays(value: string): CalendarDay[] {
       day,
       isToday: day === todayDay && month === todayMonth && year === todayYear,
       rowTone,
-      reservations: [],
+      reservations:
+        day === null
+          ? []
+          : events
+              .filter((event) => event.date === formatDateKey(year, month, day))
+              .map(({ id, title, time, category }) => ({ id, title, time, category })),
     };
   });
 }
@@ -127,6 +208,7 @@ export class Dashboard {
 
   protected readonly categories: Category[] = [...CATEGORIES];
   protected readonly activeCategory = signal<Category>('All');
+  protected readonly events = signal<UpcomingEvent[]>(HARDCODED_EVENTS);
 
   protected selectCategory(c: Category): void {
     this.activeCategory.set(c);
@@ -138,10 +220,22 @@ export class Dashboard {
 
   protected readonly weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  protected readonly calendarDays = computed(() => createCalendarDays(this.activeDate()));
+  protected readonly filteredEvents = computed(() => {
+    const category = this.activeCategory();
+
+    return this.events()
+      .filter((event) => category === 'All' || event.category === category)
+      .sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+  });
+
+  protected readonly calendarDays = computed(() =>
+    createCalendarDays(this.activeDate(), this.filteredEvents()),
+  );
   protected readonly calendarDateRows = computed(
-    () => `repeat(${this.calendarDays().length / DAYS_PER_WEEK}, minmax(0, 1fr))`,
+    () => `repeat(${this.calendarDays().length / DAYS_PER_WEEK}, minmax(7.5rem, auto))`,
   );
 
-  protected readonly upcomingEvents = signal<UpcomingEvent[]>([]);
+  protected readonly upcomingEvents = computed(() =>
+    this.filteredEvents().filter((event) => event.date.startsWith(this.activeDate())),
+  );
 }
