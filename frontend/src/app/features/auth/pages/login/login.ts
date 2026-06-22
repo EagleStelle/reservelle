@@ -2,9 +2,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   signal,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -23,19 +25,35 @@ export class Login implements OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly themeService = inject(ThemeService);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // Login is always shown in light mode; restore the user's theme on leave.
   private readonly previousTheme: Theme = this.themeService.theme();
+  private imageInterval: ReturnType<typeof setInterval> | null = null;
 
   protected readonly loading = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly showPassword = signal(false);
+  protected readonly activeImage = signal(0);
+  protected readonly heroImages = [
+    { src: '/lpu-building.webp', alt: 'LPU Laguna campus' },
+    { src: '/background.webp', alt: 'LPU Laguna building' },
+  ];
 
   constructor() {
     this.themeService.set('light');
+
+    if (this.isBrowser) {
+      this.imageInterval = setInterval(() => {
+        this.activeImage.update((index) => (index + 1) % this.heroImages.length);
+      }, 8000);
+    }
   }
 
   ngOnDestroy(): void {
+    if (this.imageInterval) {
+      clearInterval(this.imageInterval);
+    }
     this.themeService.set(this.previousTheme);
   }
 
