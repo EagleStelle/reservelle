@@ -140,7 +140,7 @@ export class Equipments {
   }
 
   protected isActive(status: string): boolean {
-    return status?.toUpperCase() === 'ACTIVE';
+    return status?.toUpperCase() === 'AVAILABLE';
   }
 
   protected toggleStatus(equipment: EquipmentRow): void {
@@ -160,7 +160,7 @@ export class Equipments {
               row.id === equipment.id
                 ? {
                     ...row,
-                    status: this.isActive(row.status) ? 'INACTIVE' : 'ACTIVE',
+                    status: this.isActive(row.status) ? 'UNAVAILABLE' : 'AVAILABLE',
                   }
                 : row,
             ),
