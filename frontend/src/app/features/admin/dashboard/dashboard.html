@@ -106,6 +106,68 @@
                         >
                           +{{ day.reservations.length - 3 }} more
                         </button>
+      <div class="mb-4 flex flex-wrap items-center gap-2 text-[11px] font-bold sm:text-xs">
+        @for (legend of eventLegends; track legend.label) {
+          <span
+            class="inline-flex items-center rounded border-l-4 px-2 py-1 leading-none"
+            [class]="legend.className"
+          >
+            {{ legend.label }}
+          </span>
+        }
+      </div>
+
+      <div class="grid min-h-[34rem] flex-1 grid-rows-[minmax(24rem,auto)_minmax(9rem,auto)] gap-3 md:min-h-[36rem] lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_14rem] lg:grid-rows-none">
+        <div class="flex min-h-0 overflow-auto rounded-lg ring-1 ring-inset ring-black/5 dark:ring-white/10">
+          <div class="min-h-0 flex-1 overflow-x-auto">
+            <div class="grid min-h-full min-w-full grid-rows-[auto_minmax(0,auto)] md:min-w-[44rem]">
+              <div class="grid grid-cols-7 bg-primary text-center text-sm font-bold text-white">
+                @for (weekday of weekdays; track weekday) {
+                  <div class="border-r border-white/35 px-1 py-2 last:border-r-0 sm:px-2">
+                    {{ weekday }}
+                  </div>
+                }
+              </div>
+
+              <div
+                class="grid grid-cols-7 text-center text-[11px] text-gray-900 dark:text-zinc-100 sm:text-xs"
+                [style.grid-template-rows]="calendarDateRows()"
+              >
+                @for (day of calendarDays(); track day.id) {
+                  <div
+                    class="flex min-h-[7.5rem] flex-col border-r border-b border-white p-1.5 last:border-r-0 dark:border-zinc-700/60 sm:p-2"
+                    [class.bg-gray-100]="day.rowTone === 'muted'"
+                    [class.dark:bg-zinc-800]="day.rowTone === 'muted'"
+                    [class.bg-gray-50]="day.rowTone === 'soft'"
+                    [class.dark:bg-zinc-800/50]="day.rowTone === 'soft'"
+                  >
+                    @if (day.day !== null) {
+                      <span
+                        class="mx-auto flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1 font-semibold sm:h-6 sm:min-w-6"
+                        [class.bg-primary]="day.isToday"
+                        [class.text-white]="day.isToday"
+                        [class.shadow-sm]="day.isToday"
+                        [attr.aria-label]="day.isToday ? 'Today' : null"
+                      >
+                        {{ day.day }}
+                      </span>
+                      @if (day.reservations.length) {
+                        <ul class="mt-2 space-y-1 text-left">
+                          @for (reservation of day.reservations; track reservation.id) {
+                            <li
+                              class="min-w-0 rounded border-l-4 px-1.5 py-1 text-[11px] leading-tight shadow-sm"
+                              [class]="eventColorClass(reservation.category)"
+                              [title]="reservation.time + ' - ' + reservation.title"
+                            >
+                              <span class="block truncate font-bold">
+                                {{ reservation.time }}
+                              </span>
+                              <span class="block truncate font-medium">
+                                {{ reservation.title }}
+                              </span>
+                            </li>
+                          }
+                        </ul>
                       }
                     }
                   }
@@ -138,11 +200,13 @@
                   </h3>
                   <span
                     class="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary"
+                    class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                    [class]="eventBadgeClass(event.category)"
                   >
                     {{ event.category }}
                   </span>
                 </div>
-                <time class="mt-1 block text-[11px] font-medium text-primary">
+                <time class="mt-1 block text-[11px] font-medium text-gray-500 dark:text-zinc-400">
                   {{ event.date }} - {{ event.time }}
                 </time>
                 @if (event.description) {

@@ -37,6 +37,11 @@ interface UpcomingEvent {
   description?: string;
 }
 
+interface EventLegend {
+  label: EventCategory;
+  className: string;
+}
+
 const CATEGORIES = ['All', 'FLT', 'Gym', 'Boardroom', 'Nexus', 'Conference'] as const;
 type Category = (typeof CATEGORIES)[number];
 type EventCategory = Exclude<Category, 'All'>;
@@ -44,6 +49,25 @@ type EventCategory = Exclude<Category, 'All'>;
 const DAYS_PER_WEEK = 7;
 const MIN_CALENDAR_ROWS = 5;
 const DEFAULT_YEAR_MONTH = '2026-06';
+
+const EVENT_COLOR_CLASSES: Record<EventCategory, string> = {
+  FLT: 'border-sky-500 bg-sky-50 text-sky-900 dark:border-sky-400 dark:bg-sky-950/70 dark:text-sky-100',
+  Gym: 'border-emerald-500 bg-emerald-50 text-emerald-900 dark:border-emerald-400 dark:bg-emerald-950/70 dark:text-emerald-100',
+  Boardroom:
+    'border-amber-500 bg-amber-50 text-amber-950 dark:border-amber-400 dark:bg-amber-950/70 dark:text-amber-100',
+  Nexus:
+    'border-violet-500 bg-violet-50 text-violet-900 dark:border-violet-400 dark:bg-violet-950/70 dark:text-violet-100',
+  Conference:
+    'border-rose-500 bg-rose-50 text-rose-900 dark:border-rose-400 dark:bg-rose-950/70 dark:text-rose-100',
+};
+
+const EVENT_BADGE_CLASSES: Record<EventCategory, string> = {
+  FLT: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-200',
+  Gym: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-200',
+  Boardroom: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200',
+  Nexus: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-200',
+  Conference: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-200',
+};
 
 const HARDCODED_EVENTS: UpcomingEvent[] = [
   {
@@ -218,6 +242,21 @@ export class Dashboard {
   protected selectDate(value: string): void {
     this.activeDate.set(value);
   }
+
+  protected eventColorClass(category: EventCategory): string {
+    return EVENT_COLOR_CLASSES[category];
+  }
+
+  protected eventBadgeClass(category: EventCategory): string {
+    return EVENT_BADGE_CLASSES[category];
+  }
+
+  protected readonly eventLegends: EventLegend[] = CATEGORIES.filter(
+    (category): category is EventCategory => category !== 'All',
+  ).map((category) => ({
+    label: category,
+    className: EVENT_COLOR_CLASSES[category],
+  }));
 
   protected readonly weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
