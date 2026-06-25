@@ -27,4 +27,6 @@ console.log(`[proxy] ${context} -> ${target}`);
 
 module.exports = {
   [context]: { target, changeOrigin: true, secure: false },
+  // Uploaded assets served at the backend root (no context path).
+  '/uploads': { target, changeOrigin: true, secure: false },
 };
