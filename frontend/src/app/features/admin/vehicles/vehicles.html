@@ -46,7 +46,30 @@
                 class="border-b border-gray-100 odd:bg-white even:bg-gray-50/70 hover:bg-secondary/5 dark:border-zinc-800 dark:odd:bg-zinc-900 dark:even:bg-zinc-800/60 dark:hover:bg-secondary/15"
               >
                 <td class="px-5 py-4 font-semibold text-black dark:text-zinc-100">
-                  {{ vehicle.plate_num || 'N/A' }}
+                  @let imageUrl = vehicleImageUrl(vehicle);
+                  <div class="flex items-center gap-3">
+                    @if (imageUrl) {
+                      <button
+                        type="button"
+                        title="View image"
+                        (click)="openImage(vehicle)"
+                        class="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-md border border-gray-200 bg-gray-100 transition hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/35 dark:border-zinc-700 dark:bg-zinc-800"
+                      >
+                        <img
+                          [src]="imageUrl"
+                          alt="Vehicle image"
+                          class="h-full w-full object-cover"
+                        />
+                      </button>
+                    } @else {
+                      <div
+                        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-gray-100 text-gray-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-500"
+                      >
+                      <ui-icon name="directions_car" class="text-2xl" />
+                      </div>
+                    }
+                    <span class="min-w-0 truncate">{{ vehicle.plate_num || 'N/A' }}</span>
+                  </div>
                 </td>
                 <td class="px-4 py-3 text-black dark:text-zinc-100">
                   {{ vehicle.brand || 'N/A' }}
@@ -108,4 +131,35 @@
     [success]="toastSuccess()"
     [message]="toastMessage()"
   />
+
+  @if (selectedImage(); as image) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      (click)="closeImage()"
+    >
+      <div
+        class="max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-zinc-950"
+        (click)="$event.stopPropagation()"
+      >
+        <div
+          class="flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-3 dark:border-zinc-800"
+        >
+          <h2 class="truncate text-sm font-black text-gray-900 dark:text-zinc-100">
+            {{ image.label }}
+          </h2>
+          <button
+            type="button"
+            title="Close"
+            (click)="closeImage()"
+            class="rounded-lg p-1.5 text-gray-500 hover:text-primary dark:text-zinc-400"
+          >
+            <ui-icon name="close" class="text-2xl" />
+          </button>
+        </div>
+        <div class="flex max-h-[calc(90vh-3.5rem)] items-center justify-center bg-black">
+          <img [src]="image.url" alt="Vehicle image" class="max-h-[calc(90vh-3.5rem)] max-w-full object-contain" />
+        </div>
+      </div>
+    </div>
+  }
 </app-admin-shell>

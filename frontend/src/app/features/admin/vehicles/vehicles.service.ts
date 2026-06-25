@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import {
@@ -9,45 +10,160 @@ import {
   VehicleStatementResponse,
 } from './vehicles.models';
 
+type UpdateVehicleBody = Omit<UpdateVehicleRequest, 'image'> & { image?: string };
+type CreateVehicleBody = Omit<CreateVehicleRequest, 'image'> & { image?: string };
+type StatementBody = { success?: boolean | string; message?: string } | null;
+
 @Injectable({ providedIn: 'root' })
 export class VehiclesService {
   private readonly http = inject(HttpClient);
   private readonly base = environment.apiUrl;
+  private readonly assetBase = environment.apiUrl.replace(/\/api\/?$/, '');
 
   list() {
     return this.http.get<PopulateVehiclesResponse>(`${this.base}/admin/vehicle`);
   }
 
   create(payload: CreateVehicleRequest) {
-    return this.http.post<VehicleStatementResponse>(
-      `${this.base}/admin/createvehicle`,
-      this.toFormData(payload),
+    return from(this.toCreateBody(payload)).pipe(
+      switchMap((body) =>
+        this.http.post<StatementBody>(`${this.base}/admin/createvehicle`, body, {
+          observe: 'response',
+        }),
+      ),
+      map((response) => this.statementResponse(response, 'Vehicle created')),
     );
   }
 
   update(payload: UpdateVehicleRequest) {
-    return this.http.put<VehicleStatementResponse>(
-      `${this.base}/admin/updatevehicle`,
-      this.toFormData(payload),
+    return from(this.toUpdateBody(payload)).pipe(
+      switchMap((body) =>
+        this.http.put<StatementBody>(`${this.base}/admin/updatevehicle`, body, {
+          observe: 'response',
+        }),
+      ),
+      map((response) => this.statementResponse(response, 'Vehicle updated')),
     );
   }
 
-  private toFormData(payload: CreateVehicleRequest | UpdateVehicleRequest): FormData {
-    const data = new FormData();
+  imageUrl(value: string | null | undefined): string | null {
+    const source = value?.trim();
 
-    for (const [key, value] of Object.entries(payload)) {
-      if (value === null || value === undefined) {
-        continue;
-      }
-
-      if (value instanceof File) {
-        data.append(key, value);
-      } else {
-        data.append(key, String(value));
-      }
+    if (!source) {
+      return null;
     }
 
-    return data;
+    if (/^(data:image\/|blob:|https?:\/\/)/i.test(source)) {
+      return source;
+    }
+
+    if (source.startsWith('/')) {
+      return source;
+    }
+
+    const mime = this.base64ImageMime(source);
+
+    if (mime) {
+      return `data:${mime};base64,${source}`;
+    }
+
+    const path = source.replace(/^\/+/, '');
+    const assetBase = this.assetBase.replace(/\/+$/, '');
+    const assetOrigin = assetBase.match(/^https?:\/\/[^/]+/i)?.[0] ?? '';
+    const assetPath = assetBase
+      .replace(/^https?:\/\/[^/]+/i, '')
+      .replace(/^\/+|\/+$/g, '');
+
+    if (assetPath && path.toLowerCase().startsWith(`${assetPath.toLowerCase()}/`)) {
+      return `${assetOrigin}/${path}`;
+    }
+
+    return `${assetBase}/${path}`;
+  }
+
+  private async toCreateBody(payload: CreateVehicleRequest): Promise<CreateVehicleBody> {
+    const { image, ...body } = payload;
+    const encodedImage = await this.imageBodyValue(image);
+
+    return encodedImage ? { ...body, image: encodedImage } : body;
+  }
+
+  private async toUpdateBody(payload: UpdateVehicleRequest): Promise<UpdateVehicleBody> {
+    const { image, ...body } = payload;
+    const encodedImage = await this.imageBodyValue(image);
+
+    return encodedImage ? { ...body, image: encodedImage } : body;
+  }
+
+  private statementResponse(
+    response: HttpResponse<StatementBody>,
+    fallbackMessage: string,
+  ): VehicleStatementResponse {
+    const body = response.body;
+    const success = body?.success;
+
+    if (success === false || success === 'false') {
+      return {
+        success: false,
+        message: body?.message ?? 'Request failed',
+      };
+    }
+
+    return {
+      success: response.ok,
+      message: body?.message ?? fallbackMessage,
+    };
+  }
+
+  private async imageBodyValue(image: File | string | null | undefined): Promise<string | null> {
+    if (image instanceof File) {
+      return this.fileToBase64(image);
+    }
+
+    if (typeof image === 'string' && image.trim()) {
+      return image;
+    }
+
+    return null;
+  }
+
+  private fileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const result = String(reader.result ?? '');
+        resolve(result.includes(',') ? result.split(',')[1] : result);
+      };
+      reader.onerror = () => reject(reader.error ?? new Error('Failed to read image'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private base64ImageMime(source: string): string | null {
+    const clean = source.replace(/\s/g, '');
+
+    if (clean.length < 64 || /[.\\]/.test(clean) || !/^[A-Za-z0-9+/]+={0,2}$/.test(clean)) {
+      return null;
+    }
+
+    if (clean.startsWith('/9j/')) {
+      return 'image/jpeg';
+    }
+
+    if (clean.startsWith('iVBORw0KGgo')) {
+      return 'image/png';
+    }
+
+    if (clean.startsWith('R0lGOD')) {
+      return 'image/gif';
+    }
+
+    if (clean.startsWith('UklGR')) {
+      return 'image/webp';
+    }
+
+    return 'image/jpeg';
   }
 
   remove(id: number) {

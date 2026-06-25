@@ -26,6 +26,7 @@ export class Vehicles {
   protected readonly toastSuccess = signal(false);
   protected readonly sortField = signal<SortField>('plate_num');
   protected readonly sortDirection = signal<'asc' | 'desc'>('asc');
+  protected readonly selectedImage = signal<{ url: string; label: string } | null>(null);
 
   protected readonly filtered = computed(() => {
     const q = this.search().trim().toLowerCase();
@@ -96,6 +97,33 @@ export class Vehicles {
       this.sortField.set(field);
       this.sortDirection.set('asc');
     }
+  }
+
+  protected vehicleImageUrl(vehicle: VehicleRow): string | null {
+    return this.api.imageUrl(
+      vehicle.image ??
+        vehicle.vehicleImage ??
+        vehicle.imageUrl ??
+        vehicle.imagePath ??
+        vehicle.photo,
+    );
+  }
+
+  protected openImage(vehicle: VehicleRow): void {
+    const url = this.vehicleImageUrl(vehicle);
+
+    if (!url) {
+      return;
+    }
+
+    this.selectedImage.set({
+      url,
+      label: vehicle.plate_num || vehicle.brand || 'Vehicle image',
+    });
+  }
+
+  protected closeImage(): void {
+    this.selectedImage.set(null);
   }
 
   protected remove(vehicle: VehicleRow): void {

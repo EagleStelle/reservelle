@@ -10,6 +10,10 @@ export interface VehicleRow {
   brand: string;
   facilityName: string;
   image?: string;
+  imagePath?: string;
+  imageUrl?: string;
+  photo?: string;
+  vehicleImage?: string;
 }
 
 export interface PopulateVehiclesResponse {
@@ -26,7 +30,7 @@ export interface CreateVehicleRequest {
   id: number;
   plate_num: string;
   brand: string;
-  image?: File | null;
+  image?: File | string | null;
 }
 
 export interface UpdateVehicleRequest {
@@ -37,7 +41,7 @@ export interface UpdateVehicleRequest {
   status: string;
   plate_num: string;
   brand: string;
-  image?: File | null;
+  image?: File | string | null;
 }
 
 export interface VehicleStatementResponse {

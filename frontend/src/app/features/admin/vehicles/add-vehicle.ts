@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -23,7 +23,7 @@ import { VehiclesService } from './vehicles.service';
   templateUrl: './add-vehicle.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddVehicle {
+export class AddVehicle implements OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(VehiclesService);
   private readonly router = inject(Router);
@@ -32,6 +32,7 @@ export class AddVehicle {
   protected readonly saving = signal(false);
   protected readonly error = signal<string | null>(null);
   protected readonly imagePreview = signal<string | null>(null);
+  private imageObjectUrl: string | null = null;
 
   protected readonly form = this.fb.nonNullable.group({
     brand: ['', [Validators.required]],
@@ -45,7 +46,11 @@ export class AddVehicle {
   protected onImageSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0] ?? null;
     this.form.controls.image.setValue(file);
-    this.imagePreview.set(file ? URL.createObjectURL(file) : null);
+    this.setImagePreview(file ? URL.createObjectURL(file) : null, Boolean(file));
+  }
+
+  ngOnDestroy(): void {
+    this.revokeImageObjectUrl();
   }
 
   protected save(): void {
@@ -81,8 +86,41 @@ export class AddVehicle {
         },
         error: (err) => {
           this.saving.set(false);
-          this.error.set(err?.error?.message ?? 'Unable to reach the server');
+          this.error.set(this.requestErrorMessage(err));
         },
       });
+  }
+
+  private requestErrorMessage(err: any): string {
+    const error = err?.error;
+
+    if (error?.message) {
+      return error.message;
+    }
+
+    if (typeof error === 'string' && error.trim()) {
+      return error;
+    }
+
+    if (err?.status) {
+      return `Request failed (${err.status}${err.statusText ? ` ${err.statusText}` : ''})`;
+    }
+
+    return 'Unable to reach the server';
+  }
+
+  private setImagePreview(value: string | null, isObjectUrl = false): void {
+    this.revokeImageObjectUrl();
+    this.imageObjectUrl = isObjectUrl ? value : null;
+    this.imagePreview.set(value);
+  }
+
+  private revokeImageObjectUrl(): void {
+    if (!this.imageObjectUrl) {
+      return;
+    }
+
+    URL.revokeObjectURL(this.imageObjectUrl);
+    this.imageObjectUrl = null;
   }
 }
