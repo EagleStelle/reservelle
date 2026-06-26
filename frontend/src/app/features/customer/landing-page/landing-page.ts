@@ -37,7 +37,7 @@ import { UiIcon } from '../../../shared/ui';
           <span class="font-bold text-base md:text-2xl">FLT Theater</span>
         </a>
 
-        <a routerLink="#" class="surface elevated border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
+        <a routerLink="/customer/gymnasium" class="surface elevated border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
           <ui-icon name="sports_basketball" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
           <span class="font-bold text-base md:text-2xl">Gymnasium</span>
         </a>
@@ -47,12 +47,12 @@ import { UiIcon } from '../../../shared/ui';
           <span class="font-bold text-base md:text-2xl">Boardroom</span>
         </a>
 
-        <a routerLink="#" class="surface elevated border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
+        <a routerLink="/customer/nexus-room" class="surface elevated border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
           <ui-icon name="co_present" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
           <span class="font-bold text-base md:text-2xl">Nexus Room</span>
         </a>
 
-        <a routerLink="#" class="surface elevated border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
+        <a routerLink="/customer/conference-room" class="surface elevated border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
           <ui-icon name="meeting_room" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
           <span class="font-bold text-base md:text-2xl">Conference Room</span>
         </a>

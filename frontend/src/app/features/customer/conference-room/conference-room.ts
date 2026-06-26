@@ -3,7 +3,7 @@ import { RoomReservationForm } from '../room-reservation/room-reservation-form';
 import { ROOM_RESERVATION_FACILITIES } from '../room-reservation/room-reservation.config';
 
 @Component({
-  selector: 'app-boardroom-reservation',
+  selector: 'app-conference-room-reservation',
   imports: [RoomReservationForm],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -11,6 +11,6 @@ import { ROOM_RESERVATION_FACILITIES } from '../room-reservation/room-reservatio
   },
   template: `<app-room-reservation-form [facility]="facility" />`,
 })
-export class BoardroomReservation {
-  readonly facility = ROOM_RESERVATION_FACILITIES['boardroom'];
+export class ConferenceRoomReservation {
+  readonly facility = ROOM_RESERVATION_FACILITIES['conferenceRoom'];
 }
