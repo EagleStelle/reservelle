@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CdkMenuModule } from '@angular/cdk/menu';
 
 import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import {
@@ -27,6 +28,7 @@ type ViewMode = 'Grid' | 'Table';
     UiSegmented,
     UiStatusBadge,
     UiToast,
+    CdkMenuModule,
   ],
   templateUrl: './vehicles.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

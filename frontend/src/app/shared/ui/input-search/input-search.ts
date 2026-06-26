@@ -19,7 +19,7 @@ import { UiIcon } from '../icon/icon';
       type="search"
       [value]="value()"
       (input)="value.set($any($event.target).value)"
-      class="pl-10! [&::-webkit-search-cancel-button]:appearance-none"
+      class="pl-10! h-10! py-0! [&::-webkit-search-cancel-button]:appearance-none"
     />
   `,
 })
