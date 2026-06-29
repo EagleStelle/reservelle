@@ -69,7 +69,7 @@ function getYearRangeStart(year: number): number {
         brnPopoverTrigger
         type="button"
         (click)="syncPickerYear()"
-        class="flex h-9 w-full cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-white dark:bg-zinc-800 px-2.5 text-sm font-bold leading-none text-gray-600 dark:text-zinc-300 elevated-sm transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-secondary hover:text-white hover:ring-transparent active:scale-[0.97] sm:w-auto sm:justify-center sm:px-4"
+        class="flex h-9 w-full cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-white dark:bg-zinc-800 px-2.5 text-sm font-bold leading-none text-gray-600 dark:text-zinc-300 shadow-[0_1px_2px_rgba(15,23,42,0.05),0_2px_6px_-2px_rgba(15,23,42,0.10)] ring-1 ring-inset ring-black/5 dark:ring-white/10 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-secondary hover:text-white hover:ring-transparent active:scale-[0.97] sm:w-auto sm:justify-center sm:px-4"
       >
         <ui-icon name="calendar_today" class="text-sm" />
         <span>{{ displayValue() }}</span>

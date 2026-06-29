@@ -23,7 +23,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
       class="flex-1 w-full max-w-6xl mx-auto md:shadow-xl flex flex-col md:flex-row relative z-0 md:surface md:rounded-2xl md:overflow-clip h-full min-h-0"
     >
       <div
-        class="w-full md:w-1/3 glass-brand p-6 text-white flex flex-col gap-4 md:gap-8 relative shrink-0"
+        class="w-full md:w-1/3 bg-primary bg-[linear-gradient(158deg,#7a2342,#5f1830_42%,#8d2546)] ring-1 ring-inset ring-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),inset_-1px_0_0_rgba(255,255,255,0.08),0_20px_50px_-22px_rgba(95,24,48,0.6)] p-6 text-white flex flex-col gap-4 md:gap-8 relative shrink-0"
       >
         <div class="flex items-center gap-3 opacity-90">
           <img src="/logo.svg" alt="LPU Logo" class="w-10 h-10 object-contain drop-shadow-md" />
@@ -127,7 +127,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
                 id="remarks"
                 formControlName="remarks"
                 rows="4"
-                class="w-full rounded-lg glass-field px-4 py-3 text-sm text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/25 focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none resize-none"
+                class="w-full rounded-lg border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150 ring-1 ring-inset ring-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)] dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.28),0_2px_10px_-2px_rgba(0,0,0,0.65)] px-4 py-3 text-sm text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/25 focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none resize-none"
               ></textarea>
             </div>
           </div>

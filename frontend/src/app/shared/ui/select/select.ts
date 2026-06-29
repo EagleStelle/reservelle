@@ -26,7 +26,7 @@ export interface UiSelectOption {
         <button
           brnSelectTrigger
           type="button"
-          class="relative w-full cursor-pointer rounded-lg glass-field px-3 py-2 pr-9 text-left text-[13px] text-gray-900 dark:text-zinc-100 transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/25 focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-placeholder:text-gray-400 dark:data-placeholder:text-zinc-500 aria-expanded:border-primary/55 aria-expanded:ring-2 aria-expanded:ring-primary/35 sm:px-3.5 sm:py-2.5 sm:pr-9 sm:text-sm"
+          class="relative w-full cursor-pointer rounded-lg border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150 ring-1 ring-inset ring-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)] dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.28),0_2px_10px_-2px_rgba(0,0,0,0.65)] px-3 py-2 pr-9 text-left text-[13px] text-gray-900 dark:text-zinc-100 transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/25 focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-placeholder:text-gray-400 dark:data-placeholder:text-zinc-500 aria-expanded:border-primary/55 aria-expanded:ring-2 aria-expanded:ring-primary/35 sm:px-3.5 sm:py-2.5 sm:pr-9 sm:text-sm"
         >
           <span
             class="block truncate"

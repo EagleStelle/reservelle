@@ -1,5 +1,3 @@
-/* Global styles + Tailwind v4 theme */
-
 @import 'tailwindcss';
 @import '@angular/cdk/overlay-prebuilt.css';
 
@@ -15,6 +13,11 @@
   --font-sans:
     'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+  --animate-rise: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.45s ease-out both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-shimmer: shimmer 3.6s ease-in-out infinite;
 }
 
 @layer base {
@@ -61,63 +64,6 @@
       'GRAD' 0,
       'opsz' 24;
   }
-}
-
-/* Shared soft elevation: tight contact + diffused ambient. */
-@utility elevated {
-  @apply shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10;
-}
-
-/* Lighter elevation for small controls so they read at the same weight as cards. */
-@utility elevated-sm {
-  @apply shadow-[0_1px_2px_rgba(15,23,42,0.05),0_2px_6px_-2px_rgba(15,23,42,0.10)] ring-1 ring-inset ring-black/5 dark:ring-white/10;
-}
-
-/* Frosted glass card: clearly translucent over the brand mesh, blurred, with a
-   bright top highlight + visible hairline so it reads as a real glass plate.
-   Light = white glass / zinc text; dark = zinc glass. All via Tailwind utilities. */
-@utility surface {
-  @apply bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60
-    shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)]
-    dark:bg-zinc-900/50 dark:ring-white/10
-    dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)];
-}
-
-/* Frosted glass for small controls (inputs, selects, segmented). Translucent +
-   blur + hairline so they match the glass cards at control scale. */
-@utility glass-field {
-  @apply border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150
-    ring-1 ring-inset ring-white/75
-    shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)]
-    dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10
-    dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.28),0_2px_10px_-2px_rgba(0,0,0,0.65)];
-}
-
-/* Brand chrome: solid, fully-opaque multi-stop primary→secondary gradient —
-   a lighter brand tint at the top-left flows into primary then secondary for
-   glassy depth. No transparency, identical in light and dark. Hairline edge +
-   highlight + inner gloss read it as a polished glass plate. */
-@utility glass-brand {
-  @apply bg-primary bg-[linear-gradient(158deg,#7a2342,#5f1830_42%,#8d2546)] ring-1 ring-inset ring-white/20
-    shadow-[inset_0_1px_0_rgba(255,255,255,0.25),inset_-1px_0_0_rgba(255,255,255,0.08),0_20px_50px_-22px_rgba(95,24,48,0.6)];
-}
-
-/* Motion utilities */
-@utility animate-rise {
-  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@utility animate-fade-in {
-  animation: fade-in 0.45s ease-out both;
-}
-
-@utility animate-float {
-  animation: float 7s ease-in-out infinite;
-}
-
-@utility animate-shimmer {
-  background-size: 220% 100%;
-  animation: shimmer 3.6s ease-in-out infinite;
 }
 
 @keyframes rise {
