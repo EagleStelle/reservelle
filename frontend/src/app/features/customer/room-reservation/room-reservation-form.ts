@@ -45,7 +45,10 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
         </h1>
 
         <div class="grow" [class.max-md:hidden]="!isCalendarOpen()">
-          <ui-calendar [occupiedDates]="facility.occupiedDates ?? defaultOccupiedDates" />
+          <ui-calendar 
+            [occupiedDates]="facility.occupiedDates ?? defaultOccupiedDates"
+            (selectionChanged)="onCalendarViewRangeChanged($event)"
+          />
         </div>
       </div>
 
@@ -196,6 +199,16 @@ export class RoomReservationForm {
 
   get features(): RoomReservationFeature[] {
     return this.facility.features?.length ? this.facility.features : DEFAULT_FEATURES;
+  }
+
+  onCalendarViewRangeChanged(range: {startDate?: string, endDate?: string, startTime?: string, endTime?: string}): void {
+    const patch: any = {};
+    if (range.startDate !== undefined) patch.startDate = range.startDate;
+    if (range.endDate !== undefined) patch.endDate = range.endDate;
+    if (range.startTime !== undefined) patch.startTime = range.startTime;
+    if (range.endTime !== undefined) patch.endTime = range.endTime;
+    
+    this.form.patchValue(patch);
   }
 
   hasEquipment(eq: string): boolean {

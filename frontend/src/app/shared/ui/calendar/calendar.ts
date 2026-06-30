@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal, output } from '@angular/core';
 import { UiIcon } from '../icon/icon';
 import { BrnButtonImports } from '@spartan-ng/brain/button';
 
@@ -43,6 +43,17 @@ import { BrnButtonImports } from '@spartan-ng/brain/button';
       <div class="flex items-center justify-between">
         <h3 class="text-lg font-bold tracking-tight">{{ headerLabel() }}</h3>
         <div class="flex gap-1.5">
+          @if (selectedStart() !== null || selectedEnd() !== null) {
+            <button
+              brnButton
+              type="button"
+              class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg bg-white/5 text-white/90 hover:bg-white/15 hover:text-white transition-colors mr-1"
+              (click)="resetSelection()"
+              title="Reset Selection"
+            >
+              <ui-icon name="refresh" class="text-lg" />
+            </button>
+          }
           <button
             brnButton
             type="button"
@@ -75,12 +86,18 @@ import { BrnButtonImports } from '@spartan-ng/brain/button';
               class="flex h-9 w-9 mx-auto items-center justify-center rounded-full text-sm transition-all duration-200"
               [class.bg-white]="isOccupied(day)"
               [class.text-primary]="isOccupied(day)"
-              [class.font-bold]="isOccupied(day)"
+              [class.font-bold]="isOccupied(day) || (isMonthSelected(day) && !isOccupied(day))"
               [class.shadow-md]="isOccupied(day)"
-              [class.hover:bg-white/20]="!isOccupied(day)"
-              [class.cursor-pointer]="!isOccupied(day)"
+              [class.bg-yellow-400]="isMonthSelected(day) && !isOccupied(day)"
+              [class.text-zinc-900]="isMonthSelected(day) && !isOccupied(day)"
+              [class.shadow-[0_0_10px_rgba(250,204,21,0.6)]]="isMonthSelected(day) && !isOccupied(day)"
+              [class.bg-yellow-400/30]="isMonthInRange(day) && !isOccupied(day)"
+              [class.text-yellow-100]="isMonthInRange(day) && !isOccupied(day)"
+              [class.hover:bg-white/20]="!isOccupied(day) && !isPastDate(day) && !isMonthSelected(day) && !isMonthInRange(day)"
+              [class.cursor-pointer]="!isOccupied(day) && !isPastDate(day)"
               [class.opacity-50]="!isOccupied(day) && isPastDate(day)"
               [attr.title]="isOccupied(day) ? 'Occupied' : 'Available'"
+              (click)="onMonthDayClick(day)"
             >
               {{ day }}
             </div>
@@ -103,15 +120,20 @@ import { BrnButtonImports } from '@spartan-ng/brain/button';
               <div class="text-[10px] font-medium text-white/50 text-right pr-2 self-center relative top-[-2px]">{{ hour.label }}</div>
               @for (day of weekDaysList(); track day.date.getTime()) {
                 <div 
-                  class="h-7 rounded-[4px] border transition-all duration-200 cursor-pointer"
+                  class="h-7 rounded-[4px] border transition-all duration-200"
                   [class.bg-white]="isAllocated(day.date, hour.val)"
-                  [class.border-transparent]="isAllocated(day.date, hour.val)"
+                  [class.border-transparent]="isAllocated(day.date, hour.val) || isWeekSelected(day.date, hour.val) || isWeekInRange(day.date, hour.val)"
                   [class.shadow-[0_0_10px_rgba(255,255,255,0.15)]]="isAllocated(day.date, hour.val)"
-                  [class.bg-white/5]="!isAllocated(day.date, hour.val)"
-                  [class.border-white/10]="!isAllocated(day.date, hour.val)"
-                  [class.hover:border-white/30]="!isAllocated(day.date, hour.val)"
+                  [class.bg-yellow-400]="isWeekSelected(day.date, hour.val) && !isAllocated(day.date, hour.val)"
+                  [class.shadow-[0_0_10px_rgba(250,204,21,0.5)]]="isWeekSelected(day.date, hour.val) && !isAllocated(day.date, hour.val)"
+                  [class.bg-yellow-400/30]="isWeekInRange(day.date, hour.val) && !isAllocated(day.date, hour.val)"
+                  [class.bg-white/5]="!isAllocated(day.date, hour.val) && !isWeekSelected(day.date, hour.val) && !isWeekInRange(day.date, hour.val)"
+                  [class.border-white/10]="!isAllocated(day.date, hour.val) && !isWeekSelected(day.date, hour.val) && !isWeekInRange(day.date, hour.val)"
+                  [class.hover:border-white/30]="!isAllocated(day.date, hour.val) && !isPastDateTime(day.date, hour.val) && !isWeekSelected(day.date, hour.val) && !isWeekInRange(day.date, hour.val)"
                   [class.opacity-40]="!isAllocated(day.date, hour.val) && isPastDateTime(day.date, hour.val)"
+                  [class.cursor-pointer]="!isAllocated(day.date, hour.val) && !isPastDateTime(day.date, hour.val)"
                   [attr.title]="isAllocated(day.date, hour.val) ? 'Allocated: ' + hour.label : 'Available: ' + hour.label"
+                  (click)="onWeekHourClick(day.date, hour.val)"
                 ></div>
               }
             }
@@ -128,6 +150,12 @@ import { BrnButtonImports } from '@spartan-ng/brain/button';
           <div class="w-3 h-3 rounded-full border border-white/30 bg-white/5"></div>
           <span class="text-xs font-medium">Available</span>
         </div>
+        @if (selectedStart() !== null || selectedEnd() !== null) {
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]"></div>
+            <span class="text-xs font-medium text-yellow-400">Selected</span>
+          </div>
+        }
       </div>
     </div>
   `,
@@ -149,9 +177,181 @@ import { BrnButtonImports } from '@spartan-ng/brain/button';
 })
 export class UiCalendar {
   readonly occupiedDates = input<string[]>([]); // Array of ISO date strings (e.g. '2026-06-25')
+  readonly selectionChanged = output<{startDate?: string, endDate?: string, startTime?: string, endTime?: string}>();
 
   protected viewMode = signal<'month' | 'week'>('month');
   protected currentDate = signal(new Date());
+
+  protected selectedStart = signal<number | null>(null);
+  protected selectedEnd = signal<number | null>(null);
+
+  protected resetSelection() {
+    this.selectedStart.set(null);
+    this.selectedEnd.set(null);
+    this.selectionChanged.emit({
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: ''
+    });
+  }
+
+  private getWeekSlotIndex(time: number): number {
+    const d = new Date(time);
+    const days = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000);
+    return days * 15 + (d.getHours() - 7);
+  }
+
+  private handleSelection(clickedValue: number, currentStart: number | null, currentEnd: number | null): [number | null, number | null] {
+    let candidateStart: number | null = null;
+    let candidateEnd: number | null = null;
+
+    if (currentStart === null && currentEnd === null) {
+      return [clickedValue, null];
+    } else if (currentStart !== null && currentEnd === null) {
+      candidateStart = clickedValue < currentStart ? clickedValue : currentStart;
+      candidateEnd = clickedValue < currentStart ? currentStart : clickedValue;
+    } else if (currentStart !== null && currentEnd !== null) {
+      let distStart = Math.abs(clickedValue - currentStart);
+      let distEnd = Math.abs(clickedValue - currentEnd);
+
+      if (this.viewMode() === 'week') {
+        distStart = Math.abs(this.getWeekSlotIndex(clickedValue) - this.getWeekSlotIndex(currentStart));
+        distEnd = Math.abs(this.getWeekSlotIndex(clickedValue) - this.getWeekSlotIndex(currentEnd));
+      }
+
+      let newStart: number;
+      let newEnd: number;
+      if (distStart < distEnd) {
+        newStart = clickedValue;
+        newEnd = currentEnd;
+      } else {
+        newStart = currentStart;
+        newEnd = clickedValue;
+      }
+      
+      candidateStart = newStart < newEnd ? newStart : newEnd;
+      candidateEnd = newStart < newEnd ? newEnd : newStart;
+    }
+
+    if (candidateStart !== null && candidateEnd !== null) {
+      if (this.isRangeClear(candidateStart, candidateEnd)) {
+        return [candidateStart, candidateEnd];
+      } else {
+        return [clickedValue, null];
+      }
+    }
+    
+    return [null, null];
+  }
+
+  private isRangeClear(start: number, end: number): boolean {
+    if (this.viewMode() === 'week') {
+      for (let t = start; t <= end; t += 3600000) {
+        const d = new Date(t);
+        if (d.getHours() >= 7 && d.getHours() <= 21) {
+          if (this.isAllocated(d, d.getHours()) || this.isPastDateTime(d, d.getHours())) {
+            return false;
+          }
+        }
+      }
+    } else {
+      let current = new Date(start);
+      current.setHours(0,0,0,0);
+      const endDay = new Date(end);
+      endDay.setHours(0,0,0,0);
+      
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      
+      while (current <= endDay) {
+        if (this.isDateOccupied(current) || current < today) {
+          return false;
+        }
+        current.setDate(current.getDate() + 1);
+      }
+    }
+    return true;
+  }
+
+  protected onMonthDayClick(day: number) {
+    if (this.isOccupied(day) || this.isPastDate(day)) return;
+    const date = this.currentDate();
+    const clickedTime = new Date(date.getFullYear(), date.getMonth(), day, 8).getTime();
+    
+    const [newStart, newEnd] = this.handleSelection(clickedTime, this.selectedStart(), this.selectedEnd());
+    this.selectedStart.set(newStart);
+    this.selectedEnd.set(newEnd);
+
+    this.emitSelection(newStart, newEnd);
+  }
+
+  protected onWeekHourClick(date: Date, hour: number) {
+    if (this.isAllocated(date, hour) || this.isPastDateTime(date, hour)) return;
+    const clickedTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour).getTime();
+    
+    const [newStart, newEnd] = this.handleSelection(clickedTime, this.selectedStart(), this.selectedEnd());
+    this.selectedStart.set(newStart);
+    this.selectedEnd.set(newEnd);
+
+    this.emitSelection(newStart, newEnd);
+  }
+
+  private emitSelection(start: number | null, end: number | null) {
+    const update: any = {};
+    if (start) {
+      const d = new Date(start);
+      update.startDate = this.formatDate(d);
+      update.startTime = `${String(d.getHours()).padStart(2, '0')}:00`;
+    }
+    if (end) {
+      const d = new Date(end);
+      update.endDate = this.formatDate(d);
+      update.endTime = `${String(d.getHours() + 1).padStart(2, '0')}:00`;
+    } else if (start) {
+      const d = new Date(start);
+      update.endDate = update.startDate;
+      update.endTime = `${String(d.getHours() + 1).padStart(2, '0')}:00`;
+    }
+    this.selectionChanged.emit(update);
+  }
+
+  private isSameDay(date1: Date, time2: number | null): boolean {
+    if (time2 === null) return false;
+    const date2 = new Date(time2);
+    return date1.getFullYear() === date2.getFullYear() && 
+           date1.getMonth() === date2.getMonth() && 
+           date1.getDate() === date2.getDate();
+  }
+
+  protected isMonthSelected(day: number): boolean {
+    const cellDate = new Date(this.currentDate().getFullYear(), this.currentDate().getMonth(), day);
+    return this.isSameDay(cellDate, this.selectedStart()) || this.isSameDay(cellDate, this.selectedEnd());
+  }
+
+  protected isMonthInRange(day: number): boolean {
+    const cellTime = new Date(this.currentDate().getFullYear(), this.currentDate().getMonth(), day).getTime();
+    const start = this.selectedStart();
+    const end = this.selectedEnd();
+    
+    if (start === null || end === null) return false;
+    const startDay = new Date(start).setHours(0,0,0,0);
+    const endDay = new Date(end).setHours(0,0,0,0);
+    
+    return cellTime > startDay && cellTime < endDay;
+  }
+
+  protected isWeekSelected(date: Date, hour: number): boolean {
+    const t = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour).getTime();
+    return t === this.selectedStart() || t === this.selectedEnd();
+  }
+
+  protected isWeekInRange(date: Date, hour: number): boolean {
+    const t = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour).getTime();
+    const start = this.selectedStart();
+    const end = this.selectedEnd();
+    return start !== null && end !== null && t > start && t < end;
+  }
 
   protected weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   
@@ -242,10 +442,15 @@ export class UiCalendar {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
+  private isDateOccupied(date: Date): boolean {
+    const dateString = this.formatDate(date);
+    return this.occupiedDates().includes(dateString);
+  }
+
   protected isOccupied(day: number): boolean {
     const date = this.currentDate();
-    const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    return this.occupiedDates().includes(dateString);
+    const cellDate = new Date(date.getFullYear(), date.getMonth(), day);
+    return this.isDateOccupied(cellDate);
   }
   
   protected isPastDate(day: number): boolean {
