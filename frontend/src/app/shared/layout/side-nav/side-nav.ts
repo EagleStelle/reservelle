@@ -35,7 +35,7 @@ export class SideNav {
     { label: 'Users', icon: 'group', link: '/users' },
     { label: 'Equipments', icon: 'inventory_2', link: '/equipments' },
     { label: 'Vehicles', icon: 'directions_car', link: '/vehicles' },
-    { label: 'Reservation', icon: 'event_note', link: '/reservation' },
+    { label: 'Reservation', icon: 'event_note', link: '/reservation/flt' },
   ];
 
   protected logout(): void {
