@@ -11,3 +11,4 @@ export { UiStatusBadge } from './status-badge/status-badge';
 export { UiToast } from './toast/toast';
 export { UiCalendar } from './calendar/calendar';
 export { UiFormFeedback } from './form-feedback/form-feedback';
+export { UiAutoAnimate } from './auto-animate/auto-animate';

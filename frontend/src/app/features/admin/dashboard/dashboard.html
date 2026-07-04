@@ -1,8 +1,8 @@
 <app-admin-shell>
-  <section class="animate-rise grid shrink-0 grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+  <section class="stagger grid shrink-0 grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
     @for (s of stats; track s.label) {
       <div
-        class="relative overflow-hidden rounded-xl p-3 text-white ring-1 ring-inset ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_40px_-16px_rgba(0,0,0,0.5)] sm:p-4"
+        class="animate-rise relative overflow-hidden rounded-xl p-3 text-white ring-1 ring-inset ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_40px_-16px_rgba(0,0,0,0.5)] sm:p-4"
         [class]="s.cardBg"
       >
         <div class="relative flex flex-col gap-1.5">

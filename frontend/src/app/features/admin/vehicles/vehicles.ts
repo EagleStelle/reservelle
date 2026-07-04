@@ -4,6 +4,7 @@ import { CdkMenuModule } from '@angular/cdk/menu';
 
 import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import {
+  UiAutoAnimate,
   UiButton,
   UiIcon,
   UiInputSearch,
@@ -21,6 +22,7 @@ type ViewMode = 'Grid' | 'Table';
   selector: 'app-vehicles',
   imports: [
     RouterLink,
+    UiAutoAnimate,
     AdminShell,
     UiButton,
     UiIcon,

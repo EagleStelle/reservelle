@@ -8,6 +8,9 @@ const BASE =
   'inline-flex box-border items-center justify-center gap-2 rounded-lg border ' +
   'px-4 py-2.5 text-[13px] font-semibold leading-none sm:text-sm ' +
   'cursor-pointer select-none ' +
+  // Magnetic physics: spring-eased lift on hover, tactile press-down on click.
+  'transition-[transform,background-color,border-color,color,box-shadow] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ' +
+  'hover:-translate-y-px active:translate-y-0 active:scale-[0.97] ' +
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ' +
   'disabled:pointer-events-none disabled:opacity-50';
 

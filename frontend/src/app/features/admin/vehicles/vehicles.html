@@ -25,7 +25,7 @@
         No vehicles found.
       </div>
       } @else if (viewMode() === 'Grid') {
-      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div uiAutoAnimate class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         @for (vehicle of filtered(); track vehicle.id) {
         @let imageUrl = vehicleImageUrl(vehicle);
         <article
@@ -125,7 +125,7 @@
               <th class="px-4 py-3 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody uiAutoAnimate>
             @for (vehicle of filtered(); track vehicle.id) {
             <tr
               class="border-b border-gray-100 odd:bg-white even:bg-gray-50/70 hover:bg-secondary/5 dark:border-zinc-800 dark:odd:bg-zinc-900 dark:even:bg-zinc-800/60 dark:hover:bg-secondary/15">

@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 
 import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import {
+  UiAutoAnimate,
   UiButton,
   UiIcon,
   UiInputSearch,
@@ -20,6 +21,7 @@ type ServiceFilter = (typeof SERVICE_FILTERS)[number];
   selector: 'app-equipments',
   imports: [
     RouterLink,
+    UiAutoAnimate,
     AdminShell,
     UiButton,
     UiIcon,
