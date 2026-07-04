@@ -128,8 +128,8 @@ export class Login implements OnDestroy {
             this.router.navigateByUrl('/facilities/dashboard');
             break;
 
-          case 'EOADMIN':
-            this.router.navigateByUrl('/eo/dashboard');
+          case 'EXECUTIVEADMIN':
+            this.router.navigateByUrl('/executive/dashboard');
             break;
 
           default:
