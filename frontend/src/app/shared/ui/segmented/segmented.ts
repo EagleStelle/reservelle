@@ -22,7 +22,7 @@ import { BrnToggleGroupImports } from '@spartan-ng/brain/toggle-group';
         <button
           brnToggleGroupItem
           [value]="o"
-          class="flex h-full flex-1 cursor-pointer items-center justify-center rounded-[6px] px-3 text-sm font-medium leading-none transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.97] text-gray-600 dark:text-zinc-400 data-[state=off]:hover:bg-white/45 data-[state=off]:hover:text-gray-900 dark:data-[state=off]:hover:bg-white/5 dark:data-[state=off]:hover:text-zinc-100 data-[state=on]:bg-primary data-[state=on]:text-white data-[state=on]:shadow-[0_1px_1px_rgb(24_24_27/0.1),0_2px_5px_-3px_rgb(24_24_27/0.18),inset_0_1px_0_rgb(255_255_255/0.55)] dark:data-[state=on]:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.12)]"
+          class="flex h-full flex-1 cursor-pointer items-center justify-center rounded-md px-3 text-sm font-medium leading-none transition-all duration-300 ease-spring active:scale-[0.97] text-gray-600 dark:text-zinc-400 data-[state=off]:hover:bg-white/45 data-[state=off]:hover:text-gray-900 dark:data-[state=off]:hover:bg-white/5 dark:data-[state=off]:hover:text-zinc-100 data-[state=on]:bg-primary data-[state=on]:text-white data-[state=on]:shadow-[0_1px_1px_rgb(24_24_27/0.1),0_2px_5px_-3px_rgb(24_24_27/0.18),inset_0_1px_0_rgb(255_255_255/0.55)] dark:data-[state=on]:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.12)]"
         >
           {{ displayLabel(o) }}
         </button>

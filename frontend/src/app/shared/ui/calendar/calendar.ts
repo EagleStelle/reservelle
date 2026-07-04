@@ -115,12 +115,12 @@ import { BrnButtonImports } from '@spartan-ng/brain/button';
             }
           </div>
           
-          <div class="flex-1 grid grid-cols-[40px_repeat(6,1fr)] gap-x-1 gap-y-[3px]">
+          <div class="flex-1 grid grid-cols-[40px_repeat(6,1fr)] gap-x-1 gap-y-0.75">
             @for (hour of hours; track hour.val) {
-              <div class="text-[10px] font-medium text-white/50 text-right pr-2 self-center relative top-[-2px]">{{ hour.label }}</div>
+              <div class="text-[10px] font-medium text-white/50 text-right pr-2 self-center relative -top-0.5">{{ hour.label }}</div>
               @for (day of weekDaysList(); track day.date.getTime()) {
                 <div 
-                  class="h-7 rounded-[4px] border transition-all duration-200"
+                  class="h-7 rounded-sm border transition-all duration-200"
                   [class.bg-white]="isAllocated(day.date, hour.val)"
                   [class.border-transparent]="isAllocated(day.date, hour.val) || isWeekSelected(day.date, hour.val) || isWeekInRange(day.date, hour.val)"
                   [class.shadow-[0_0_10px_rgba(255,255,255,0.15)]]="isAllocated(day.date, hour.val)"

@@ -55,7 +55,7 @@ import { FltReservationService } from './flt-reservation.service';
               >{{ step.label }}</span>
             </div>
             @if (i < steps.length - 1) {
-              <div class="flex-1 h-0.5 mx-2 mt-[-12px] sm:mt-[-20px] transition-all duration-300"
+              <div class="flex-1 h-0.5 mx-2 -mt-3 sm:-mt-5 transition-all duration-300"
                 [class.bg-primary]="currentStep() > step.id"
                 [class.bg-gray-200]="currentStep() <= step.id"
               ></div>
@@ -70,7 +70,7 @@ import { FltReservationService } from './flt-reservation.service';
 
       <!-- Step 1: Dates & Times -->
       @if (currentStep() === 1) {
-        <div class="flex flex-col gap-4 animate-fade-in">
+        <div class="flex flex-col gap-4">
           <div class="flex items-start justify-between gap-3">
             <div>
               <h2 class="text-lg font-bold text-gray-900 dark:text-zinc-100">Your Selected Dates</h2>
@@ -135,7 +135,7 @@ import { FltReservationService } from './flt-reservation.service';
 
       <!-- Step 2: Event Details & Equipment -->
       @if (currentStep() === 2) {
-        <div class="flex flex-col gap-4 animate-fade-in">
+        <div class="flex flex-col gap-4">
           <div>
             <h2 class="text-lg font-bold text-gray-900 dark:text-zinc-100">Event Details</h2>
             <p class="text-sm text-gray-500 mt-0.5">Fill in the event information and select needed equipment.</p>
@@ -306,7 +306,7 @@ import { FltReservationService } from './flt-reservation.service';
 
       <!-- Step 3: Contact Info + Review -->
       @if (currentStep() === 3) {
-        <div class="flex flex-col gap-4 animate-fade-in">
+        <div class="flex flex-col gap-4">
           <div>
             <h2 class="text-lg font-bold text-gray-900 dark:text-zinc-100">Contact Information</h2>
             <p class="text-sm text-gray-500 mt-0.5">Provide your contact details. We'll use these for reservation updates.</p>
@@ -411,7 +411,7 @@ import { FltReservationService } from './flt-reservation.service';
 
       <!-- Success state -->
       @if (submitted()) {
-        <div class="flex flex-col items-center justify-center gap-4 py-12 text-center animate-fade-in">
+        <div class="flex flex-col items-center justify-center gap-4 py-12 text-center">
           <div class="flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
             <ui-icon name="check_circle" class="text-5xl text-green-500" />
           </div>

@@ -12,7 +12,7 @@ import { UiIcon } from '../../../shared/ui';
   template: `
     <!-- Header -->
     <div class="bg-primary bg-[linear-gradient(135deg,#7a2342,#5f1830_55%,#8d2546)] text-white shadow-lg shrink-0">
-      <div class="max-w-screen-lg mx-auto px-4 sm:px-6 py-4 flex items-center gap-4">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-4">
         <img src="/logo.svg" alt="LPU Logo" class="w-10 h-10 shrink-0 object-contain drop-shadow" />
         <div class="flex-1">
           <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-tight">FLT Theater</h1>
@@ -27,7 +27,7 @@ import { UiIcon } from '../../../shared/ui';
     </div>
 
     <!-- Content -->
-    <div class="flex-1 max-w-screen-lg mx-auto w-full px-4 sm:px-6 py-8">
+    <div class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8">
       <div class="bg-white dark:bg-zinc-800/60 rounded-2xl border border-gray-100 dark:border-zinc-700 shadow-sm p-6 sm:p-10 flex flex-col gap-8">
 
         <!-- Intro -->

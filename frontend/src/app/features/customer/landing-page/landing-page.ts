@@ -28,7 +28,7 @@ import { UiIcon, UiButton } from '../../../shared/ui';
       </div>
 
       <!-- Facilities Grid -->
-      <div class="stagger grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 max-w-7xl w-full mx-auto flex-1 content-start md:content-stretch">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 max-w-7xl w-full mx-auto flex-1 content-start md:content-stretch">
         
         <a routerLink="#" [class]="facilityCardClass">
           <ui-icon name="airport_shuttle" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
@@ -73,7 +73,7 @@ export class LandingPage {
   protected readonly facilityCardClass =
     'bg-white/60 backdrop-blur-md ring-1 ring-inset ring-black/10 dark:bg-zinc-900/55 dark:ring-white/10 ' +
     'shadow-[0_1px_1px_rgba(15,23,42,0.06),0_8px_20px_-12px_rgba(15,23,42,0.18)] ' +
-    'animate-rise border border-primary/70 hover:-translate-y-0.5 transition-all duration-300 rounded-lg ' +
+    'border border-primary/70 hover:-translate-y-0.5 transition-all duration-300 rounded-lg ' +
     'p-2 md:p-3 flex flex-row md:flex-col items-center justify-start md:justify-center gap-3 md:gap-4 ' +
     'text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full';
 }

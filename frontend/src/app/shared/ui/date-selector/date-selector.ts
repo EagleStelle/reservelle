@@ -69,7 +69,7 @@ function getYearRangeStart(year: number): number {
         brnPopoverTrigger
         type="button"
         (click)="syncPickerYear()"
-        class="flex h-9 w-full cursor-pointer items-center justify-between gap-1.5 rounded-md bg-white px-3 text-sm font-medium leading-none text-gray-600 ring-1 ring-inset ring-zinc-200 shadow-[0_1px_1px_rgb(24_24_27/0.08),0_2px_5px_-3px_rgb(24_24_27/0.16),inset_0_1px_0_rgb(255_255_255/0.85)] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-secondary hover:text-white hover:ring-secondary active:scale-[0.97] dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700 dark:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.1)] sm:w-auto sm:justify-center"
+        class="flex h-9 w-full cursor-pointer items-center justify-between gap-1.5 rounded-md bg-white px-3 text-sm font-medium leading-none text-gray-600 ring-1 ring-inset ring-zinc-200 shadow-[0_1px_1px_rgb(24_24_27/0.08),0_2px_5px_-3px_rgb(24_24_27/0.16),inset_0_1px_0_rgb(255_255_255/0.85)] transition-all duration-300 ease-spring hover:bg-secondary hover:text-white hover:ring-secondary active:scale-[0.97] dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700 dark:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.1)] sm:w-auto sm:justify-center"
       >
         <ui-icon name="calendar_today" class="text-sm" />
         <span>{{ displayValue() }}</span>

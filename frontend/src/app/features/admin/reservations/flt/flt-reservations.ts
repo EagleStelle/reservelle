@@ -83,25 +83,79 @@ interface ConfirmState {
       <!-- Table -->
         <ui-data-table minWidthClass="min-w-[92rem]">
             <thead class="sticky top-0 z-10">
-              <tr class="bg-primary text-[11px] font-semibold text-white">
-                <th class="px-3.5 py-2.5">#</th>
-                <th class="px-3 py-2.5">Event</th>
-                <th class="px-3 py-2.5">Dept / Org</th>
-                <th class="px-3 py-2.5">Contact</th>
-                <th class="px-3 py-2.5">Dates</th>
-                <th class="px-3 py-2.5">Room / Pax</th>
-                <th class="px-3 py-2.5">Equipment</th>
-                <th class="px-3 py-2.5 text-center">Status</th>
-                <th class="px-3 py-2.5 text-center">Actions</th>
+              <tr class="bg-primary text-sm font-semibold text-white">
+                <th class="w-[4%] px-3.5 py-2.5">#</th>
+                <th class="w-[19%] px-3 py-2.5">Event</th>
+                <th class="w-[12%] px-3 py-2.5">Dept / Org</th>
+                <th class="w-[14%] px-3 py-2.5">Contact</th>
+                <th class="w-[15%] px-3 py-2.5">Dates</th>
+                <th class="w-[9%] px-3 py-2.5">Room / Pax</th>
+                <th class="w-[10%] px-3 py-2.5">Equipment</th>
+                <th class="w-[8%] px-3 py-2.5 text-center">Status</th>
+                <th class="w-[9%] px-3 py-2.5 text-center">Actions</th>
               </tr>
             </thead>
             <tbody uiAutoAnimate>
               @if (loading()) {
-                <tr>
-                  <td colspan="9" class="px-3 py-8 text-center text-gray-500 dark:text-zinc-400">
-                    Loading reservations...
-                  </td>
-                </tr>
+                @for (row of [1,2,3,4,5,6,7,8]; track row) {
+                  <tr class="border-b border-gray-100 align-top dark:border-zinc-800">
+                    <!-- # -->
+                    <td class="px-3.5 py-2.5"><div class="h-3 w-6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></td>
+                    <!-- Event -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex flex-col gap-1.5">
+                        <div class="h-4 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                      </div>
+                    </td>
+                    <!-- Dept / Org -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex flex-col gap-1.5">
+                        <div class="h-3 w-4/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                      </div>
+                    </td>
+                    <!-- Contact -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex flex-col gap-1.5">
+                        <div class="h-3 w-2/3 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                      </div>
+                    </td>
+                    <!-- Dates -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex flex-col gap-1.5">
+                        <div class="h-3 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                      </div>
+                    </td>
+                    <!-- Room / Pax -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex flex-col gap-1.5">
+                        <div class="h-3 w-4/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                      </div>
+                    </td>
+                    <!-- Equipment -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex flex-col gap-1.5">
+                        <div class="h-3 w-4/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                        <div class="h-3 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
+                      </div>
+                    </td>
+                    <!-- Status -->
+                    <td class="px-3 py-2.5 text-center"><div class="mx-auto h-5 w-16 animate-pulse rounded-full bg-gray-200 dark:bg-zinc-700"></div></td>
+                    <!-- Actions -->
+                    <td class="px-3 py-2.5">
+                      <div class="flex items-center justify-center gap-2">
+                        <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
+                        <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
+                      </div>
+                    </td>
+                  </tr>
+                }
               } @else if (apiError()) {
                 <tr>
                   <td colspan="9" class="px-3 py-6 text-center">
@@ -126,12 +180,12 @@ interface ConfirmState {
                   <td class="px-3.5 py-2.5 text-xs text-black dark:text-zinc-100 font-mono">{{ row.id }}</td>
 
                   <!-- Event -->
-                  <td class="px-3 py-2.5 max-w-[200px] cursor-pointer text-black dark:text-zinc-100" (click)="openDetails(row)">
+                  <td class="px-3 py-2.5 max-w-50 cursor-pointer text-black dark:text-zinc-100" (click)="openDetails(row)">
                     <p class="font-semibold text-gray-900 dark:text-zinc-100 truncate">{{ row.eventTitle }}</p>
                     <p class="text-xs text-gray-500 dark:text-zinc-400 capitalize">{{ row.eventType }}</p>
                     <p class="text-[11px] text-gray-400 dark:text-zinc-500 mt-0.5">{{ formatDate(row.createdAt) }}</p>
                     @if (row.additionalInstructions) {
-                      <p class="mt-1 text-[10px] italic text-amber-600 dark:text-amber-400 truncate max-w-[180px]" [title]="row.additionalInstructions">
+                      <p class="mt-1 text-[10px] italic text-amber-600 dark:text-amber-400 truncate max-w-45" [title]="row.additionalInstructions">
                         📝 {{ row.additionalInstructions }}
                       </p>
                     }
@@ -139,20 +193,20 @@ interface ConfirmState {
                   </td>
 
                   <!-- Dept / Org -->
-                  <td class="px-3 py-2.5 max-w-[160px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-40 text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300 truncate">{{ row.department }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ row.organization }}</p>
                   </td>
 
                   <!-- Contact -->
-                  <td class="px-3 py-2.5 max-w-[160px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-40 text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300 truncate">{{ row.contactPerson }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ row.contactEmail }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500">{{ row.contactNumber }}</p>
                   </td>
 
                   <!-- Dates -->
-                  <td class="px-3 py-2.5 max-w-[180px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-45 text-black dark:text-zinc-100">
                     @for (slot of parseDates(row.reservedDates); track slot.date) {
                       <div class="text-[11px] leading-tight text-gray-600 dark:text-zinc-400 flex items-center gap-1 mb-0.5">
                         <ui-icon name="calendar_today" class="text-[10px] text-primary shrink-0" />
@@ -163,7 +217,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Room / Pax -->
-                  <td class="px-3 py-2.5 max-w-[130px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-32.5 text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300">{{ row.roomType ? getRoomTypeLabel(row.roomType) : '—' }}</p>
                     @if (row.expectedAttendees) {
                       <p class="text-xs text-gray-400 dark:text-zinc-500">{{ row.expectedAttendees }} pax</p>
@@ -171,7 +225,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Equipment -->
-                  <td class="px-3 py-2.5 max-w-[140px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-35 text-black dark:text-zinc-100">
                     @if (parseEquipment(row.requestedEquipment).length > 0) {
                       @for (eq of parseEquipment(row.requestedEquipment); track eq.id) {
                         <div class="text-[11px] text-gray-600 dark:text-zinc-400 flex items-center gap-1 mb-0.5">

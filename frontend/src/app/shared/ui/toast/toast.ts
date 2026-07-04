@@ -9,7 +9,7 @@ import { UiIcon } from '../icon/icon';
   template: `
     @if (show()) {
       <div
-        class="animate-rise fixed bottom-5 left-4 right-4 z-50 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-white shadow-lg sm:left-auto sm:min-w-[300px]"
+        class="fixed bottom-5 left-4 right-4 z-50 flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-white shadow-lg sm:left-auto sm:min-w-75"
         [class.bg-green-600]="success()"
         [class.bg-red-600]="!success()"
       >

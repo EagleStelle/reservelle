@@ -195,7 +195,7 @@ type PickerView = 'calendar' | 'timeslots';
 
       <!-- ── Time-slot view ── -->
       @if (pickerView() === 'timeslots') {
-        <div class="flex-1 overflow-auto max-w-screen-md mx-auto w-full px-4 sm:px-6 py-6 flex flex-col gap-4">
+        <div class="flex-1 overflow-auto max-w-3xl mx-auto w-full px-4 sm:px-6 py-6 flex flex-col gap-4">
           <div class="flex items-center gap-2 shrink-0">
             <ui-icon name="calendar_today" class="text-amber-600 text-base" />
             <span class="text-sm font-bold text-gray-800 dark:text-zinc-100">{{ formatDateLong(selectedDay()) }}</span>

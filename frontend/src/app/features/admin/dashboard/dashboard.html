@@ -1,5 +1,5 @@
 <app-admin-shell>
-  <div class="stagger flex shrink-0 flex-wrap items-center gap-3">
+  <div class="flex shrink-0 flex-wrap items-center gap-3">
     <ui-date-selector [value]="activeDate()" (valueChange)="selectDate($event)" />
     <ui-segmented
       [options]="categories"
@@ -8,7 +8,7 @@
     />
   </div>
 
-  <section class="animate-rise flex min-h-0 flex-none flex-col lg:flex-1">
+  <section class="flex min-h-0 flex-none flex-col lg:flex-1">
     <div
       class="grid min-h-136 flex-1 grid-rows-[minmax(24rem,auto)_minmax(9rem,auto)] gap-3 md:min-h-144 lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_22rem] lg:grid-rows-none"
     >
@@ -223,7 +223,7 @@
       (click)="closeDayModal()"
     >
       <div
-        class="animate-rise flex max-h-full w-full max-w-sm cursor-default flex-col rounded-lg bg-white shadow-2xl dark:bg-zinc-900"
+        class="flex max-h-full w-full max-w-sm cursor-default flex-col rounded-lg bg-white shadow-2xl dark:bg-zinc-900"
         (click)="$event.stopPropagation()"
       >
         <div

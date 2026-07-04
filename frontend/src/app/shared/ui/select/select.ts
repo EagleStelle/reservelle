@@ -51,7 +51,7 @@ export interface UiSelectOption {
                 brnSelectItem
                 type="button"
                 [value]="opt.value"
-                class="flex w-full cursor-pointer items-center justify-between gap-2 rounded-[6px] px-2.5 py-1.5 text-left text-sm text-gray-700 transition-colors duration-150 data-highlighted:bg-secondary/10 data-highlighted:text-primary aria-selected:font-medium aria-selected:text-primary dark:text-zinc-300 dark:data-highlighted:bg-secondary/20 dark:data-highlighted:text-zinc-100 dark:aria-selected:text-secondary"
+                class="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-sm text-gray-700 transition-colors duration-150 data-highlighted:bg-secondary/10 data-highlighted:text-primary aria-selected:font-medium aria-selected:text-primary dark:text-zinc-300 dark:data-highlighted:bg-secondary/20 dark:data-highlighted:text-zinc-100 dark:aria-selected:text-secondary"
               >
                 <span class="truncate">{{ opt.label }}</span>
                 @if (value() === opt.value) {

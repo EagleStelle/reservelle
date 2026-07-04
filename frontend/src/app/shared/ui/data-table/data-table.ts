@@ -5,9 +5,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'contents' },
   template: `
-    <section class="card-surface animate-rise flex min-h-0 flex-1 flex-col overflow-hidden rounded-md">
+    <section class="card-surface flex min-h-0 flex-1 flex-col overflow-hidden rounded-md">
       <div class="min-h-0 flex-1 overflow-auto">
-        <table [class]="'w-full border-collapse text-left text-xs ' + minWidthClass()">
+        <table [class]="'w-full border-collapse text-left text-[13px] ' + minWidthClass()">
           <ng-content />
         </table>
       </div>
