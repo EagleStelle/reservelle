@@ -7,7 +7,7 @@
     </a>
   </section>
 
-  <section class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] animate-rise flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl">
+  <section class="card-surface animate-rise flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg">
     <div class="min-h-0 flex-1 overflow-auto">
       <table class="w-full min-w-215 border-collapse text-left text-sm">
         <thead class="sticky top-0 z-10">
@@ -75,7 +75,7 @@
           } @else {
             @for (u of filtered(); track u.employeeId) {
               <tr
-                class="border-b border-gray-100 odd:bg-white even:bg-gray-50/70 hover:bg-secondary/5 dark:border-zinc-800 dark:odd:bg-zinc-900 dark:even:bg-zinc-800/60 dark:hover:bg-secondary/15"
+                class="border-b border-zinc-200 transition-colors hover:bg-secondary/5 dark:border-zinc-700 dark:hover:bg-secondary/15"
               >
                 <td class="px-5 py-4 text-black dark:text-zinc-100">{{ u.employeeId }}</td>
                 <td class="px-4 py-3 text-black dark:text-zinc-100">{{ u.username }}</td>

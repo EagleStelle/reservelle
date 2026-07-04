@@ -7,10 +7,12 @@ import { BrnInput } from '@spartan-ng/brain/input';
   hostDirectives: [BrnInput],
   host: {
     class:
-      'w-full rounded-lg border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150 ring-1 ring-inset ring-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)] dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.28),0_2px_10px_-2px_rgba(0,0,0,0.65)] px-4 py-2 text-sm sm:px-3.5 sm:py-2.5 sm:text-sm ' +
+      'w-full rounded-lg bg-white dark:bg-zinc-800 h-10 px-4 text-sm ' +
       'text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 dark:placeholder:text-zinc-400 ' +
-      'transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/25 ' +
-      'focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none',
+      'ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700 ' +
+      'shadow-[0_1px_2px_rgb(24_24_27/0.12),0_2px_6px_-2px_rgb(24_24_27/0.14),inset_0_1px_0_rgb(255_255_255/0.9)] dark:shadow-[0_1px_2px_rgb(0_0_0/0.4),0_2px_6px_-2px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.12)] ' +
+      'transition-all duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] hover:ring-secondary dark:hover:ring-secondary ' +
+      'focus:ring-2 focus:ring-primary focus:outline-none',
   },
 })
 export class UiInput {}

@@ -7,10 +7,8 @@ import { UiIcon, UiSegmented, UiDateSelector } from '../../../shared/ui';
 interface StatCard {
   label: string;
   value: string;
-  delta: string;
-  trend: 'up' | 'down';
   icon: string;
-  cardBg: string;
+  accent: string;
 }
 
 interface CalendarReservation {
@@ -39,7 +37,7 @@ interface UpcomingEvent {
 
 interface EventLegend {
   label: EventCategory;
-  className: string;
+  dotClassName: string;
 }
 
 const CATEGORIES = ['All', 'FLT', 'Gym', 'Boardroom', 'Nexus', 'Conference'] as const;
@@ -50,23 +48,34 @@ const DAYS_PER_WEEK = 7;
 const MIN_CALENDAR_ROWS = 5;
 const DEFAULT_YEAR_MONTH = '2026-06';
 
+// Uniform token pattern across every category so light mode reads consistently:
+// pills = border-{c}-500 bg-{c}-100 text-{c}-900, badges = bg-{c}-100 text-{c}-800.
 const EVENT_COLOR_CLASSES: Record<EventCategory, string> = {
-  FLT: 'border-sky-500 bg-sky-50 text-sky-900 dark:border-sky-400 dark:bg-sky-950/70 dark:text-sky-100',
-  Gym: 'border-emerald-500 bg-emerald-50 text-emerald-900 dark:border-emerald-400 dark:bg-emerald-950/70 dark:text-emerald-100',
+  FLT: 'border-sky-500 bg-sky-100 text-sky-900 dark:border-sky-400 dark:bg-sky-950/70 dark:text-sky-100',
+  Gym: 'border-emerald-500 bg-emerald-100 text-emerald-900 dark:border-emerald-400 dark:bg-emerald-950/70 dark:text-emerald-100',
   Boardroom:
-    'border-amber-500 bg-amber-50 text-amber-950 dark:border-amber-400 dark:bg-amber-950/70 dark:text-amber-100',
+    'border-amber-500 bg-amber-100 text-amber-900 dark:border-amber-400 dark:bg-amber-950/70 dark:text-amber-100',
   Nexus:
-    'border-violet-500 bg-violet-50 text-violet-900 dark:border-violet-400 dark:bg-violet-950/70 dark:text-violet-100',
+    'border-violet-500 bg-violet-100 text-violet-900 dark:border-violet-400 dark:bg-violet-950/70 dark:text-violet-100',
   Conference:
-    'border-rose-500 bg-rose-50 text-rose-900 dark:border-rose-400 dark:bg-rose-950/70 dark:text-rose-100',
+    'border-rose-500 bg-rose-100 text-rose-900 dark:border-rose-400 dark:bg-rose-950/70 dark:text-rose-100',
+};
+
+// Solid swatch dots for the legend key — one flat color per category, no fill/border/text tint.
+const EVENT_DOT_CLASSES: Record<EventCategory, string> = {
+  FLT: 'bg-sky-500 dark:bg-sky-400',
+  Gym: 'bg-emerald-500 dark:bg-emerald-400',
+  Boardroom: 'bg-amber-500 dark:bg-amber-400',
+  Nexus: 'bg-violet-500 dark:bg-violet-400',
+  Conference: 'bg-rose-500 dark:bg-rose-400',
 };
 
 const EVENT_BADGE_CLASSES: Record<EventCategory, string> = {
-  FLT: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-200',
-  Gym: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-200',
+  FLT: 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-200',
+  Gym: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200',
   Boardroom: 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-200',
-  Nexus: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-200',
-  Conference: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-200',
+  Nexus: 'bg-violet-100 text-violet-800 dark:bg-violet-950 dark:text-violet-200',
+  Conference: 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-200',
 };
 
 const HARDCODED_EVENTS: UpcomingEvent[] = [
@@ -195,38 +204,10 @@ function createCalendarDays(value: string, events: UpcomingEvent[]): CalendarDay
 })
 export class Dashboard {
   protected readonly stats: StatCard[] = [
-    {
-      label: 'Total',
-      value: '2,456',
-      delta: '12.5%',
-      trend: 'up',
-      icon: 'monitoring',
-      cardBg: 'bg-linear-to-br from-primary to-secondary',
-    },
-    {
-      label: 'Pending',
-      value: '2,456',
-      delta: '12.5%',
-      trend: 'up',
-      icon: 'pending_actions',
-      cardBg: 'bg-linear-to-br from-amber-800 to-amber-950',
-    },
-    {
-      label: 'Accepted',
-      value: '159',
-      delta: '12.5%',
-      trend: 'down',
-      icon: 'check_circle',
-      cardBg: 'bg-linear-to-br from-emerald-800 to-emerald-950',
-    },
-    {
-      label: 'Rejected',
-      value: '200',
-      delta: '12.5%',
-      trend: 'down',
-      icon: 'cancel',
-      cardBg: 'bg-linear-to-br from-red-800 to-red-950',
-    },
+    { label: 'Total', value: '2,456', icon: 'monitoring', accent: 'text-primary dark:text-secondary' },
+    { label: 'Pending', value: '2,456', icon: 'pending_actions', accent: 'text-amber-600 dark:text-amber-400' },
+    { label: 'Accepted', value: '159', icon: 'check_circle', accent: 'text-emerald-600 dark:text-emerald-400' },
+    { label: 'Rejected', value: '200', icon: 'cancel', accent: 'text-rose-600 dark:text-rose-400' },
   ];
 
   protected readonly activeDate = signal(DEFAULT_YEAR_MONTH);
@@ -255,7 +236,7 @@ export class Dashboard {
     (category): category is EventCategory => category !== 'All',
   ).map((category) => ({
     label: category,
-    className: EVENT_COLOR_CLASSES[category],
+    dotClassName: EVENT_DOT_CLASSES[category],
   }));
 
   protected readonly weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];

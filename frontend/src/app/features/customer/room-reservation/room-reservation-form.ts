@@ -23,7 +23,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
       class="flex-1 w-full flex flex-col md:flex-row relative z-0 h-full min-h-0"
     >
       <div
-        class="w-full md:w-1/3 xl:w-1/4 bg-primary bg-[linear-gradient(158deg,#7a2342,#5f1830_42%,#8d2546)] ring-1 ring-inset ring-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.25),inset_-1px_0_0_rgba(255,255,255,0.08),0_20px_50px_-22px_rgba(95,24,48,0.6)] p-6 text-white flex flex-col gap-4 relative shrink-0 transition-all duration-300"
+        class="w-full md:w-1/3 xl:w-1/4 bg-primary md:border-r md:border-black/10 p-6 text-white flex flex-col gap-4 relative shrink-0 transition-all duration-300"
       >
         <div class="flex items-center justify-between opacity-90">
           <div class="flex items-center gap-3">

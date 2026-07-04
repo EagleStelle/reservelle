@@ -9,6 +9,8 @@ Thumbs.db
 .settings/
 *.sublime-workspace
 .history/*
+.claude/*
+.agents/*
 
 # Visual Studio Code
 .vscode/*

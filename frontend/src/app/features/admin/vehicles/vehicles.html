@@ -29,7 +29,7 @@
         @for (vehicle of filtered(); track vehicle.id) {
         @let imageUrl = vehicleImageUrl(vehicle);
         <article
-          class="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900">
+          class="card-surface overflow-hidden rounded-lg transition hover:-translate-y-0.5 hover:shadow-md">
           <button type="button"
             class="relative flex aspect-[16/10] w-full cursor-pointer items-center justify-center overflow-hidden bg-gray-100 dark:bg-zinc-800"
             [disabled]="!imageUrl" (click)="openImage(vehicle)">
@@ -108,7 +108,7 @@
         }
       </div>
       } @else {
-      <div class="rounded-xl overflow-hidden border border-gray-100 dark:border-zinc-800">
+      <div class="card-surface rounded-lg overflow-hidden">
         <table class="w-full min-w-[76rem] border-collapse text-left text-sm">
           <thead class="sticky top-0 z-10">
             <tr class="bg-primary text-xs font-bold uppercase tracking-wide text-white">
@@ -128,7 +128,7 @@
           <tbody uiAutoAnimate>
             @for (vehicle of filtered(); track vehicle.id) {
             <tr
-              class="border-b border-gray-100 odd:bg-white even:bg-gray-50/70 hover:bg-secondary/5 dark:border-zinc-800 dark:odd:bg-zinc-900 dark:even:bg-zinc-800/60 dark:hover:bg-secondary/15">
+              class="border-b border-zinc-200 transition-colors hover:bg-secondary/5 dark:border-zinc-700 dark:hover:bg-secondary/15">
               <td class="px-5 py-4 font-semibold text-black dark:text-zinc-100">
                 @let imageUrl = vehicleImageUrl(vehicle);
                 <div class="flex items-center gap-3">
