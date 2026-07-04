@@ -16,15 +16,9 @@ export const authGuard: CanActivateFn = () => {
     return router.parseUrl('/login');
   }
 
-  // 2. Validate session with backend.
+  // 2. Validate session with backend (a 401 rejects the observable).
   return auth.me().pipe(
-    map((res) => {
-      if (res.success) {
-        return true;
-      }
-      auth.logout();
-      return router.parseUrl('/login');
-    }),
+    map(() => true),
     catchError(() => {
       auth.logout();
       return of(router.parseUrl('/login'));
@@ -48,7 +42,7 @@ export const guestGuard: CanActivateFn = () => {
   }
 
   return auth.me().pipe(
-    map((res) => (res.success ? dashboard : true)),
+    map(() => dashboard),
     catchError(() => {
       auth.logout();
       return of(true);

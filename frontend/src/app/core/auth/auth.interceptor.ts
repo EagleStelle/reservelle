@@ -5,14 +5,14 @@ import { catchError, throwError } from 'rxjs';
 
 import { AuthService } from './auth.service';
 
-/** Attaches the backend's `Authorization: LpuL <token>` scheme. */
+/** Attaches the standard `Authorization: Bearer <token>` header. */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const token = auth.token();
 
   if (token) {
-    req = req.clone({ setHeaders: { Authorization: `LpuL ${token}` } });
+    req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
 
   return next(req).pipe(

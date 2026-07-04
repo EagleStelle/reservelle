@@ -4,7 +4,7 @@ import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core
 import { tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { AuthResponse, AuthUser, LoginRequest } from './auth.models';
+import { AuthUser, LoginRequest, LoginResponse } from './auth.models';
 
 const TOKEN_KEY = 'lpul_token';
 
@@ -18,17 +18,18 @@ export class AuthService {
   readonly user = signal<AuthUser | null>(null);
   readonly isAuthenticated = computed(() => this.token() !== null);
 
+  // Success resolves with the token + user; bad credentials surface as an HTTP error.
   login(payload: LoginRequest) {
     return this.http
-      .post<AuthResponse>(`${this.base}/auth/login`, payload)
-      .pipe(tap((res) => res.success && this.setSession(res)));
+      .post<LoginResponse>(`${this.base}/auth/login`, payload)
+      .pipe(tap((res) => this.setSession(res)));
   }
 
-  /** Validate the stored token and refresh the current user. */
+  /** Validate the stored token and refresh the current user. Errors if invalid. */
   me() {
     return this.http
-      .get<AuthResponse>(`${this.base}/auth/me`)
-      .pipe(tap((res) => this.user.set(toUser(res))));
+      .get<AuthUser>(`${this.base}/auth/me`)
+      .pipe(tap((user) => this.user.set(user)));
   }
 
   logout() {
@@ -37,23 +38,13 @@ export class AuthService {
     if (this.isBrowser) localStorage.removeItem(TOKEN_KEY);
   }
 
-  private setSession(res: AuthResponse) {
+  private setSession(res: LoginResponse) {
     this.token.set(res.token);
-    this.user.set(toUser(res));
+    this.user.set(res.user);
     if (this.isBrowser) localStorage.setItem(TOKEN_KEY, res.token);
   }
 
   private readToken(): string | null {
     return this.isBrowser ? localStorage.getItem(TOKEN_KEY) : null;
   }
-}
-
-function toUser(res: AuthResponse): AuthUser {
-  return {
-    username: res.username,
-    role: res.role,
-    email: res.email,
-    fullname: res.fullname,
-    empId: res.empId,
-  };
 }

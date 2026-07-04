@@ -115,12 +115,7 @@ export class Login implements OnDestroy {
       next: (res) => {
         this.loading.set(false);
 
-        if (!res?.success) {
-          this.error.set(res?.message ?? 'Login failed');
-          return;
-        }
-
-        switch (res.role?.toUpperCase()) {
+        switch (res.user.role?.toUpperCase()) {
           case 'SUPERADMIN':
             this.router.navigateByUrl('/dashboard');
             break;
@@ -138,7 +133,7 @@ export class Login implements OnDestroy {
             break;
 
           default:
-            this.error.set(`Unknown role: ${res.role}`);
+            this.error.set(`Unknown role: ${res.user.role}`);
         }
       },
       error: (err) => {
