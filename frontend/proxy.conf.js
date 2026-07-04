@@ -20,13 +20,11 @@ const env = { ...loadEnv(path.resolve(__dirname, '.env')), ...process.env };
 const portSuffix = env.BACKEND_PORT ? `:${env.BACKEND_PORT}` : '';
 const target = env.BACKEND_URL || `http://${env.BACKEND_IP || 'localhost'}${portSuffix}`;
 
-// Backend's Tomcat context path; forwarded as-is (no rewrite).
-const context = env.API_CONTEXT || '/lpu-reservation-system';
+// API prefix; forwarded as-is (no rewrite) to the backend.
+const context = env.API_CONTEXT || '/api';
 
 console.log(`[proxy] ${context} -> ${target}`);
 
 module.exports = {
   [context]: { target, changeOrigin: true, secure: false },
-  // Uploaded assets served at the backend root (no context path).
-  '/uploads': { target, changeOrigin: true, secure: false },
 };
