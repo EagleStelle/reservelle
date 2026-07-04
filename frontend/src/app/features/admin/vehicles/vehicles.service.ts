@@ -1,179 +1,84 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { from, map, switchMap } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import {
   CreateVehicleRequest,
   PopulateVehiclesResponse,
   UpdateVehicleRequest,
+  VehicleRow,
   VehicleStatementResponse,
 } from './vehicles.models';
-
-type UpdateVehicleBody = Omit<UpdateVehicleRequest, 'image'> & { image?: string };
-type CreateVehicleBody = Omit<CreateVehicleRequest, 'image'> & { image?: string };
-type StatementBody = { success?: boolean | string; message?: string } | null;
 
 @Injectable({ providedIn: 'root' })
 export class VehiclesService {
   private readonly http = inject(HttpClient);
   private readonly base = environment.apiUrl;
 
+  // Backend returns a bare array; adapt to the envelope the UI expects.
   list() {
-    return this.http.get<PopulateVehiclesResponse>(`${this.base}/admin/vehicle`);
+    return this.http.get<VehicleRow[]>(`${this.base}/admin/vehicle`).pipe(
+      map((vehicles): PopulateVehiclesResponse => ({ success: true, message: '', vehicles })),
+      catchError((err) => of(fail<PopulateVehiclesResponse>(err))),
+    );
   }
 
   create(payload: CreateVehicleRequest) {
-    return from(this.toCreateBody(payload)).pipe(
-      switchMap((body) =>
-        this.http.post<StatementBody>(`${this.base}/admin/createvehicle`, body, {
-          observe: 'response',
-        }),
-      ),
-      map((response) => this.statementResponse(response, 'Vehicle created')),
+    const body = {
+      brand: payload.brand,
+      plate_num: payload.plate_num,
+      capacity: payload.capacity,
+      vehicleDescription: payload.vehicleDescription,
+      status: payload.status,
+    };
+    return this.http.post(`${this.base}/admin/createvehicle`, body).pipe(
+      map(() => ok('Vehicle created')),
+      catchError((err) => of(fail<VehicleStatementResponse>(err))),
     );
   }
 
   update(payload: UpdateVehicleRequest) {
-    return from(this.toUpdateBody(payload)).pipe(
-      switchMap((body) =>
-        this.http.put<StatementBody>(`${this.base}/admin/updatevehicle`, body, {
-          observe: 'response',
-        }),
-      ),
-      map((response) => this.statementResponse(response, 'Vehicle updated')),
-    );
-  }
-
-  imageUrl(value: string | null | undefined): string | null {
-    const source = value?.trim();
-
-    if (!source) {
-      return null;
-    }
-
-    // Already a usable URL (absolute http, data:, blob:) — leave as-is.
-    if (/^(data:image\/|blob:|https?:\/\/)/i.test(source)) {
-      return source;
-    }
-
-    const mime = this.base64ImageMime(source);
-
-    if (mime) {
-      return `data:${mime};base64,${source}`;
-    }
-
-    // Otherwise a backend-relative path (e.g. "uploads/foo.jpg"). Images are
-    // served straight off the backend host, no API context. Strip a leading
-    // context segment if the backend included one.
-    let path = source.replace(/^\/+/, '');
-    const ctx = environment.apiUrl.replace(/^\/+/, '').replace(/\/api\/?$/, '');
-
-    if (ctx && path.toLowerCase().startsWith(`${ctx.toLowerCase()}/`)) {
-      path = path.slice(ctx.length + 1);
-    }
-
-    const origin = environment.backendUrl.replace(/\/+$/, '');
-
-    return origin ? `${origin}/${path}` : `/${path}`;
-  }
-
-  private async toCreateBody(payload: CreateVehicleRequest): Promise<CreateVehicleBody> {
-    const { image, ...body } = payload;
-    const encodedImage = await this.imageBodyValue(image);
-
-    return encodedImage ? { ...body, image: encodedImage } : body;
-  }
-
-  private async toUpdateBody(payload: UpdateVehicleRequest): Promise<UpdateVehicleBody> {
-    const { image, ...body } = payload;
-    const encodedImage = await this.imageBodyValue(image);
-
-    return encodedImage ? { ...body, image: encodedImage } : body;
-  }
-
-  private statementResponse(
-    response: HttpResponse<StatementBody>,
-    fallbackMessage: string,
-  ): VehicleStatementResponse {
-    const body = response.body;
-    const success = body?.success;
-
-    if (success === false || success === 'false') {
-      return {
-        success: false,
-        message: body?.message ?? 'Request failed',
-      };
-    }
-
-    return {
-      success: response.ok,
-      message: body?.message ?? fallbackMessage,
+    const body = {
+      id: payload.id,
+      facilityId: payload.facilityId,
+      brand: payload.brand,
+      plate_num: payload.plate_num,
+      capacity: payload.capacity,
+      vehicleDescription: payload.vehicleDescription,
+      status: payload.status,
     };
-  }
-
-  private async imageBodyValue(image: File | string | null | undefined): Promise<string | null> {
-    if (image instanceof File) {
-      return this.fileToBase64(image);
-    }
-
-    if (typeof image === 'string' && image.trim()) {
-      return image;
-    }
-
-    return null;
-  }
-
-  private fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        const result = String(reader.result ?? '');
-        resolve(result.includes(',') ? result.split(',')[1] : result);
-      };
-      reader.onerror = () => reject(reader.error ?? new Error('Failed to read image'));
-      reader.readAsDataURL(file);
-    });
-  }
-
-  private base64ImageMime(source: string): string | null {
-    const clean = source.replace(/\s/g, '');
-
-    if (clean.length < 64 || /[.\\]/.test(clean) || !/^[A-Za-z0-9+/]+={0,2}$/.test(clean)) {
-      return null;
-    }
-
-    if (clean.startsWith('/9j/')) {
-      return 'image/jpeg';
-    }
-
-    if (clean.startsWith('iVBORw0KGgo')) {
-      return 'image/png';
-    }
-
-    if (clean.startsWith('R0lGOD')) {
-      return 'image/gif';
-    }
-
-    if (clean.startsWith('UklGR')) {
-      return 'image/webp';
-    }
-
-    return 'image/jpeg';
+    return this.http.put(`${this.base}/admin/updatevehicle`, body).pipe(
+      map(() => ok('Vehicle updated')),
+      catchError((err) => of(fail<VehicleStatementResponse>(err))),
+    );
   }
 
   remove(id: number) {
-    return this.http.delete<VehicleStatementResponse>(`${this.base}/admin/deletevehicle`, {
-      params: { id },
-    });
+    return this.http.delete(`${this.base}/admin/deletevehicle`, { params: { id } }).pipe(
+      map(() => ok('Vehicle deleted')),
+      catchError((err) => of(fail<VehicleStatementResponse>(err))),
+    );
   }
 
   toggleStatus(id: number) {
-    return this.http.patch<VehicleStatementResponse>(
-      `${this.base}/admin/togglevehicle`,
-      {},
-      { params: { id } },
+    return this.http.patch(`${this.base}/admin/togglevehicle`, {}, { params: { id } }).pipe(
+      map(() => ok('Status updated')),
+      catchError((err) => of(fail<VehicleStatementResponse>(err))),
     );
   }
+
+  // Images were removed from the backend; pass through a usable URL or null.
+  imageUrl(value: string | null | undefined): string | null {
+    const s = value?.trim();
+    return s ? s : null;
+  }
+}
+
+function ok(message: string): VehicleStatementResponse {
+  return { success: true, message };
+}
+
+function fail<T extends { success: boolean; message: string }>(err: any): T {
+  return { success: false, message: err?.error?.message ?? 'Request failed' } as T;
 }
