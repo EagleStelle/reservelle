@@ -83,28 +83,28 @@ interface ConfirmState {
       <!-- Table -->
         <ui-data-table minWidthClass="min-w-[92rem]">
             <thead class="sticky top-0 z-10">
-              <tr class="bg-primary text-xs font-bold uppercase tracking-wide text-white">
-                <th class="px-5 py-4">#</th>
-                <th class="px-4 py-3">Event</th>
-                <th class="px-4 py-3">Dept / Org</th>
-                <th class="px-4 py-3">Contact</th>
-                <th class="px-4 py-3">Dates</th>
-                <th class="px-4 py-3">Room / Pax</th>
-                <th class="px-4 py-3">Equipment</th>
-                <th class="px-4 py-3 text-center">Status</th>
-                <th class="px-4 py-3 text-center">Actions</th>
+              <tr class="bg-primary text-[11px] font-semibold text-white">
+                <th class="px-3.5 py-2.5">#</th>
+                <th class="px-3 py-2.5">Event</th>
+                <th class="px-3 py-2.5">Dept / Org</th>
+                <th class="px-3 py-2.5">Contact</th>
+                <th class="px-3 py-2.5">Dates</th>
+                <th class="px-3 py-2.5">Room / Pax</th>
+                <th class="px-3 py-2.5">Equipment</th>
+                <th class="px-3 py-2.5 text-center">Status</th>
+                <th class="px-3 py-2.5 text-center">Actions</th>
               </tr>
             </thead>
             <tbody uiAutoAnimate>
               @if (loading()) {
                 <tr>
-                  <td colspan="9" class="px-4 py-10 text-center text-gray-500 dark:text-zinc-400">
+                  <td colspan="9" class="px-3 py-8 text-center text-gray-500 dark:text-zinc-400">
                     Loading reservations...
                   </td>
                 </tr>
               } @else if (apiError()) {
                 <tr>
-                  <td colspan="9" class="px-4 py-8 text-center">
+                  <td colspan="9" class="px-3 py-6 text-center">
                     <div class="flex flex-col items-center gap-3">
                       <p class="text-sm font-semibold text-red-600">Failed to load reservations</p>
                       <button uiButton type="button" (click)="load()">
@@ -116,17 +116,17 @@ interface ConfirmState {
                 </tr>
               } @else if (filtered().length === 0) {
                 <tr>
-                  <td colspan="9" class="px-4 py-8 text-center text-gray-500 dark:text-zinc-400">
+                  <td colspan="9" class="px-3 py-6 text-center text-gray-500 dark:text-zinc-400">
                     No reservations found.
                   </td>
                 </tr>
               } @else {
                 @for (row of filtered(); track row.id) {
                 <tr class="border-b border-zinc-200 transition-colors hover:bg-secondary/5 dark:border-zinc-700 dark:hover:bg-secondary/15">
-                  <td class="px-5 py-4 text-xs text-black dark:text-zinc-100 font-mono">{{ row.id }}</td>
+                  <td class="px-3.5 py-2.5 text-xs text-black dark:text-zinc-100 font-mono">{{ row.id }}</td>
 
                   <!-- Event -->
-                  <td class="px-4 py-3 max-w-[200px] cursor-pointer text-black dark:text-zinc-100" (click)="openDetails(row)">
+                  <td class="px-3 py-2.5 max-w-[200px] cursor-pointer text-black dark:text-zinc-100" (click)="openDetails(row)">
                     <p class="font-semibold text-gray-900 dark:text-zinc-100 truncate">{{ row.eventTitle }}</p>
                     <p class="text-xs text-gray-500 dark:text-zinc-400 capitalize">{{ row.eventType }}</p>
                     <p class="text-[11px] text-gray-400 dark:text-zinc-500 mt-0.5">{{ formatDate(row.createdAt) }}</p>
@@ -139,20 +139,20 @@ interface ConfirmState {
                   </td>
 
                   <!-- Dept / Org -->
-                  <td class="px-4 py-3 max-w-[160px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-[160px] text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300 truncate">{{ row.department }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ row.organization }}</p>
                   </td>
 
                   <!-- Contact -->
-                  <td class="px-4 py-3 max-w-[160px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-[160px] text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300 truncate">{{ row.contactPerson }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ row.contactEmail }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500">{{ row.contactNumber }}</p>
                   </td>
 
                   <!-- Dates -->
-                  <td class="px-4 py-3 max-w-[180px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-[180px] text-black dark:text-zinc-100">
                     @for (slot of parseDates(row.reservedDates); track slot.date) {
                       <div class="text-[11px] leading-tight text-gray-600 dark:text-zinc-400 flex items-center gap-1 mb-0.5">
                         <ui-icon name="calendar_today" class="text-[10px] text-primary shrink-0" />
@@ -163,7 +163,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Room / Pax -->
-                  <td class="px-4 py-3 max-w-[130px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-[130px] text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300">{{ row.roomType ? getRoomTypeLabel(row.roomType) : '—' }}</p>
                     @if (row.expectedAttendees) {
                       <p class="text-xs text-gray-400 dark:text-zinc-500">{{ row.expectedAttendees }} pax</p>
@@ -171,7 +171,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Equipment -->
-                  <td class="px-4 py-3 max-w-[140px] text-black dark:text-zinc-100">
+                  <td class="px-3 py-2.5 max-w-[140px] text-black dark:text-zinc-100">
                     @if (parseEquipment(row.requestedEquipment).length > 0) {
                       @for (eq of parseEquipment(row.requestedEquipment); track eq.id) {
                         <div class="text-[11px] text-gray-600 dark:text-zinc-400 flex items-center gap-1 mb-0.5">
@@ -185,7 +185,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Status -->
-                  <td class="px-4 py-3 text-center">
+                  <td class="px-3 py-2.5 text-center">
                     <ui-status-badge [status]="row.status" />
                     @if (row.status === 'COMPLETED' && row.satisfactionRating) {
                       <div class="flex items-center gap-0.5 mt-1.5" [title]="row.satisfactionRating + ' / 5'">
@@ -197,7 +197,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Actions -->
-                  <td class="px-4 py-3">
+                  <td class="px-3 py-2.5">
                     @if (row.status === 'PENDING') {
                       <div class="flex items-center justify-center gap-2 text-gray-500 dark:text-zinc-400">
                         <button
@@ -205,7 +205,7 @@ interface ConfirmState {
                           (click)="requestConfirm(row, 'APPROVED')"
                           [disabled]="acting() === row.id"
                           title="Approve"
-                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                          class="cursor-pointer rounded-md p-1 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <ui-icon name="check_circle" class="text-xl" />
                         </button>
@@ -214,7 +214,7 @@ interface ConfirmState {
                           (click)="requestConfirm(row, 'REJECTED')"
                           [disabled]="acting() === row.id"
                           title="Reject"
-                          class="cursor-pointer rounded-lg p-1.5 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                          class="cursor-pointer rounded-md p-1 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <ui-icon name="cancel" class="text-xl" />
                         </button>
@@ -225,7 +225,7 @@ interface ConfirmState {
                           type="button"
                           (click)="openCoordination(row)"
                           [disabled]="acting() === row.id"
-                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                          class="cursor-pointer rounded-md p-1 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                           [title]="row.coordinationDate ? 'Update coordination: ' + row.coordinationDate : 'Set coordination meeting'"
                         >
                           <ui-icon name="handshake" class="text-xl" />
@@ -235,7 +235,7 @@ interface ConfirmState {
                           (click)="openReschedule(row)"
                           [disabled]="acting() === row.id"
                           title="Reschedule"
-                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                          class="cursor-pointer rounded-md p-1 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <ui-icon name="edit_calendar" class="text-xl" />
                         </button>
@@ -244,7 +244,7 @@ interface ConfirmState {
                           (click)="requestConfirm(row, 'COMPLETED')"
                           [disabled]="acting() === row.id"
                           title="Complete"
-                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                          class="cursor-pointer rounded-md p-1 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <ui-icon name="task_alt" class="text-xl" />
                         </button>
@@ -253,7 +253,7 @@ interface ConfirmState {
                             type="button"
                             (click)="downloadReservationForm(row)"
                             [disabled]="acting() === row.id"
-                            class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
+                            class="cursor-pointer rounded-md p-1 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                             title="Download reservation form"
                           >
                             <ui-icon name="download" class="text-xl" />
@@ -264,7 +264,7 @@ interface ConfirmState {
                           (click)="requestConfirm(row, 'CANCELLED')"
                           [disabled]="acting() === row.id"
                           title="Cancel"
-                          class="cursor-pointer rounded-lg p-1.5 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+                          class="cursor-pointer rounded-md p-1 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           <ui-icon name="block" class="text-xl" />
                         </button>
@@ -282,7 +282,7 @@ interface ConfirmState {
       <!-- Event Details Summary Dialog -->
       @if (detailsTarget()) {
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" (click)="closeDetails()">
-          <div class="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-zinc-900 shadow-2xl p-6 flex flex-col gap-5" (click)="$event.stopPropagation()">
+          <div class="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg bg-white dark:bg-zinc-900 shadow-2xl p-4 flex flex-col gap-4" (click)="$event.stopPropagation()">
             <div class="flex items-start justify-between gap-3">
               <div>
                 <h2 class="text-lg font-black text-gray-900 dark:text-zinc-100">Event Summary</h2>
@@ -291,38 +291,38 @@ interface ConfirmState {
               <button
                 type="button"
                 (click)="closeDetails()"
-                class="flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                class="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               >
                 <ui-icon name="close" class="text-lg" />
               </button>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-3">
-                <p class="text-xs uppercase tracking-wide font-bold text-gray-400">Event</p>
+              <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-2.5">
+                <p class="text-xs font-medium text-gray-400">Event</p>
                 <p class="font-semibold text-gray-900 dark:text-zinc-100 mt-1">{{ detailsTarget()!.eventTitle }}</p>
                 <p class="text-xs text-gray-500 dark:text-zinc-400 capitalize">{{ detailsTarget()!.eventType }}</p>
               </div>
-              <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-3">
-                <p class="text-xs uppercase tracking-wide font-bold text-gray-400">Organization</p>
+              <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-2.5">
+                <p class="text-xs font-medium text-gray-400">Organization</p>
                 <p class="font-semibold text-gray-900 dark:text-zinc-100 mt-1">{{ detailsTarget()!.organization }}</p>
                 <p class="text-xs text-gray-500 dark:text-zinc-400">{{ detailsTarget()!.department }}</p>
               </div>
-              <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-3">
-                <p class="text-xs uppercase tracking-wide font-bold text-gray-400">Contact</p>
+              <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-2.5">
+                <p class="text-xs font-medium text-gray-400">Contact</p>
                 <p class="font-semibold text-gray-900 dark:text-zinc-100 mt-1">{{ detailsTarget()!.contactPerson }}</p>
                 <p class="text-xs text-gray-500 dark:text-zinc-400">{{ detailsTarget()!.contactEmail }}</p>
                 <p class="text-xs text-gray-500 dark:text-zinc-400">{{ detailsTarget()!.contactNumber }}</p>
               </div>
-              <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-3">
-                <p class="text-xs uppercase tracking-wide font-bold text-gray-400">Room / Attendees</p>
+              <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-2.5">
+                <p class="text-xs font-medium text-gray-400">Room / Attendees</p>
                 <p class="font-semibold text-gray-900 dark:text-zinc-100 mt-1">{{ detailsTarget()!.roomType ? getRoomTypeLabel(detailsTarget()!.roomType) : '—' }}</p>
                 <p class="text-xs text-gray-500 dark:text-zinc-400">{{ detailsTarget()!.expectedAttendees || '—' }} pax</p>
               </div>
             </div>
 
-            <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-4">
-              <p class="text-xs uppercase tracking-wide font-bold text-gray-400 mb-2">Reserved Dates</p>
+            <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-3">
+              <p class="text-xs font-medium text-gray-400 mb-2">Reserved Dates</p>
               <div class="flex flex-col gap-1.5">
                 @for (slot of parseDates(detailsTarget()!.reservedDates); track slot.date + '-' + slot.startTime) {
                   <p class="text-sm text-gray-700 dark:text-zinc-300">• {{ slot.date }} · {{ slot.startTime }} – {{ slot.endTime }}</p>
@@ -330,8 +330,8 @@ interface ConfirmState {
               </div>
             </div>
 
-            <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-4">
-              <p class="text-xs uppercase tracking-wide font-bold text-gray-400 mb-2">Requested Equipment</p>
+            <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-3">
+              <p class="text-xs font-medium text-gray-400 mb-2">Requested Equipment</p>
               @if (parseEquipment(detailsTarget()!.requestedEquipment).length > 0) {
                 <div class="flex flex-wrap gap-2">
                   @for (eq of parseEquipment(detailsTarget()!.requestedEquipment); track eq.id) {
@@ -344,15 +344,15 @@ interface ConfirmState {
             </div>
 
             @if (detailsTarget()!.coordinationDate) {
-              <div class="rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/20 p-4">
-                <p class="text-xs uppercase tracking-wide font-bold text-amber-600 dark:text-amber-400 mb-1">Coordination Meeting</p>
+              <div class="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/20 p-3">
+                <p class="text-xs font-medium text-amber-600 dark:text-amber-400 mb-1">Coordination Meeting</p>
                 <p class="text-sm text-amber-900 dark:text-amber-200">{{ detailsTarget()!.coordinationDate }} · {{ detailsTarget()!.coordinationStartTime }} – {{ detailsTarget()!.coordinationEndTime }}</p>
               </div>
             }
 
             @if (detailsTarget()!.additionalInstructions) {
-              <div class="rounded-xl border border-gray-200 dark:border-zinc-700 p-4">
-                <p class="text-xs uppercase tracking-wide font-bold text-gray-400 mb-1">Additional Instructions</p>
+              <div class="rounded-lg border border-gray-200 dark:border-zinc-700 p-3">
+                <p class="text-xs font-medium text-gray-400 mb-1">Additional Instructions</p>
                 <p class="text-sm text-gray-700 dark:text-zinc-300 whitespace-pre-wrap">{{ detailsTarget()!.additionalInstructions }}</p>
               </div>
             }
@@ -361,7 +361,7 @@ interface ConfirmState {
               <button
                 type="button"
                 (click)="closeDetails()"
-                class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90 transition-colors cursor-pointer"
+                class="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer"
               >
                 Close
               </button>
@@ -373,7 +373,7 @@ interface ConfirmState {
       <!-- Confirmation Dialog -->
       @if (confirm()) {
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" (click)="confirm.set(null)">
-          <div class="w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 shadow-2xl p-6 flex flex-col gap-4" (click)="$event.stopPropagation()">
+          <div class="w-full max-w-sm rounded-lg bg-white dark:bg-zinc-900 shadow-2xl p-4 flex flex-col gap-4" (click)="$event.stopPropagation()">
             <div class="flex items-start gap-3">
               @if (confirm()!.action === 'APPROVED') {
                 <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950/60">
@@ -406,7 +406,7 @@ interface ConfirmState {
               <button
                 type="button"
                 (click)="confirm.set(null)"
-                class="rounded-lg border border-gray-200 dark:border-zinc-700 px-4 py-2 text-sm font-semibold text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
+                class="rounded-md border border-gray-200 dark:border-zinc-700 px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -414,7 +414,7 @@ interface ConfirmState {
                 type="button"
                 (click)="executeAction()"
                 [disabled]="acting() !== null"
-                class="rounded-lg px-4 py-2 text-sm font-bold text-white cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                class="rounded-md px-3 py-1.5 text-sm font-semibold text-white cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 [class.bg-emerald-600]="confirm()!.action === 'APPROVED'"
                 [class.hover:bg-emerald-700]="confirm()!.action === 'APPROVED'"
                 [class.bg-red-600]="confirm()!.action === 'REJECTED'"

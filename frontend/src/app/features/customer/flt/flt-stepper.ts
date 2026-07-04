@@ -30,13 +30,13 @@ import { FltReservationService } from './flt-reservation.service';
   },
   template: `
     <!-- Step indicator -->
-    <div class="shrink-0 px-6 pt-6 pb-4">
+    <div class="shrink-0 px-4 pt-4 pb-3">
       <div class="flex items-center gap-0">
         @for (step of steps; track step.id; let i = $index) {
           <div class="flex items-center" [class.flex-1]="i < steps.length - 1">
             <div class="flex flex-col items-center gap-1">
               <div
-                class="flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold transition-all duration-300 shrink-0"
+                class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-all duration-300 shrink-0"
                 [class.bg-primary]="currentStep() >= step.id"
                 [class.text-white]="currentStep() >= step.id"
                 [class.bg-gray-200]="currentStep() < step.id"
@@ -66,7 +66,7 @@ import { FltReservationService } from './flt-reservation.service';
     </div>
 
     <!-- Step content -->
-    <div class="flex-1 min-h-0 md:overflow-y-auto px-6 pb-2 flex flex-col gap-4 md:gap-5" style="scrollbar-width:thin;">
+    <div class="flex-1 min-h-0 md:overflow-y-auto px-4 pb-2 flex flex-col gap-4" style="scrollbar-width:thin;">
 
       <!-- Step 1: Dates & Times -->
       @if (currentStep() === 1) {
@@ -87,7 +87,7 @@ import { FltReservationService } from './flt-reservation.service';
           </div>
 
           @if (dateSlots().length === 0) {
-            <div class="flex flex-col items-center justify-center gap-3 py-10 text-center border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 dark:bg-zinc-800/40 dark:border-zinc-700">
+            <div class="flex flex-col items-center justify-center gap-3 py-8 text-center border border-dashed border-gray-300 rounded-lg bg-gray-50 dark:bg-zinc-800/40 dark:border-zinc-700">
               <ui-icon name="calendar_month" class="text-4xl text-gray-300 dark:text-zinc-600" />
               <div>
                 <p class="text-sm font-semibold text-gray-500 dark:text-zinc-400">No dates selected</p>
@@ -105,10 +105,10 @@ import { FltReservationService } from './flt-reservation.service';
           } @else {
             <div class="flex flex-col gap-3">
               @for (slot of dateSlots(); track slot.date) {
-                <div class="rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 shadow-sm">
-                  <div class="flex items-center justify-between mb-3">
+                <div class="rounded-lg border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-3 shadow-sm">
+                  <div class="flex items-center justify-between mb-2.5">
                     <div class="flex items-center gap-2">
-                      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                      <div class="flex h-7 w-7 items-center justify-center rounded-md bg-primary/10">
                         <ui-icon name="event" class="text-primary text-base" />
                       </div>
                       <span class="font-semibold text-sm text-gray-900 dark:text-zinc-100">{{ formatDateDisplay(slot.date) }}</span>
@@ -116,12 +116,12 @@ import { FltReservationService } from './flt-reservation.service';
                     <button
                       type="button"
                       (click)="removeDateSlot(slot.date)"
-                      class="flex h-7 w-7 items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
+                      class="flex h-7 w-7 items-center justify-center rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer"
                     >
                       <ui-icon name="close" class="text-base" />
                     </button>
                   </div>
-                  <div class="flex items-center gap-2 rounded-lg bg-gray-50 dark:bg-zinc-900/60 border border-gray-100 dark:border-zinc-700 px-3 py-2 text-sm">
+                  <div class="flex items-center gap-2 rounded-md bg-gray-50 dark:bg-zinc-900/60 border border-gray-100 dark:border-zinc-700 px-2.5 py-1.5 text-sm">
                     <ui-icon name="schedule" class="text-primary text-base shrink-0" />
                     <span class="font-semibold text-gray-700 dark:text-zinc-300">{{ slot.startTime }} – {{ slot.endTime }}</span>
                     <span class="ml-auto text-xs text-gray-400 dark:text-zinc-500">Time slot confirmed</span>
@@ -154,7 +154,7 @@ import { FltReservationService } from './flt-reservation.service';
                     <button
                       type="button"
                       (click)="selectRoomType(room.value)"
-                      class="flex flex-col items-start gap-1 rounded-xl border px-4 py-3 text-left transition-all duration-200 cursor-pointer"
+                      class="flex flex-col items-start gap-1 rounded-lg border px-3 py-2.5 text-left transition-all duration-200 cursor-pointer"
                       [class.border-primary]="detailsForm.get('roomType')?.value === room.value"
                       [class.bg-primary]="detailsForm.get('roomType')?.value === room.value"
                       [class.text-white]="detailsForm.get('roomType')?.value === room.value"
@@ -222,7 +222,7 @@ import { FltReservationService } from './flt-reservation.service';
                 <select
                   id="eventType"
                   formControlName="eventType"
-                  class="w-full rounded-lg border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150 ring-1 ring-inset ring-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)] dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10 px-4 py-2.5 text-sm text-gray-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/35 focus:border-primary/55 transition-all duration-200 cursor-pointer"
+                  class="w-full rounded-md border border-zinc-950/12 bg-white px-3 py-2 text-[13px] text-gray-900 ring-1 ring-inset ring-zinc-200 shadow-[0_1px_1px_rgb(24_24_27/0.08),0_2px_5px_-3px_rgb(24_24_27/0.16),inset_0_1px_0_rgb(255_255_255/0.85)] focus:outline-none focus:ring-2 focus:ring-primary/35 focus:border-primary/55 transition-all duration-200 cursor-pointer dark:border-white/15 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700"
                 >
                   <option value="">-- Select Type --</option>
                   @for (type of eventTypes; track type.value) {
@@ -258,7 +258,7 @@ import { FltReservationService } from './flt-reservation.service';
                   formControlName="additionalInstructions"
                   rows="3"
                   placeholder="Any special requests, setup requirements, or notes for the FLT team..."
-                  class="w-full rounded-lg border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150 ring-1 ring-inset ring-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)] dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10 px-4 py-2.5 text-sm text-gray-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-primary/35 focus:border-primary/55 transition-all duration-200 resize-none"
+                  class="w-full rounded-md border border-zinc-950/12 bg-white px-3 py-2 text-[13px] text-gray-900 ring-1 ring-inset ring-zinc-200 shadow-[0_1px_1px_rgb(24_24_27/0.08),0_2px_5px_-3px_rgb(24_24_27/0.16),inset_0_1px_0_rgb(255_255_255/0.85)] focus:outline-none focus:ring-2 focus:ring-primary/35 focus:border-primary/55 transition-all duration-200 resize-none dark:border-white/15 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700"
                 ></textarea>
               </div>
             </div>
@@ -282,7 +282,7 @@ import { FltReservationService } from './flt-reservation.service';
                     <button
                       type="button"
                       (click)="toggleEquipment(eq)"
-                      class="h-10 rounded-lg border text-sm font-medium transition-all duration-200 truncate px-3 cursor-pointer"
+                      class="h-9 rounded-md border text-[13px] font-medium transition-all duration-200 truncate px-3 cursor-pointer"
                       [class.border-primary]="isEquipmentSelected(eq.id)"
                       [class.bg-primary]="isEquipmentSelected(eq.id)"
                       [class.text-white]="isEquipmentSelected(eq.id)"
@@ -340,7 +340,7 @@ import { FltReservationService } from './flt-reservation.service';
           </div>
 
           <!-- Reservation summary -->
-          <div class="mt-2 rounded-xl bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-700 p-4 flex flex-col gap-3">
+          <div class="mt-2 rounded-lg bg-gray-50 dark:bg-zinc-800/60 border border-gray-200 dark:border-zinc-700 p-3 flex flex-col gap-3">
             <h3 class="text-sm font-bold text-gray-700 dark:text-zinc-300 flex items-center gap-2">
               <ui-icon name="summarize" class="text-base text-primary" />
               Reservation Summary
@@ -377,7 +377,7 @@ import { FltReservationService } from './flt-reservation.service';
 
           <!-- Terms & Conditions agreement -->
           <label
-            class="flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors select-none"
+            class="flex items-start gap-3 rounded-lg border p-3 cursor-pointer transition-colors select-none"
             [class.border-primary]="termsAccepted()"
             [class.bg-primary/5]="termsAccepted()"
             [class.dark:bg-primary/10]="termsAccepted()"
@@ -401,7 +401,7 @@ import { FltReservationService } from './flt-reservation.service';
           </label>
 
           @if (submitError()) {
-            <div class="flex items-center gap-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
+            <div class="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-3 py-2 text-sm text-red-600 dark:text-red-400">
               <ui-icon name="error_outline" class="text-base shrink-0" />
               {{ submitError() }}
             </div>
@@ -426,13 +426,13 @@ import { FltReservationService } from './flt-reservation.service';
 
     <!-- Navigation buttons -->
     @if (!submitted()) {
-      <div class="shrink-0 p-6 flex gap-3 sticky bottom-0 z-20 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border-t border-gray-100 dark:border-zinc-800">
+      <div class="shrink-0 p-4 flex gap-2 sticky bottom-0 z-20 bg-white/40 dark:bg-zinc-900/40 backdrop-blur-md border-t border-gray-100 dark:border-zinc-800">
         @if (currentStep() === 1) {
           <button type="button" uiButton variant="secondary" class="flex-1 bg-white/50 dark:bg-zinc-800/50" (click)="addMoreDates.emit()">
-            ← ADD DATES
+            Add dates
           </button>
         } @else {
-          <button uiButton variant="secondary" type="button" class="flex-1 bg-white/50 dark:bg-zinc-800/50" (click)="prevStep()">BACK</button>
+          <button uiButton variant="secondary" type="button" class="flex-1 bg-white/50 dark:bg-zinc-800/50" (click)="prevStep()">Back</button>
         }
 
         @if (currentStep() < 3) {
@@ -444,7 +444,7 @@ import { FltReservationService } from './flt-reservation.service';
             [disabled]="!canProceed()"
             (click)="nextStep()"
           >
-            NEXT
+            Next
           </button>
         } @else {
           <button
@@ -457,9 +457,9 @@ import { FltReservationService } from './flt-reservation.service';
           >
             @if (submitting()) {
               <ui-icon name="autorenew" class="animate-spin mr-1" />
-              SUBMITTING...
+              Submitting...
             } @else {
-              SUBMIT RESERVATION
+              Submit reservation
             }
           </button>
         }
@@ -476,9 +476,9 @@ export class FltStepper implements OnChanges {
   private readonly reservationService = inject(FltReservationService);
 
   readonly steps = [
-    { id: 1, label: 'DATES & TIMES' },
-    { id: 2, label: 'EVENT DETAILS' },
-    { id: 3, label: 'CONTACT INFO' },
+    { id: 1, label: 'Dates & times' },
+    { id: 2, label: 'Event details' },
+    { id: 3, label: 'Contact info' },
   ];
 
 

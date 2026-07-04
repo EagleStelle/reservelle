@@ -8,50 +8,50 @@
     />
     <a uiButton routerLink="/equipments/new" class="w-full sm:w-auto">
       <ui-icon name="add" [size]="20" />
-      <span>ADD EQUIPMENT</span>
+      <span>Add Equipment</span>
     </a>
   </section>
 
   <ui-data-table minWidthClass="min-w-150">
         <thead class="sticky top-0 z-10">
-          <tr class="bg-primary text-xs font-bold uppercase tracking-wide text-white">
+          <tr class="bg-primary text-xs font-semibold text-white">
            <th
-  class="px-5 py-4 cursor-pointer"
+  class="px-3.5 py-2.5 cursor-pointer"
   (click)="sortBy('name')"
 >
   Name
 </th>
 
 <th
-  class="px-4 py-3 cursor-pointer"
+  class="px-3 py-2.5 cursor-pointer"
   (click)="sortBy('facilityName')"
 >
   Service
 </th>
 
 <th
-  class="px-4 py-3 text-center cursor-pointer"
+  class="px-3 py-2.5 text-center cursor-pointer"
   (click)="sortBy('status')"
 >
   Status
 </th>
-            <th class="px-4 py-3 text-center">Actions</th>
+            <th class="px-3 py-2.5 text-center">Actions</th>
           </tr>
         </thead>
         <tbody uiAutoAnimate>
           @if (loading()) {
             <tr>
-              <td colspan="4" class="px-4 py-10 text-center text-gray-500 dark:text-zinc-400">
+              <td colspan="4" class="px-3 py-8 text-center text-gray-500 dark:text-zinc-400">
                 Loading equipments...
               </td>
             </tr>
           } @else if (error()) {
             <tr>
-              <td colspan="4" class="px-4 py-8 text-center text-red-600">{{ error() }}</td>
+              <td colspan="4" class="px-3 py-6 text-center text-red-600">{{ error() }}</td>
             </tr>
           } @else if (filtered().length === 0) {
             <tr>
-              <td colspan="4" class="px-4 py-8 text-center text-gray-500 dark:text-zinc-400">
+              <td colspan="4" class="px-3 py-6 text-center text-gray-500 dark:text-zinc-400">
                 No equipments found.
               </td>
             </tr>
@@ -60,28 +60,28 @@
               <tr
                 class="border-b border-zinc-200 transition-colors hover:bg-secondary/5 dark:border-zinc-700 dark:hover:bg-secondary/15"
               >
-                <td class="px-5 py-4 text-black dark:text-zinc-100">{{ equipment.name ?? '—' }}</td>
-                <td class="px-4 py-3 text-black dark:text-zinc-100">
+                <td class="px-3.5 py-2.5 text-black dark:text-zinc-100">{{ equipment.name ?? '—' }}</td>
+                <td class="px-3 py-2.5 text-black dark:text-zinc-100">
                   {{ equipment.facilityName ?? '—' }}
                 </td>
-                <td class="px-4 py-3 text-center">
+                <td class="px-3 py-2.5 text-center">
                   <ui-status-badge [status]="equipment.status" />
                 </td>
-                <td class="px-4 py-3">
+                <td class="px-3 py-2.5">
                   <div
                     class="flex items-center justify-center gap-2 text-gray-500 dark:text-zinc-400"
                   >
                     <a
                       title="Edit"
                       [routerLink]="['/equipments', equipment.id, 'edit']"
-                      class="cursor-pointer rounded-lg p-1.5 hover:text-primary"
+                      class="cursor-pointer rounded-md p-1 hover:text-primary"
                     >
                       <ui-icon name="edit_square" class="text-xl" />
                     </a>
                     <button
                       type="button"
                       (click)="toggleStatus(equipment)"
-                      class="cursor-pointer rounded-lg p-1.5 hover:text-primary"
+                      class="cursor-pointer rounded-md p-1 hover:text-primary"
                     >
                       <ui-icon
                         [name]="isActive(equipment.status) ? 'pause_circle' : 'play_circle'"
@@ -92,7 +92,7 @@
                       type="button"
                       title="Delete"
                       (click)="remove(equipment)"
-                      class="cursor-pointer rounded-lg p-1.5 hover:text-red-600"
+                      class="cursor-pointer rounded-md p-1 hover:text-red-600"
                     >
                       <ui-icon name="delete" class="text-xl" />
                     </button>

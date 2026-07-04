@@ -12,7 +12,7 @@ import { SideNav } from '../side-nav/side-nav';
       class="flex h-dvh min-h-0 w-full flex-col overflow-hidden bg-transparent text-black dark:text-zinc-100 lg:flex-row"
     >
       <app-side-nav />
-      <main class="flex min-h-0 flex-1 flex-col gap-4 overflow-auto p-4">
+      <main class="flex min-h-0 flex-1 flex-col gap-3 overflow-auto p-3 lg:p-4">
         <ng-content />
       </main>
     </div>

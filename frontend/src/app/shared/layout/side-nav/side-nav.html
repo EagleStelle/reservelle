@@ -5,7 +5,7 @@
     <div class="flex min-w-0 items-center gap-2">
       <img src="/logo.svg" alt="LPU Laguna" class="h-9 w-9 shrink-0 object-contain" />
       <div class="min-w-0">
-        <p class="truncate text-xs font-black uppercase tracking-wide">LPU Laguna</p>
+        <p class="truncate text-xs font-semibold">LPU Laguna</p>
         <p class="truncate text-[11px] text-white/65">{{ user()?.fullname ?? 'Account' }}</p>
       </div>
     </div>
@@ -16,7 +16,7 @@
         (click)="toggleTheme()"
         [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
         [title]="isDark() ? 'Light mode' : 'Dark mode'"
-        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
       >
         <ui-icon [name]="isDark() ? 'light_mode' : 'dark_mode'" class="text-xl" />
       </button>
@@ -26,17 +26,17 @@
         (click)="logout()"
         aria-label="Logout"
         title="Logout"
-        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg bg-white/10 text-white hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
       >
         <ui-icon name="logout" class="text-xl" />
       </button>
     </div>
   </div>
 
-  <div class="hidden items-center gap-3 px-5 py-6 lg:flex">
-    <img src="/logo.svg" alt="LPU Laguna" class="h-14 w-14 object-contain" />
+  <div class="hidden items-center gap-3 px-4 py-4 lg:flex">
+    <img src="/logo.svg" alt="LPU Laguna" class="h-12 w-12 object-contain" />
     <div class="min-w-0">
-      <p class="truncate text-sm font-black uppercase tracking-wide">LPU Laguna</p>
+      <p class="truncate text-sm font-semibold">LPU Laguna</p>
       <p class="text-xs text-white/60">Reservation System</p>
     </div>
   </div>
@@ -50,7 +50,7 @@
           [routerLink]="item.link"
           routerLinkActive="bg-secondary text-white shadow-lg"
           #rla="routerLinkActive"
-          class="flex min-w-fit cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80"
+          class="flex min-w-fit cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-white/80"
           [class.hover:bg-white/10]="!rla.isActive"
         >
           <ui-icon [name]="item.icon" class="text-xl" />
@@ -61,7 +61,7 @@
           <button
             type="button"
             (click)="toggleGroup(item.label)"
-            class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10"
+            class="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-white/80 hover:bg-white/10"
           >
             <ui-icon [name]="item.icon" class="text-xl shrink-0" />
             <span class="hidden flex-1 text-left sm:inline">{{ item.label }}</span>
@@ -79,7 +79,7 @@
                   [routerLink]="child.link"
                   routerLinkActive="bg-secondary text-white shadow-md"
                   #crla="routerLinkActive"
-                  class="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-white/75"
+                  class="flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium text-white/75"
                   [class.hover:bg-white/10]="!crla.isActive"
                 >
                   <ui-icon [name]="child.icon" class="text-lg" />
@@ -93,10 +93,10 @@
     }
   </nav>
 
-  <div class="mt-auto hidden border-t border-white/15 px-3 py-4 lg:block">
+  <div class="mt-auto hidden border-t border-white/15 px-3 py-3 lg:block">
     <a
       href="#"
-      class="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10"
+      class="flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-white/80 hover:bg-white/10"
     >
       <ui-icon name="account_circle" class="text-xl" />
       <span>{{ user()?.fullname ?? 'Account' }}</span>
@@ -104,7 +104,7 @@
     <button
       type="button"
       (click)="toggleTheme()"
-      class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10"
+      class="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-white/80 hover:bg-white/10"
     >
       <ui-icon [name]="isDark() ? 'light_mode' : 'dark_mode'" class="text-xl" />
       <span>{{ isDark() ? 'Light Mode' : 'Dark Mode' }}</span>
@@ -112,7 +112,7 @@
     <button
       type="button"
       (click)="logout()"
-      class="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/80 hover:bg-white/10"
+      class="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-sm font-medium text-white/80 hover:bg-white/10"
     >
       <ui-icon name="logout" class="text-xl" />
       <span>Logout</span>

@@ -12,7 +12,7 @@
   ></div>
 
   <div
-    class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] animate-rise relative z-10 grid w-full max-w-5xl overflow-hidden rounded-3xl md:grid-cols-[1.05fr_0.95fr]"
+    class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] animate-rise relative z-10 grid w-full max-w-5xl overflow-hidden rounded-xl md:grid-cols-[1.05fr_0.95fr]"
   >
     <div class="relative hidden min-h-155 overflow-hidden bg-slate-200 md:block">
       @for (image of heroImages; track image.src; let i = $index) {
@@ -27,9 +27,9 @@
       <div
         class="absolute inset-0 bg-linear-to-tr from-primary/75 via-primary/25 to-transparent"
       ></div>
-      <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+      <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
         <div
-          class="mb-5 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur"
+          class="mb-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur"
         >
           <span
             class="h-2 w-2 rounded-full"
@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="relative flex flex-col justify-center gap-8 px-6 py-10 sm:px-10 md:py-14">
+    <div class="relative flex flex-col justify-center gap-6 px-5 py-8 sm:px-8 md:py-10">
       <img
         src="/logo.svg"
         alt=""
@@ -56,9 +56,9 @@
       <header class="relative flex flex-col gap-3">
         <div class="flex items-center gap-3 md:hidden">
           <img src="/logo.svg" alt="LPU Laguna" class="h-12 w-12 object-contain" />
-          <span class="text-sm font-bold uppercase tracking-[0.18em] text-primary">LPU Laguna</span>
+          <span class="text-sm font-semibold text-primary">LPU Laguna</span>
         </div>
-        <p class="hidden text-sm font-bold uppercase tracking-[0.22em] text-secondary md:block">
+        <p class="hidden text-sm font-semibold text-secondary md:block">
           Welcome back
         </p>
         <h1 class="text-3xl font-black leading-tight text-gray-950 sm:text-4xl">
@@ -108,7 +108,7 @@
 
         @if (error()) {
           <p
-            class="animate-rise rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm font-medium text-red-600"
+            class="animate-rise rounded-md border border-red-100 bg-red-50 px-3 py-2 text-sm font-medium text-red-600"
           >
             {{ error() }}
           </p>
@@ -128,12 +128,12 @@
           </a>
         </div>
 
-        <button uiButton type="submit" class="w-full py-3" [disabled]="loading()">
-          {{ loading() ? 'Signing in...' : 'Login' }}
+        <button uiButton type="submit" class="w-full" [disabled]="loading()">
+          {{ loading() ? 'Signing In...' : 'Login' }}
         </button>
 
         <div class="text-center">
-          <a routerLink="/customer" uiButton variant="link" class="w-full">Make a Reservation</a>
+          <a routerLink="/customer" uiButton variant="link" class="w-full">Make A Reservation</a>
         </div>
       </form>
     </div>

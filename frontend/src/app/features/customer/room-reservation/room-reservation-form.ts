@@ -23,12 +23,12 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
       class="flex-1 w-full flex flex-col md:flex-row relative z-0 h-full min-h-0"
     >
       <div
-        class="w-full md:w-1/3 xl:w-1/4 bg-primary md:border-r md:border-black/10 p-6 text-white flex flex-col gap-4 relative shrink-0 transition-all duration-300"
+        class="w-full md:w-1/3 xl:w-1/4 bg-primary md:border-r md:border-black/10 p-4 text-white flex flex-col gap-3 relative shrink-0 transition-all duration-300"
       >
         <div class="flex items-center justify-between opacity-90">
           <div class="flex items-center gap-3">
             <img src="/logo.svg" alt="LPU Logo" class="w-10 h-10 md:w-12 md:h-12 object-contain drop-shadow-md" />
-            <span class="font-semibold tracking-wide text-xs md:text-sm">LPU LAGUNA RESERVATION SYSTEM</span>
+            <span class="font-semibold text-xs md:text-sm">LPU Laguna Reservation System</span>
           </div>
           <button 
             type="button" 
@@ -40,7 +40,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
           </button>
         </div>
 
-        <h1 class="text-4xl md:text-5xl font-black drop-shadow-sm tracking-tight">
+        <h1 class="text-3xl md:text-4xl font-semibold drop-shadow-sm tracking-tight">
           {{ facility.title }}
         </h1>
 
@@ -57,9 +57,9 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
       >
         <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col flex-1 w-full min-h-0">
           <div
-            class="flex-1 md:overflow-y-auto hidden-scrollbar p-6 pb-2 flex flex-col gap-4 md:gap-6"
+            class="flex-1 md:overflow-y-auto hidden-scrollbar p-4 pb-2 flex flex-col gap-4"
           >
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 xl:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
                 <label uiLabel for="eventName">Event / Seminar Name</label>
                 <input uiInput id="eventName" formControlName="eventName" />
@@ -70,7 +70,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 xl:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
                 <label uiLabel for="contactPerson">Contact Person</label>
                 <input uiInput id="contactPerson" formControlName="contactPerson" />
@@ -81,7 +81,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 xl:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
                 <label uiLabel for="startDate">Start Date</label>
                 <input uiInput id="startDate" type="date" formControlName="startDate" />
@@ -92,7 +92,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 xl:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col gap-2">
                 <label uiLabel for="startTime">Start Time</label>
                 <input uiInput id="startTime" type="time" formControlName="startTime" />
@@ -105,12 +105,12 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
 
             <div class="flex flex-col gap-2">
               <label uiLabel>Equipment</label>
-              <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3">
+              <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-2">
                 @for (eq of equipmentOptions; track eq) {
                   <button
                     type="button"
                     (click)="toggleEquipment(eq)"
-                    class="h-10 rounded-lg border text-sm font-medium transition-all duration-200"
+                    class="h-9 rounded-md border text-[13px] font-medium transition-all duration-200"
                     [class.border-primary]="hasEquipment(eq)"
                     [class.bg-primary]="hasEquipment(eq)"
                     [class.text-white]="hasEquipment(eq)"
@@ -131,13 +131,13 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
                 id="remarks"
                 formControlName="remarks"
                 rows="4"
-                class="w-full rounded-lg border border-zinc-950/15 bg-white/70 backdrop-blur-md backdrop-saturate-150 ring-1 ring-inset ring-white/75 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),inset_0_-1px_0_rgba(24,24,27,0.05),0_2px_8px_-3px_rgba(24,24,27,0.2)] dark:border-white/15 dark:bg-zinc-800/70 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.28),0_2px_10px_-2px_rgba(0,0,0,0.65)] px-4 py-3 text-sm text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/25 focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none resize-none"
+                class="w-full rounded-md border border-zinc-950/12 bg-white px-3 py-2 text-[13px] text-gray-900 ring-1 ring-inset ring-zinc-200 shadow-[0_1px_1px_rgb(24_24_27/0.08),0_2px_5px_-3px_rgb(24_24_27/0.16),inset_0_1px_0_rgb(255_255_255/0.85)] transition-all duration-200 hover:border-secondary/45 hover:ring-secondary/30 focus:border-primary/55 focus:ring-2 focus:ring-primary/35 focus:outline-none resize-none dark:border-white/15 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-zinc-700 dark:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.1)]"
               ></textarea>
             </div>
           </div>
 
           <div
-            class="shrink-0 p-6 flex gap-4 mt-auto sticky bottom-0 z-20 bg-white/40 dark:bg-zinc-900/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none"
+            class="shrink-0 p-4 flex gap-2 mt-auto sticky bottom-0 z-20 bg-white/40 dark:bg-zinc-900/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none"
           >
             <button
               uiButton
@@ -146,7 +146,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
               class="flex-1 bg-white/50 dark:bg-zinc-800/50 md:bg-transparent"
               routerLink="/customer"
             >
-              CANCEL
+              Cancel
             </button>
             <button
               uiButton
@@ -155,7 +155,7 @@ const DEFAULT_FEATURES: RoomReservationFeature[] = [
               class="flex-1"
               [disabled]="form.invalid"
             >
-              SUBMIT
+              Submit
             </button>
           </div>
         </form>

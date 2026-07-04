@@ -30,34 +30,34 @@ import { UiIcon, UiButton } from '../../../shared/ui';
       <!-- Facilities Grid -->
       <div class="stagger grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 max-w-7xl w-full mx-auto flex-1 content-start md:content-stretch">
         
-        <a routerLink="#" class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10 animate-rise border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
-          <ui-icon name="airport_shuttle" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <span class="font-bold text-base md:text-2xl">University Van</span>
+        <a routerLink="#" [class]="facilityCardClass">
+          <ui-icon name="airport_shuttle" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="font-semibold text-base md:text-xl">University Van</span>
         </a>
 
-        <a routerLink="/customer/flt" class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10 animate-rise border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
-          <ui-icon name="stadium" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <span class="font-bold text-base md:text-2xl">FLT Theater</span>
+        <a routerLink="/customer/flt" [class]="facilityCardClass">
+          <ui-icon name="stadium" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="font-semibold text-base md:text-xl">FLT Theater</span>
         </a>
 
-        <a routerLink="/customer/gymnasium" class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10 animate-rise border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
-          <ui-icon name="sports_basketball" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <span class="font-bold text-base md:text-2xl">Gymnasium</span>
+        <a routerLink="/customer/gymnasium" [class]="facilityCardClass">
+          <ui-icon name="sports_basketball" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="font-semibold text-base md:text-xl">Gymnasium</span>
         </a>
 
-        <a routerLink="/customer/boardroom" class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10 animate-rise border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
-          <ui-icon name="groups" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <span class="font-bold text-base md:text-2xl">Boardroom</span>
+        <a routerLink="/customer/boardroom" [class]="facilityCardClass">
+          <ui-icon name="groups" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="font-semibold text-base md:text-xl">Boardroom</span>
         </a>
 
-        <a routerLink="/customer/nexus-room" class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10 animate-rise border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
-          <ui-icon name="co_present" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <span class="font-bold text-base md:text-2xl">Nexus Room</span>
+        <a routerLink="/customer/nexus-room" [class]="facilityCardClass">
+          <ui-icon name="co_present" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="font-semibold text-base md:text-xl">Nexus Room</span>
         </a>
 
-        <a routerLink="/customer/conference-room" class="bg-white/45 backdrop-blur-xl backdrop-saturate-150 ring-1 ring-inset ring-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_16px_40px_-12px_rgba(24,24,27,0.18)] dark:bg-zinc-900/50 dark:ring-white/10 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_18px_44px_-14px_rgba(0,0,0,0.6)] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_8px_24px_-6px_rgba(15,23,42,0.16)] ring-1 ring-inset ring-black/5 dark:ring-white/10 animate-rise border-2 border-primary hover:-translate-y-1 transition-all duration-300 rounded-xl p-2 md:p-4 flex flex-row md:flex-col items-center justify-start md:justify-center gap-4 md:gap-6 text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full">
-          <ui-icon name="meeting_room" class="text-3xl md:text-[80px] opacity-80 group-hover:opacity-100 transition-opacity" />
-          <span class="font-bold text-base md:text-2xl">Conference Room</span>
+        <a routerLink="/customer/conference-room" [class]="facilityCardClass">
+          <ui-icon name="meeting_room" class="text-3xl md:text-[64px] opacity-80 group-hover:opacity-100 transition-opacity" />
+          <span class="font-semibold text-base md:text-xl">Conference Room</span>
         </a>
 
       </div>
@@ -69,4 +69,11 @@ import { UiIcon, UiButton } from '../../../shared/ui';
     </div>
   `,
 })
-export class LandingPage {}
+export class LandingPage {
+  protected readonly facilityCardClass =
+    'bg-white/60 backdrop-blur-md ring-1 ring-inset ring-black/10 dark:bg-zinc-900/55 dark:ring-white/10 ' +
+    'shadow-[0_1px_1px_rgba(15,23,42,0.06),0_8px_20px_-12px_rgba(15,23,42,0.18)] ' +
+    'animate-rise border border-primary/70 hover:-translate-y-0.5 transition-all duration-300 rounded-lg ' +
+    'p-2 md:p-3 flex flex-row md:flex-col items-center justify-start md:justify-center gap-3 md:gap-4 ' +
+    'text-black hover:bg-primary hover:text-white cursor-pointer group h-fit md:h-full';
+}

@@ -28,7 +28,7 @@ import { UiIcon } from '../icon/icon';
   template: `
     @if (saving()) {
       <div
-        class="mx-5 mt-4 rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary sm:mx-7"
+        class="mx-4 mt-3 rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-sm font-medium text-primary sm:mx-5"
       >
         {{ savingText() }}
       </div>
@@ -38,7 +38,7 @@ import { UiIcon } from '../icon/icon';
       <brn-alert-dialog-overlay class="bg-black/50" />
       <div
         *brnAlertDialogContent
-        class="fixed left-1/2 top-1/2 z-50 w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gray-50 p-6 shadow-xl dark:bg-gray-950"
+        class="fixed left-1/2 top-1/2 z-50 w-[90vw] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg bg-gray-50 p-4 shadow-xl dark:bg-gray-950"
       >
         <div class="flex items-center gap-3 text-red-700 dark:text-red-400">
           <ui-icon name="error" class="text-2xl" />
@@ -51,7 +51,7 @@ import { UiIcon } from '../icon/icon';
           {{ displayedError() }}
         </p>
         <div class="mt-5 flex justify-end">
-          <button uiButton type="button" (click)="closeDialog()">OK</button>
+          <button uiButton type="button" (click)="closeDialog()">Okay</button>
         </div>
       </div>
     </brn-alert-dialog>

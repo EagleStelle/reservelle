@@ -62,7 +62,7 @@ type PickerView = 'calendar' | 'timeslots';
           </div>
           <div class="flex items-center gap-3">
             @if (pickerView() === 'calendar') {
-              <div class="flex items-center gap-1 bg-white/10 rounded-xl p-1">
+              <div class="flex items-center gap-1 bg-white/10 rounded-md p-0.5">
                 <button type="button" (click)="prevMonth()"
                   class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg hover:bg-white/20 transition-colors">
                   <ui-icon name="chevron_left" class="text-xl" />
@@ -87,7 +87,7 @@ type PickerView = 'calendar' | 'timeslots';
       <!-- ── Calendar view ── -->
       @if (pickerView() === 'calendar') {
         <div class="flex-1 flex flex-col max-w-screen-2xl w-full mx-auto px-4 sm:px-6 py-4 gap-3 overflow-auto">
-          <div class="flex-1 flex flex-col overflow-hidden rounded-xl ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
+          <div class="flex-1 flex flex-col overflow-hidden rounded-lg ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
             <!-- Day-of-week header -->
             <div class="grid grid-cols-7 bg-primary text-center text-sm font-bold text-white shrink-0">
               @for (wd of weekdays; track wd) {
@@ -189,7 +189,7 @@ type PickerView = 'calendar' | 'timeslots';
               </div>
               <button type="button" (click)="save()"
                 [disabled]="saving()"
-                class="flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white hover:bg-primary/90 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm shrink-0">
+                class="flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm shrink-0">
                 @if (saving()) {
                   <ui-icon name="autorenew" class="text-base animate-spin" />
                 } @else {
@@ -210,7 +210,7 @@ type PickerView = 'calendar' | 'timeslots';
             <span class="text-sm font-bold text-gray-800 dark:text-zinc-100">{{ formatDateLong(selectedDay()) }}</span>
           </div>
 
-          <div class="rounded-xl overflow-hidden ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
+          <div class="rounded-lg overflow-hidden ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
             @for (slot of timeSlots; track slot.value) {
               @if (getSlotEvent(slot.value); as ev) {
                 <!-- Booked slot -->
@@ -293,12 +293,12 @@ type PickerView = 'calendar' | 'timeslots';
 
           <div class="flex gap-3 mt-2">
             <button type="button" (click)="pickerView.set('calendar')"
-              class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-gray-300 dark:border-zinc-600 px-4 py-3 text-sm font-semibold text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer">
+              class="flex-1 flex items-center justify-center gap-2 rounded-md border border-gray-300 dark:border-zinc-600 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer">
               <ui-icon name="arrow_back" class="text-base" /> Back to Calendar
             </button>
             <button type="button" (click)="addToBasket()"
               [disabled]="selectedTimeStart() === null"
-              class="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-primary/90 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
+              class="flex-1 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
               <ui-icon name="add" class="text-base" /> Add This Date
             </button>
           </div>
@@ -319,7 +319,7 @@ type PickerView = 'calendar' | 'timeslots';
               </div>
               <button type="button" (click)="save()"
                 [disabled]="saving()"
-                class="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                class="w-full flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 @if (saving()) { <ui-icon name="autorenew" class="text-base animate-spin" /> }
                 @else { <ui-icon name="save" class="text-base" /> }
                 Save Reschedule

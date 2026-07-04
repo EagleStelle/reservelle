@@ -14,7 +14,7 @@ import { BrnToggleGroupImports } from '@spartan-ng/brain/toggle-group';
   },
   template: `
     <brn-toggle-group
-      class="flex min-w-full h-10 items-center gap-0 rounded-lg p-1 bg-zinc-200 ring-1 ring-inset ring-zinc-300 dark:bg-zinc-800 dark:ring-zinc-700 sm:min-w-0"
+      class="flex min-w-full h-9 items-center gap-0.5 rounded-md p-0.5 bg-zinc-200/80 ring-1 ring-inset ring-zinc-300 dark:bg-zinc-800 dark:ring-zinc-700 sm:min-w-0"
       [value]="value()"
       (valueChange)="value.set($any($event))"
     >
@@ -22,9 +22,9 @@ import { BrnToggleGroupImports } from '@spartan-ng/brain/toggle-group';
         <button
           brnToggleGroupItem
           [value]="o"
-          class="flex h-full flex-1 cursor-pointer items-center justify-center rounded-md px-4 text-sm font-semibold leading-none transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.96] text-gray-500 dark:text-zinc-400 data-[state=off]:hover:text-gray-800 dark:data-[state=off]:hover:text-zinc-100 data-[state=on]:bg-primary data-[state=on]:text-white data-[state=on]:shadow-[0_1px_2px_rgb(24_24_27/0.12),0_2px_6px_-2px_rgb(24_24_27/0.14),inset_0_1px_0_rgb(255_255_255/0.9)] dark:data-[state=on]:shadow-[0_1px_2px_rgb(0_0_0/0.4),0_2px_6px_-2px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.12)]"
+          class="flex h-full flex-1 cursor-pointer items-center justify-center rounded-[6px] px-3 text-sm font-medium leading-none transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.97] text-gray-600 dark:text-zinc-400 data-[state=off]:hover:bg-white/45 data-[state=off]:hover:text-gray-900 dark:data-[state=off]:hover:bg-white/5 dark:data-[state=off]:hover:text-zinc-100 data-[state=on]:bg-primary data-[state=on]:text-white data-[state=on]:shadow-[0_1px_1px_rgb(24_24_27/0.1),0_2px_5px_-3px_rgb(24_24_27/0.18),inset_0_1px_0_rgb(255_255_255/0.55)] dark:data-[state=on]:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5),inset_0_1px_0_rgb(255_255_255/0.12)]"
         >
-          {{ o }}
+          {{ displayLabel(o) }}
         </button>
       }
     </brn-toggle-group>
@@ -33,4 +33,14 @@ import { BrnToggleGroupImports } from '@spartan-ng/brain/toggle-group';
 export class UiSegmented {
   readonly options = input<string[]>([]);
   readonly value = model<string>('');
+
+  protected displayLabel(option: string): string {
+    const cleaned = option.replace(/[_-]+/g, ' ');
+
+    if (cleaned.length <= 3 || cleaned !== cleaned.toUpperCase()) {
+      return cleaned;
+    }
+
+    return cleaned.toLowerCase().replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
 }

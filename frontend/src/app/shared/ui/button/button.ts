@@ -5,9 +5,9 @@ export type UiButtonVariant = 'primary' | 'secondary' | 'link';
 
 /** Shared layout/sizing so primary + secondary buttons line up at the same height. */
 const BASE =
-  'inline-flex box-border items-center justify-center gap-2 rounded-lg border ' +
-  'h-10 px-4 text-sm font-semibold leading-none ' +
-  'shadow-[0_1px_2px_rgb(24_24_27/0.12),0_2px_6px_-2px_rgb(24_24_27/0.14)] dark:shadow-[0_1px_2px_rgb(0_0_0/0.4),0_2px_6px_-2px_rgb(0_0_0/0.5)] ' +
+  'inline-flex box-border items-center justify-center gap-1.5 rounded-md border ' +
+  'h-9 px-3.5 text-sm font-medium leading-none ' +
+  'shadow-[0_1px_1px_rgb(24_24_27/0.08),0_2px_5px_-3px_rgb(24_24_27/0.16)] dark:shadow-[0_1px_1px_rgb(0_0_0/0.35),0_2px_5px_-3px_rgb(0_0_0/0.5)] ' +
   'cursor-pointer select-none ' +
   // Magnetic physics: spring-eased lift on hover, tactile press-down on click.
   'transition-[transform,background-color,border-color,color,box-shadow] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ' +

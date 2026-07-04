@@ -7,7 +7,7 @@ type StatusTone = 'success' | 'warning' | 'danger' | 'muted';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span
-      class="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase"
+      class="inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-medium"
       [class.bg-green-100]="tone() === 'success'"
       [class.text-green-700]="tone() === 'success'"
       [class.bg-amber-100]="tone() === 'warning'"
@@ -17,7 +17,7 @@ type StatusTone = 'success' | 'warning' | 'danger' | 'muted';
       [class.bg-gray-100]="tone() === 'muted'"
       [class.text-gray-600]="tone() === 'muted'"
     >
-      {{ status() }}
+      {{ displayStatus() }}
     </span>
   `,
 })
@@ -34,5 +34,11 @@ export class UiStatusBadge {
     if (UiStatusBadge.WARNING.has(status)) return 'warning';
     if (UiStatusBadge.MUTED.has(status)) return 'muted';
     return 'danger';
+  });
+
+  protected readonly displayStatus = computed(() => {
+    const status = this.status().replace(/[_-]+/g, ' ');
+    if (status.length <= 3 || status !== status.toUpperCase()) return status;
+    return status.toLowerCase().replace(/\b\w/g, (letter) => letter.toUpperCase());
   });
 }

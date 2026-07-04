@@ -49,11 +49,11 @@ interface CalendarCell {
             </div>
             <div class="flex items-center gap-3">
               <!-- Month navigator -->
-              <div class="flex items-center gap-1 bg-white/10 rounded-xl p-1">
+              <div class="flex items-center gap-1 bg-white/10 rounded-md p-0.5">
                 <button
                   type="button"
                   (click)="prevMonth()"
-                  class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg hover:bg-white/20 transition-colors"
+                  class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md hover:bg-white/20 transition-colors"
                 >
                   <ui-icon name="chevron_left" class="text-xl" />
                 </button>
@@ -61,7 +61,7 @@ interface CalendarCell {
                 <button
                   type="button"
                   (click)="nextMonth()"
-                  class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg hover:bg-white/20 transition-colors"
+                  class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md hover:bg-white/20 transition-colors"
                 >
                   <ui-icon name="chevron_right" class="text-xl" />
                 </button>
@@ -82,7 +82,7 @@ interface CalendarCell {
               <span class="text-sm">Loading schedule...</span>
             </div>
           } @else {
-            <div class="flex-1 flex flex-col overflow-hidden rounded-xl ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
+            <div class="flex-1 flex flex-col overflow-hidden rounded-lg ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
               <!-- Day-of-week header -->
               <div class="grid grid-cols-7 bg-primary text-center text-sm font-bold text-white shrink-0">
                 @for (wd of weekdays; track wd) {
@@ -192,7 +192,7 @@ interface CalendarCell {
               <button
                 type="button"
                 (click)="goToForm()"
-                class="shrink-0 flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-sm"
+                class="shrink-0 flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-sm"
               >
                 Continue to Form
                 <ui-icon name="arrow_forward" class="text-base" />
@@ -228,7 +228,7 @@ interface CalendarCell {
 
         <!-- Time slots -->
         <div class="flex-1 max-w-screen-md mx-auto w-full px-4 sm:px-6 py-6 flex flex-col gap-4">
-          <div class="rounded-xl overflow-hidden ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
+          <div class="rounded-lg overflow-hidden ring-1 ring-black/5 dark:ring-white/10 shadow-sm bg-white dark:bg-zinc-900">
             @for (slot of timeSlots; track slot.value) {
               @if (getSlotEvent(slot.value); as ev) {
                 <!-- Booked slot -->
@@ -316,7 +316,7 @@ interface CalendarCell {
             <button
               type="button"
               (click)="view.set('calendar')"
-              class="flex-1 flex items-center justify-center gap-2 rounded-xl border border-gray-300 dark:border-zinc-600 px-4 py-3 text-sm font-semibold text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              class="flex-1 flex items-center justify-center gap-2 rounded-md border border-gray-300 dark:border-zinc-600 px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               <ui-icon name="arrow_back" class="text-base" />
               Back to Calendar
@@ -325,7 +325,7 @@ interface CalendarCell {
               type="button"
               (click)="addToBasket()"
               [disabled]="selectedTimeStart() === null"
-              class="flex-1 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-primary/90 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+              class="flex-1 flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
             >
               <ui-icon name="add" class="text-base" />
               Add This Date
@@ -348,7 +348,7 @@ interface CalendarCell {
               <button
                 type="button"
                 (click)="goToForm()"
-                class="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-sm"
+                class="w-full flex items-center justify-center gap-2 rounded-md bg-primary px-3 py-2.5 text-sm font-medium text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-sm"
               >
                 Continue to Form
                 <ui-icon name="arrow_forward" class="text-base" />

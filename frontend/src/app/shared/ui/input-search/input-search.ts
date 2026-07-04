@@ -12,14 +12,14 @@ import { UiIcon } from '../icon/icon';
   template: `
     <ui-icon
       name="search"
-      class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xl text-current"
+      class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-lg text-current"
     />
     <input
       uiInput
       type="search"
       [value]="value()"
       (input)="value.set($any($event.target).value)"
-      class="pl-10! h-10! py-0! [&::-webkit-search-cancel-button]:appearance-none"
+      class="pl-9! h-9! py-0! [&::-webkit-search-cancel-button]:appearance-none"
     />
   `,
 })
