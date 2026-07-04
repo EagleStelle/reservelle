@@ -22,5 +22,6 @@ public class AppDbContext : DbContext
         // Enforce unique logins and employee IDs at the database level.
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.EmployeeId).IsUnique();
+        modelBuilder.Entity<Reservation>().HasIndex(r => new { r.FacilityId, r.Status });
     }
 }

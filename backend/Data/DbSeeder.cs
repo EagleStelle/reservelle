@@ -14,17 +14,28 @@ public static class DbSeeder
 
     private static async Task SeedFacilitiesAsync(AppDbContext db)
     {
-        if (await db.Facilities.AnyAsync()) return;
+        var required = new[]
+        {
+            "Boardroom",
+            "Vans",
+            "Conference Room",
+            "Gymnasium",
+            "Nexus Room",
+            "FLT",
+        };
 
-        // Insertion order sets the auto-increment ids; Vans is 2 to match the
-        // frontend's VAN_FACILITY_ID constant (we'll harden this later).
-        db.Facilities.AddRange(
-            new Facility { FacilityName = "Boardroom" },
-            new Facility { FacilityName = "Vans" },
-            new Facility { FacilityName = "Conference Room" },
-            new Facility { FacilityName = "Gymnasium" },
-            new Facility { FacilityName = "Nexus Room" },
-            new Facility { FacilityName = "FLT" });
+        var existing = await db.Facilities
+            .Select(f => f.FacilityName)
+            .ToListAsync();
+
+        foreach (var facilityName in required)
+        {
+            if (existing.Any(name => string.Equals(name, facilityName, StringComparison.OrdinalIgnoreCase)))
+                continue;
+
+            db.Facilities.Add(new Facility { FacilityName = facilityName });
+        }
+
         await db.SaveChangesAsync();
     }
 
