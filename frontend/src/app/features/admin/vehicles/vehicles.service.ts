@@ -171,7 +171,7 @@ export class VehiclesService {
 
   toggleStatus(id: number) {
     return this.http.patch<VehicleStatementResponse>(
-      `${this.base}/admin/togglevehiclestat`,
+      `${this.base}/admin/togglevehicle`,
       {},
       { params: { id } },
     );

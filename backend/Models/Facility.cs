@@ -6,7 +6,6 @@ public class Facility
 {
     public int Id { get; set; }
     public string? FacilityName { get; set; }
-    public string Description { get; set; } = string.Empty;
 
     public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
     public ICollection<Equipment> Equipment { get; set; } = new List<Equipment>();
