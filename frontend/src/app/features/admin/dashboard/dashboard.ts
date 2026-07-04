@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { SlicePipe, DatePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 
 import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import { UiIcon, UiSegmented, UiDateSelector } from '../../../shared/ui';
@@ -32,7 +32,14 @@ interface UpcomingEvent {
   date: string;
   time: string;
   category: EventCategory;
-  description?: string;
+}
+
+interface UpcomingEventGroup {
+  id: string;
+  dayLabel: string;
+  dateLabel: string;
+  relativeLabel: string | null;
+  events: UpcomingEvent[];
 }
 
 interface EventLegend {
@@ -70,6 +77,14 @@ const EVENT_DOT_CLASSES: Record<EventCategory, string> = {
   Conference: 'bg-rose-500 dark:bg-rose-400',
 };
 
+const EVENT_TEXT_CLASSES: Record<EventCategory, string> = {
+  FLT: 'text-sky-700 dark:text-sky-300',
+  Gym: 'text-emerald-700 dark:text-emerald-300',
+  Boardroom: 'text-amber-700 dark:text-amber-300',
+  Nexus: 'text-violet-700 dark:text-violet-300',
+  Conference: 'text-rose-700 dark:text-rose-300',
+};
+
 const EVENT_BADGE_CLASSES: Record<EventCategory, string> = {
   FLT: 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-200',
   Gym: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200',
@@ -85,7 +100,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-20',
     time: '10:00 AM',
     category: 'Boardroom',
-    description: 'Monthly executive board discussion',
   },
   {
     id: 'e2',
@@ -93,7 +107,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-21',
     time: '3:00 PM',
     category: 'Gym',
-    description: 'Team fitness session',
   },
   {
     id: 'e3',
@@ -101,7 +114,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-22',
     time: '9:30 AM',
     category: 'FLT',
-    description: 'Maintenance and inspection',
   },
   {
     id: 'e4',
@@ -109,7 +121,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-25',
     time: '1:00 PM',
     category: 'Conference',
-    description: 'Prepare room for client meeting',
   },
   {
     id: 'e5',
@@ -117,7 +128,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-25',
     time: '2:30 PM',
     category: 'Boardroom',
-    description: 'Prepare materials and room layout',
   },
   {
     id: 'e6',
@@ -125,7 +135,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-25',
     time: '4:00 PM',
     category: 'Conference',
-    description: 'Projector, microphones, and display check',
   },
   {
     id: 'e6-b',
@@ -133,7 +142,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-06-25',
     time: '5:30 PM',
     category: 'Boardroom',
-    description: 'Post-visit meeting',
   },
   {
     id: 'e7',
@@ -141,7 +149,6 @@ const HARDCODED_EVENTS: UpcomingEvent[] = [
     date: '2026-07-02',
     time: '2:00 PM',
     category: 'Nexus',
-    description: 'Workshop preparation',
   },
 ];
 
@@ -159,6 +166,102 @@ function parseYearMonth(value: string): { year: number; month: number } {
 
 function formatDateKey(year: number, month: number, day: number): string {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function parseEventDate(value: string): Date {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+
+  if (!match) {
+    return new Date(value);
+  }
+
+  const [, year, month, day] = match;
+
+  return new Date(Number(year), Number(month) - 1, Number(day));
+}
+
+function parseTimeMinutes(value: string): number {
+  const match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(value.trim());
+
+  if (!match) {
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  const [, hourValue, minuteValue, meridiemValue] = match;
+  const meridiem = meridiemValue.toUpperCase();
+  let hour = Number(hourValue) % 12;
+
+  if (meridiem === 'PM') {
+    hour += 12;
+  }
+
+  return hour * 60 + Number(minuteValue);
+}
+
+function compareEventsByDateTime(a: UpcomingEvent, b: UpcomingEvent): number {
+  const dateCompare = a.date.localeCompare(b.date);
+
+  if (dateCompare !== 0) {
+    return dateCompare;
+  }
+
+  const timeCompare = parseTimeMinutes(a.time) - parseTimeMinutes(b.time);
+
+  if (timeCompare !== 0) {
+    return timeCompare;
+  }
+
+  return a.title.localeCompare(b.title);
+}
+
+function startOfDay(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function getRelativeDateLabel(value: string): string | null {
+  const date = startOfDay(parseEventDate(value));
+  const today = startOfDay(new Date());
+  const diffInDays = Math.round((date.getTime() - today.getTime()) / 86_400_000);
+
+  if (diffInDays === 0) {
+    return 'Today';
+  }
+
+  if (diffInDays === 1) {
+    return 'Tomorrow';
+  }
+
+  if (diffInDays > 1 && diffInDays <= 7) {
+    return `In ${diffInDays} days`;
+  }
+
+  return null;
+}
+
+function createUpcomingEventGroups(events: UpcomingEvent[]): UpcomingEventGroup[] {
+  const groups = new Map<string, UpcomingEventGroup>();
+  const dayFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
+  const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' });
+
+  for (const event of [...events].sort(compareEventsByDateTime)) {
+    const eventDate = parseEventDate(event.date);
+    const group = groups.get(event.date);
+
+    if (group) {
+      group.events.push(event);
+      continue;
+    }
+
+    groups.set(event.date, {
+      id: event.date,
+      dayLabel: dayFormatter.format(eventDate),
+      dateLabel: dateFormatter.format(eventDate),
+      relativeLabel: getRelativeDateLabel(event.date),
+      events: [event],
+    });
+  }
+
+  return Array.from(groups.values());
 }
 
 function createCalendarDays(value: string, events: UpcomingEvent[]): CalendarDay[] {
@@ -198,15 +301,30 @@ function createCalendarDays(value: string, events: UpcomingEvent[]): CalendarDay
 
 @Component({
   selector: 'app-dashboard',
-  imports: [AdminShell, UiIcon, UiSegmented, UiDateSelector, SlicePipe, DatePipe],
+  imports: [AdminShell, UiIcon, UiSegmented, UiDateSelector, SlicePipe],
   templateUrl: './dashboard.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard {
   protected readonly stats: StatCard[] = [
-    { label: 'Total', value: '2,456', icon: 'monitoring', accent: 'text-primary dark:text-secondary' },
-    { label: 'Pending', value: '2,456', icon: 'pending_actions', accent: 'text-amber-600 dark:text-amber-400' },
-    { label: 'Accepted', value: '159', icon: 'check_circle', accent: 'text-emerald-600 dark:text-emerald-400' },
+    {
+      label: 'Total',
+      value: '2,456',
+      icon: 'monitoring',
+      accent: 'text-primary dark:text-secondary',
+    },
+    {
+      label: 'Pending',
+      value: '2,456',
+      icon: 'pending_actions',
+      accent: 'text-amber-600 dark:text-amber-400',
+    },
+    {
+      label: 'Accepted',
+      value: '159',
+      icon: 'check_circle',
+      accent: 'text-emerald-600 dark:text-emerald-400',
+    },
     { label: 'Rejected', value: '200', icon: 'cancel', accent: 'text-rose-600 dark:text-rose-400' },
   ];
 
@@ -228,8 +346,20 @@ export class Dashboard {
     return EVENT_COLOR_CLASSES[category];
   }
 
+  protected eventDotClass(category: EventCategory): string {
+    return EVENT_DOT_CLASSES[category];
+  }
+
+  protected eventTextClass(category: EventCategory): string {
+    return EVENT_TEXT_CLASSES[category];
+  }
+
   protected eventBadgeClass(category: EventCategory): string {
     return EVENT_BADGE_CLASSES[category];
+  }
+
+  protected eventRowClass(): string {
+    return 'group relative flex flex-col gap-1 rounded-md border border-transparent px-3 py-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-zinc-200 hover:bg-zinc-50 hover:shadow-sm dark:hover:border-zinc-700 dark:hover:bg-zinc-800/70';
   }
 
   protected readonly eventLegends: EventLegend[] = CATEGORIES.filter(
@@ -257,7 +387,12 @@ export class Dashboard {
   );
 
   protected readonly upcomingEvents = computed(() =>
-    this.filteredEvents().filter((event) => event.date.startsWith(this.activeDate())),
+    this.filteredEvents()
+      .filter((event) => event.date.startsWith(this.activeDate()))
+      .sort(compareEventsByDateTime),
+  );
+  protected readonly upcomingEventGroups = computed(() =>
+    createUpcomingEventGroups(this.upcomingEvents()),
   );
 
   protected readonly selectedDayForModal = signal<CalendarDay | null>(null);

@@ -12,9 +12,7 @@
     <div
       class="grid min-h-136 flex-1 grid-rows-[minmax(24rem,auto)_minmax(9rem,auto)] gap-3 md:min-h-144 lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_22rem] lg:grid-rows-none"
     >
-      <div
-        class="card-surface flex min-h-0 flex-col overflow-hidden rounded-lg"
-      >
+      <div class="card-surface flex min-h-0 flex-col overflow-hidden rounded-lg">
         <div class="min-h-0 flex-1 overflow-auto">
           <div class="grid h-full min-w-full grid-rows-[auto_minmax(0,1fr)] md:min-w-176">
             <div class="grid grid-cols-7 bg-primary text-center text-sm font-bold text-white">
@@ -85,9 +83,7 @@
       </div>
 
       <div class="flex min-h-0 flex-col gap-3">
-        <div
-          class="card-surface shrink-0 overflow-hidden rounded-lg"
-        >
+        <div class="card-surface shrink-0 overflow-hidden rounded-lg">
           <div class="bg-primary px-4 py-2 text-center text-sm font-bold text-white">Overview</div>
           <div class="bg-white dark:bg-zinc-900">
             @for (s of stats; track s.label) {
@@ -111,48 +107,98 @@
         <aside
           class="card-surface flex min-h-0 max-h-80 flex-1 flex-col overflow-hidden rounded-lg lg:max-h-none"
         >
-          <div class="shrink-0 bg-primary px-4 py-2 text-center text-sm font-bold text-white">
-            Upcoming Events
-          </div>
-          <div class="min-h-0 flex-1 overflow-y-auto bg-white p-3 dark:bg-zinc-900">
-            @for (event of upcomingEvents(); track event.id) {
-              <article
-                class="flex items-start gap-3 border-b border-gray-100 pb-3 last:border-b-0 last:pb-0 dark:border-zinc-800"
+          <div
+            class="flex shrink-0 items-center justify-between gap-3 bg-primary px-4 py-2 text-sm font-bold text-white"
+          >
+            <span>Upcoming Events</span>
+            @if (upcomingEvents().length) {
+              <span
+                class="rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-semibold text-white/90"
               >
-                <div
-                  class="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-full bg-primary text-white shadow-sm"
-                >
-                  <span class="text-[10px] font-medium leading-tight">{{
-                    event.date | date: 'MMM'
-                  }}</span>
-                  <span class="text-lg font-bold leading-none">{{ event.date | date: 'd' }}</span>
-                </div>
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-start justify-between gap-2">
-                    <h3
-                      class="min-w-0 truncate text-xs font-semibold text-gray-900 dark:text-zinc-100"
-                    >
-                      {{ event.title }}
-                    </h3>
-                    <span
-                      class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
-                      [class]="eventBadgeClass(event.category)"
-                    >
-                      {{ event.category }}
-                    </span>
-                  </div>
-                  <time class="mt-1 block text-[11px] font-medium text-gray-500 dark:text-zinc-400">
-                    {{ event.date }} - {{ event.time }}
+                {{ upcomingEvents().length }} scheduled
+              </span>
+            }
+          </div>
+          <div
+            class="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto bg-white px-4 py-2.5 dark:bg-zinc-900"
+          >
+            @for (group of upcomingEventGroups(); track group.id; let groupIndex = $index) {
+              <section
+                class="flex flex-col gap-3 border-b border-gray-100 last:border-b-0 dark:border-zinc-800/80"
+              >
+                <header class="flex items-center justify-between gap-2">
+                  <time
+                    class="flex min-w-0 items-center gap-1.5 text-xs font-bold leading-tight text-gray-950 dark:text-zinc-50"
+                    [attr.datetime]="group.id"
+                  >
+                    <ui-icon
+                      name="event"
+                      class="shrink-0 text-sm text-gray-500 dark:text-zinc-400"
+                    />
+                    <span class="truncate">{{ group.dayLabel }}, {{ group.dateLabel }}</span>
                   </time>
-                  @if (event.description) {
-                    <p class="mt-1 text-[11px] leading-snug text-gray-500 dark:text-zinc-400">
-                      {{ event.description }}
-                    </p>
+                  @if (group.relativeLabel) {
+                    <span
+                      class="shrink-0 rounded-full bg-primary/10 px-2 py-1 text-[10px] font-semibold text-primary dark:bg-secondary/15 dark:text-secondary"
+                    >
+                      {{ group.relativeLabel }}
+                    </span>
+                  }
+                </header>
+
+                <div class="flex flex-col gap-3">
+                  @for (event of group.events; track event.id; let eventIndex = $index) {
+                    <article [class]="eventRowClass()">
+                      <span
+                        class="absolute inset-y-0 left-0 w-0.5 rounded-full opacity-75 transition-opacity group-hover:opacity-100"
+                        [class]="eventDotClass(event.category)"
+                      ></span>
+
+                      <div class="grid grid-cols-[4.75rem_minmax(0,1fr)] items-start gap-3">
+                        <time
+                          class="whitespace-nowrap text-xs font-bold leading-snug tabular-nums text-gray-700 dark:text-zinc-300"
+                        >
+                          {{ event.time }}
+                        </time>
+
+                        <div class="flex min-w-0 flex-col gap-1">
+                          <div class="flex w-fit max-w-full flex-col gap-1">
+                            <div class="flex min-w-0 items-start gap-2">
+                              <h4
+                                class="line-clamp-2 w-fit max-w-full text-xs font-semibold leading-snug text-gray-900 dark:text-zinc-100"
+                              >
+                                {{ event.title }}
+                              </h4>
+                              @if (groupIndex === 0 && eventIndex === 0) {
+                                <span
+                                  class="shrink-0 rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold uppercase leading-none tracking-wider text-primary dark:bg-secondary/15 dark:text-secondary"
+                                >
+                                  Up next
+                                </span>
+                              }
+                            </div>
+                          </div>
+
+                          <div
+                            class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-medium text-gray-500 dark:text-zinc-500"
+                          >
+                            <div class="inline-flex min-w-0 items-center gap-1">
+                              <ui-icon
+                                name="location_on"
+                                class="shrink-0 text-sm"
+                                [class]="eventTextClass(event.category)"
+                              />
+                              <span class="truncate font-medium">{{ event.category }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
                   }
                 </div>
-              </article>
+              </section>
             } @empty {
-              <p class="text-center text-xs font-medium text-gray-500 dark:text-zinc-400">
+              <p class="p-4 text-center text-xs font-medium text-gray-500 dark:text-zinc-400">
                 No events this month
               </p>
             }
@@ -161,9 +207,7 @@
       </div>
     </div>
 
-    <div
-      class="mt-4 flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2 text-[11px] sm:text-xs"
-    >
+    <div class="mt-4 flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2 text-[11px] sm:text-xs">
       @for (legend of eventLegends; track legend.label) {
         <span class="inline-flex items-center gap-2 font-medium text-gray-600 dark:text-zinc-300">
           <span class="h-3.5 w-1 shrink-0 rounded-full" [class]="legend.dotClassName"></span>
