@@ -7,6 +7,7 @@ import {
   UiButton,
   UiIcon,
   UiInputSearch,
+  UiDataTable,
   UiStatusBadge,
   UiToast,
 } from '../../../shared/ui';
@@ -22,6 +23,7 @@ import { UserRow } from './users.models';
     UiButton,
     UiIcon,
     UiInputSearch,
+    UiDataTable,
     UiStatusBadge,
     UiToast,
   ],

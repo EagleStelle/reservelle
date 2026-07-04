@@ -12,7 +12,16 @@ import { FltRescheduleCalendar, RescheduleEvent } from './flt-reschedule-calenda
 import { CoordinationSlot, FltCoordinationCalendar } from './flt-coordination-calendar';
 
 import { AdminShell } from '../../../../shared/layout/admin-shell/admin-shell';
-import { UiIcon, UiInputSearch, UiSegmented, UiToast } from '../../../../shared/ui';
+import {
+  UiAutoAnimate,
+  UiButton,
+  UiDataTable,
+  UiIcon,
+  UiInputSearch,
+  UiSegmented,
+  UiStatusBadge,
+  UiToast,
+} from '../../../../shared/ui';
 import {
   FltReservationRecord,
   RequestedEquipmentItem,
@@ -33,7 +42,19 @@ interface ConfirmState {
 
 @Component({
   selector: 'app-flt-reservations',
-  imports: [AdminShell, UiIcon, UiInputSearch, UiSegmented, UiToast, FltRescheduleCalendar, FltCoordinationCalendar],
+  imports: [
+    AdminShell,
+    UiAutoAnimate,
+    UiButton,
+    UiDataTable,
+    UiIcon,
+    UiInputSearch,
+    UiSegmented,
+    UiStatusBadge,
+    UiToast,
+    FltRescheduleCalendar,
+    FltCoordinationCalendar,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-admin-shell>
@@ -60,54 +81,52 @@ interface ConfirmState {
       </div>
 
       <!-- Table -->
-      @if (loading()) {
-        <div class="flex items-center justify-center gap-3 py-20 text-gray-400">
-          <ui-icon name="autorenew" class="text-3xl animate-spin" />
-          <span class="text-sm">Loading reservations...</span>
-        </div>
-      } @else if (apiError()) {
-        <div class="flex flex-col items-center justify-center gap-3 py-20 text-center">
-          <ui-icon name="cloud_off" class="text-5xl text-red-300 dark:text-red-700" />
-          <p class="text-sm font-semibold text-red-500 dark:text-red-400">Failed to load reservations</p>
-          <p class="text-xs text-gray-400 dark:text-zinc-500 max-w-xs">The server could not be reached or returned an error. Make sure the backend is running and your session is valid.</p>
-          <button
-            type="button"
-            (click)="load()"
-            class="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90 transition-colors cursor-pointer mt-1"
-          >
-            <ui-icon name="refresh" class="text-base" />
-            Retry
-          </button>
-        </div>
-      } @else if (filtered().length === 0) {
-        <div class="flex flex-col items-center justify-center gap-3 py-20 text-center">
-          <ui-icon name="event_busy" class="text-5xl text-gray-300 dark:text-zinc-600" />
-          <p class="text-sm font-semibold text-gray-500 dark:text-zinc-400">No reservations found</p>
-          <p class="text-xs text-gray-400 dark:text-zinc-500">Try adjusting your search or filter</p>
-        </div>
-      } @else {
-        <div class="overflow-x-auto rounded-xl ring-1 ring-black/5 dark:ring-white/10 shadow-sm">
-          <table class="w-full text-sm border-collapse bg-white dark:bg-zinc-900">
-            <thead>
-              <tr class="border-b border-gray-100 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-800/60">
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400 w-10">#</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400">Event</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400 hidden md:table-cell">Dept / Org</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400 hidden lg:table-cell">Contact</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400 hidden xl:table-cell">Dates</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400 hidden lg:table-cell">Room / Pax</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400 hidden xl:table-cell">Equipment</th>
-                <th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400">Status</th>
-                <th class="px-4 py-3 text-right text-xs font-bold uppercase tracking-wide text-gray-500 dark:text-zinc-400">Actions</th>
+        <ui-data-table minWidthClass="min-w-[92rem]">
+            <thead class="sticky top-0 z-10">
+              <tr class="bg-primary text-xs font-bold uppercase tracking-wide text-white">
+                <th class="px-5 py-4">#</th>
+                <th class="px-4 py-3">Event</th>
+                <th class="px-4 py-3">Dept / Org</th>
+                <th class="px-4 py-3">Contact</th>
+                <th class="px-4 py-3">Dates</th>
+                <th class="px-4 py-3">Room / Pax</th>
+                <th class="px-4 py-3">Equipment</th>
+                <th class="px-4 py-3 text-center">Status</th>
+                <th class="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
-            <tbody>
-              @for (row of filtered(); track row.id) {
-                <tr class="border-b border-gray-50 dark:border-zinc-800/60 hover:bg-gray-50/60 dark:hover:bg-zinc-800/30 transition-colors">
-                  <td class="px-4 py-3 text-xs text-gray-400 dark:text-zinc-500 font-mono">{{ row.id }}</td>
+            <tbody uiAutoAnimate>
+              @if (loading()) {
+                <tr>
+                  <td colspan="9" class="px-4 py-10 text-center text-gray-500 dark:text-zinc-400">
+                    Loading reservations...
+                  </td>
+                </tr>
+              } @else if (apiError()) {
+                <tr>
+                  <td colspan="9" class="px-4 py-8 text-center">
+                    <div class="flex flex-col items-center gap-3">
+                      <p class="text-sm font-semibold text-red-600">Failed to load reservations</p>
+                      <button uiButton type="button" (click)="load()">
+                        <ui-icon name="refresh" class="text-base" />
+                        Retry
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @else if (filtered().length === 0) {
+                <tr>
+                  <td colspan="9" class="px-4 py-8 text-center text-gray-500 dark:text-zinc-400">
+                    No reservations found.
+                  </td>
+                </tr>
+              } @else {
+                @for (row of filtered(); track row.id) {
+                <tr class="border-b border-zinc-200 transition-colors hover:bg-secondary/5 dark:border-zinc-700 dark:hover:bg-secondary/15">
+                  <td class="px-5 py-4 text-xs text-black dark:text-zinc-100 font-mono">{{ row.id }}</td>
 
                   <!-- Event -->
-                  <td class="px-4 py-3 max-w-[200px] cursor-pointer hover:bg-gray-50/80 dark:hover:bg-zinc-800/40 transition-colors" (click)="openDetails(row)">
+                  <td class="px-4 py-3 max-w-[200px] cursor-pointer text-black dark:text-zinc-100" (click)="openDetails(row)">
                     <p class="font-semibold text-gray-900 dark:text-zinc-100 truncate">{{ row.eventTitle }}</p>
                     <p class="text-xs text-gray-500 dark:text-zinc-400 capitalize">{{ row.eventType }}</p>
                     <p class="text-[11px] text-gray-400 dark:text-zinc-500 mt-0.5">{{ formatDate(row.createdAt) }}</p>
@@ -120,20 +139,20 @@ interface ConfirmState {
                   </td>
 
                   <!-- Dept / Org -->
-                  <td class="px-4 py-3 hidden md:table-cell max-w-[160px]">
+                  <td class="px-4 py-3 max-w-[160px] text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300 truncate">{{ row.department }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ row.organization }}</p>
                   </td>
 
                   <!-- Contact -->
-                  <td class="px-4 py-3 hidden lg:table-cell max-w-[160px]">
+                  <td class="px-4 py-3 max-w-[160px] text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300 truncate">{{ row.contactPerson }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500 truncate">{{ row.contactEmail }}</p>
                     <p class="text-xs text-gray-400 dark:text-zinc-500">{{ row.contactNumber }}</p>
                   </td>
 
                   <!-- Dates -->
-                  <td class="px-4 py-3 hidden xl:table-cell max-w-[180px]">
+                  <td class="px-4 py-3 max-w-[180px] text-black dark:text-zinc-100">
                     @for (slot of parseDates(row.reservedDates); track slot.date) {
                       <div class="text-[11px] leading-tight text-gray-600 dark:text-zinc-400 flex items-center gap-1 mb-0.5">
                         <ui-icon name="calendar_today" class="text-[10px] text-primary shrink-0" />
@@ -144,7 +163,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Room / Pax -->
-                  <td class="px-4 py-3 hidden lg:table-cell max-w-[130px]">
+                  <td class="px-4 py-3 max-w-[130px] text-black dark:text-zinc-100">
                     <p class="text-xs font-medium text-gray-700 dark:text-zinc-300">{{ row.roomType ? getRoomTypeLabel(row.roomType) : '—' }}</p>
                     @if (row.expectedAttendees) {
                       <p class="text-xs text-gray-400 dark:text-zinc-500">{{ row.expectedAttendees }} pax</p>
@@ -152,7 +171,7 @@ interface ConfirmState {
                   </td>
 
                   <!-- Equipment -->
-                  <td class="px-4 py-3 hidden xl:table-cell max-w-[140px]">
+                  <td class="px-4 py-3 max-w-[140px] text-black dark:text-zinc-100">
                     @if (parseEquipment(row.requestedEquipment).length > 0) {
                       @for (eq of parseEquipment(row.requestedEquipment); track eq.id) {
                         <div class="text-[11px] text-gray-600 dark:text-zinc-400 flex items-center gap-1 mb-0.5">
@@ -166,30 +185,8 @@ interface ConfirmState {
                   </td>
 
                   <!-- Status -->
-                  <td class="px-4 py-3">
-                    <span
-                      class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wide"
-                      [class.bg-amber-100]="row.status === 'PENDING'"
-                      [class.text-amber-700]="row.status === 'PENDING'"
-                      [class.dark:bg-amber-950]="row.status === 'PENDING'"
-                      [class.dark:text-amber-400]="row.status === 'PENDING'"
-                      [class.bg-emerald-100]="row.status === 'APPROVED'"
-                      [class.text-emerald-700]="row.status === 'APPROVED'"
-                      [class.dark:bg-emerald-950]="row.status === 'APPROVED'"
-                      [class.dark:text-emerald-400]="row.status === 'APPROVED'"
-                      [class.bg-red-100]="row.status === 'REJECTED'"
-                      [class.text-red-700]="row.status === 'REJECTED'"
-                      [class.dark:bg-red-950]="row.status === 'REJECTED'"
-                      [class.dark:text-red-400]="row.status === 'REJECTED'"
-                      [class.bg-gray-100]="row.status === 'CANCELLED'"
-                      [class.text-gray-500]="row.status === 'CANCELLED'"
-                      [class.dark:bg-zinc-800]="row.status === 'CANCELLED'"
-                      [class.dark:text-zinc-400]="row.status === 'CANCELLED'"
-                      [class.bg-teal-100]="row.status === 'COMPLETED'"
-                      [class.text-teal-700]="row.status === 'COMPLETED'"
-                      [class.dark:bg-teal-950]="row.status === 'COMPLETED'"
-                      [class.dark:text-teal-400]="row.status === 'COMPLETED'"
-                    >{{ row.status }}</span>
+                  <td class="px-4 py-3 text-center">
+                    <ui-status-badge [status]="row.status" />
                     @if (row.status === 'COMPLETED' && row.satisfactionRating) {
                       <div class="flex items-center gap-0.5 mt-1.5" [title]="row.satisfactionRating + ' / 5'">
                         @for (star of [1,2,3,4,5]; track star) {
@@ -200,78 +197,76 @@ interface ConfirmState {
                   </td>
 
                   <!-- Actions -->
-                  <td class="px-4 py-3 text-right">
+                  <td class="px-4 py-3">
                     @if (row.status === 'PENDING') {
-                      <div class="flex items-center justify-end gap-1.5">
+                      <div class="flex items-center justify-center gap-2 text-gray-500 dark:text-zinc-400">
                         <button
                           type="button"
                           (click)="requestConfirm(row, 'APPROVED')"
                           [disabled]="acting() === row.id"
-                          class="flex items-center gap-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Approve"
+                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          <ui-icon name="check_circle" class="text-sm" />
-                          Approve
+                          <ui-icon name="check_circle" class="text-xl" />
                         </button>
                         <button
                           type="button"
                           (click)="requestConfirm(row, 'REJECTED')"
                           [disabled]="acting() === row.id"
-                          class="flex items-center gap-1 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 px-2.5 py-1.5 text-xs font-semibold text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Reject"
+                          class="cursor-pointer rounded-lg p-1.5 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          <ui-icon name="cancel" class="text-sm" />
-                          Reject
+                          <ui-icon name="cancel" class="text-xl" />
                         </button>
                       </div>
                     } @else if (row.status === 'APPROVED') {
-                      <div class="flex items-center justify-end gap-1.5 flex-wrap">
+                      <div class="flex items-center justify-center gap-2 text-gray-500 dark:text-zinc-400">
                         <button
                           type="button"
                           (click)="openCoordination(row)"
                           [disabled]="acting() === row.id"
-                          class="flex items-center gap-1 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 px-2.5 py-1.5 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                           [title]="row.coordinationDate ? 'Update coordination: ' + row.coordinationDate : 'Set coordination meeting'"
                         >
-                          <ui-icon name="handshake" class="text-sm" />
-                          {{ row.coordinationDate ? 'Coordination ✓' : 'Coordination' }}
+                          <ui-icon name="handshake" class="text-xl" />
                         </button>
                         <button
                           type="button"
                           (click)="openReschedule(row)"
                           [disabled]="acting() === row.id"
-                          class="flex items-center gap-1 rounded-lg bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-800 px-2.5 py-1.5 text-xs font-semibold text-sky-700 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Reschedule"
+                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          <ui-icon name="edit_calendar" class="text-sm" />
-                          Reschedule
+                          <ui-icon name="edit_calendar" class="text-xl" />
                         </button>
                         <button
                           type="button"
                           (click)="requestConfirm(row, 'COMPLETED')"
                           [disabled]="acting() === row.id"
-                          class="flex items-center gap-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Complete"
+                          class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          <ui-icon name="task_alt" class="text-sm" />
-                          Complete
+                          <ui-icon name="task_alt" class="text-xl" />
                         </button>
                         @if (row.coordinationDate && row.coordinationStartTime && row.coordinationEndTime) {
                           <button
                             type="button"
                             (click)="downloadReservationForm(row)"
                             [disabled]="acting() === row.id"
-                            class="flex items-center gap-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 px-2.5 py-1.5 text-xs font-semibold text-indigo-700 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="cursor-pointer rounded-lg p-1.5 hover:text-primary disabled:cursor-not-allowed disabled:opacity-50"
                             title="Download reservation form"
                           >
-                            <ui-icon name="download" class="text-sm" />
-                            Download
+                            <ui-icon name="download" class="text-xl" />
                           </button>
                         }
                         <button
                           type="button"
                           (click)="requestConfirm(row, 'CANCELLED')"
                           [disabled]="acting() === row.id"
-                          class="flex items-center gap-1 rounded-lg bg-gray-100 dark:bg-zinc-700 border border-gray-200 dark:border-zinc-600 px-2.5 py-1.5 text-xs font-semibold text-gray-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Cancel"
+                          class="cursor-pointer rounded-lg p-1.5 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          <ui-icon name="block" class="text-sm" />
-                          Cancel
+                          <ui-icon name="block" class="text-xl" />
                         </button>
                       </div>
                     } @else {
@@ -279,11 +274,10 @@ interface ConfirmState {
                     }
                   </td>
                 </tr>
+                }
               }
             </tbody>
-          </table>
-        </div>
-      }
+        </ui-data-table>
 
       <!-- Event Details Summary Dialog -->
       @if (detailsTarget()) {
@@ -442,7 +436,12 @@ interface ConfirmState {
       }
 
       <!-- Toast -->
-      <ui-toast [message]="toast()" (dismissed)="toast.set('')" />
+      <ui-toast
+        class="contents"
+        [show]="showToast()"
+        [success]="toastSuccess()"
+        [message]="toastMessage()"
+      />
     </app-admin-shell>
 
     <!-- ─── Coordination Calendar Overlay ─── -->
@@ -482,7 +481,9 @@ export class FltReservations implements OnInit {
   readonly acting = signal<number | null>(null);
   readonly confirm = signal<ConfirmState | null>(null);
   readonly detailsTarget = signal<FltReservationRecord | null>(null);
-  readonly toast = signal('');
+  readonly showToast = signal(false);
+  readonly toastMessage = signal('');
+  readonly toastSuccess = signal(false);
 
   // Coordination modal
   readonly coordinationTarget = signal<{ id: number; eventTitle: string } | null>(null);
@@ -617,15 +618,15 @@ export class FltReservations implements OnInit {
           this.reservations.update(list =>
             list.map(r => r.id === state.id ? { ...r, status: state.action } : r)
           );
-          this.toast.set(`Reservation ${state.action.toLowerCase()} successfully.`);
+          this.showResponse(true, `Reservation ${state.action.toLowerCase()} successfully.`);
         } else {
-          this.toast.set('Action failed. Please try again.');
+          this.showResponse(false, 'Action failed. Please try again.');
         }
       },
       error: () => {
         this.acting.set(null);
         this.confirm.set(null);
-        this.toast.set('An error occurred. Please try again.');
+        this.showResponse(false, 'An error occurred. Please try again.');
       },
     });
   }
@@ -651,13 +652,13 @@ export class FltReservations implements OnInit {
           this.reservations.update(list => list.map(r => r.id === target.id
             ? { ...r, coordinationDate: body.date, coordinationStartTime: body.startTime, coordinationEndTime: body.endTime }
             : r));
-          this.toast.set('Coordination meeting saved.');
+          this.showResponse(true, 'Coordination meeting saved.');
           this.closeCoordination();
         } else {
-          this.toast.set('Failed to save coordination meeting.');
+          this.showResponse(false, 'Failed to save coordination meeting.');
         }
       },
-      error: () => { this.coordSaving.set(false); this.toast.set('An error occurred.'); },
+      error: () => { this.coordSaving.set(false); this.showResponse(false, 'An error occurred.'); },
     });
   }
 
@@ -680,13 +681,13 @@ export class FltReservations implements OnInit {
         if (res.success) {
           const newDates = JSON.stringify(slots);
           this.reservations.update(list => list.map(r => r.id === target.id ? { ...r, reservedDates: newDates } : r));
-          this.toast.set('Reservation rescheduled successfully.');
+          this.showResponse(true, 'Reservation rescheduled successfully.');
           this.closeReschedule();
         } else {
-          this.toast.set('Failed to reschedule reservation.');
+          this.showResponse(false, 'Failed to reschedule reservation.');
         }
       },
-      error: () => { this.rescheduleSaving.set(false); this.toast.set('An error occurred.'); },
+      error: () => { this.rescheduleSaving.set(false); this.showResponse(false, 'An error occurred.'); },
     });
   }
 
@@ -724,9 +725,17 @@ export class FltReservations implements OnInit {
     } catch { return iso; }
   }
 
+  showResponse(success: boolean, message: string): void {
+    this.toastSuccess.set(success);
+    this.toastMessage.set(message);
+    this.showToast.set(true);
+
+    setTimeout(() => this.showToast.set(false), 3000);
+  }
+
   async downloadReservationForm(row: FltReservationRecord): Promise<void> {
     if (!row.coordinationDate || !row.coordinationStartTime || !row.coordinationEndTime) {
-      this.toast.set('Please set coordination meeting first before downloading.');
+      this.showResponse(false, 'Please set coordination meeting first before downloading.');
       return;
     }
 
@@ -778,7 +787,7 @@ export class FltReservations implements OnInit {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      this.toast.set('Reservation form downloaded.');
+      this.showResponse(true, 'Reservation form downloaded.');
     } catch (err: any) {
       // docxtemplater wraps template errors in err.properties.errors
       const inner = err?.properties?.errors;
@@ -787,7 +796,7 @@ export class FltReservations implements OnInit {
       } else {
         console.error('downloadReservationForm error', err);
       }
-      this.toast.set('Failed to generate form: ' + (err?.message ?? 'unknown error'));
+      this.showResponse(false, 'Failed to generate form: ' + (err?.message ?? 'unknown error'));
     }
   }
 

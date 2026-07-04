@@ -12,3 +12,4 @@ export { UiToast } from './toast/toast';
 export { UiCalendar } from './calendar/calendar';
 export { UiFormFeedback } from './form-feedback/form-feedback';
 export { UiAutoAnimate } from './auto-animate/auto-animate';
+export { UiDataTable } from './data-table/data-table';

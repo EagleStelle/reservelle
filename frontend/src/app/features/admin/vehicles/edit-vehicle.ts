@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
@@ -23,7 +23,7 @@ import { VehiclesService } from './vehicles.service';
   templateUrl: './edit-vehicle.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditVehicle implements OnDestroy {
+export class EditVehicle {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(VehiclesService);
   private readonly route = inject(ActivatedRoute);
@@ -36,8 +36,6 @@ export class EditVehicle implements OnDestroy {
   protected readonly id = signal(0);
   protected readonly facilityId = signal(VAN_FACILITY_ID);
   protected readonly currentStatus = signal<string | null>(null);
-  protected readonly imagePreview = signal<string | null>(null);
-  private imageObjectUrl: string | null = null;
 
   protected readonly statuses = computed(() => {
     const current = this.currentStatus();
@@ -55,14 +53,7 @@ export class EditVehicle implements OnDestroy {
     capacity: [1, [Validators.required, Validators.min(1)]],
     status: ['AVAILABLE', [Validators.required]],
     vehicleDescription: ['', [Validators.required]],
-    image: [null as File | null],
   });
-
-  protected onImageSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
-    this.form.controls.image.setValue(file);
-    this.setImagePreview(file ? URL.createObjectURL(file) : null, Boolean(file));
-  }
 
   constructor() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -75,10 +66,6 @@ export class EditVehicle implements OnDestroy {
     }
 
     this.load(id);
-  }
-
-  ngOnDestroy(): void {
-    this.revokeImageObjectUrl();
   }
 
   private load(id: number): void {
@@ -111,17 +98,7 @@ export class EditVehicle implements OnDestroy {
           capacity: Number(vehicle.capacity ?? 1),
           status: normalizeVehicleStatus(vehicle.status),
           vehicleDescription: vehicle.vehicleDescription ?? '',
-          image: null,
         });
-        this.setImagePreview(
-          this.api.imageUrl(
-            vehicle.image ??
-              vehicle.vehicleImage ??
-              vehicle.imageUrl ??
-              vehicle.imagePath ??
-              vehicle.photo,
-          ),
-        );
         this.ready.set(true);
       },
       error: (err) => {
@@ -156,7 +133,6 @@ export class EditVehicle implements OnDestroy {
         capacity: Number(v.capacity),
         vehicleDescription: v.vehicleDescription,
         status: v.status,
-        image: v.image,
       })
       .subscribe({
         next: (res) => {
@@ -191,20 +167,5 @@ export class EditVehicle implements OnDestroy {
     }
 
     return 'Unable to reach the server';
-  }
-
-  private setImagePreview(value: string | null, isObjectUrl = false): void {
-    this.revokeImageObjectUrl();
-    this.imageObjectUrl = isObjectUrl ? value : null;
-    this.imagePreview.set(value);
-  }
-
-  private revokeImageObjectUrl(): void {
-    if (!this.imageObjectUrl) {
-      return;
-    }
-
-    URL.revokeObjectURL(this.imageObjectUrl);
-    this.imageObjectUrl = null;
   }
 }

@@ -67,12 +67,6 @@ export class VehiclesService {
       catchError((err) => of(fail<VehicleStatementResponse>(err))),
     );
   }
-
-  // Images were removed from the backend; pass through a usable URL or null.
-  imageUrl(value: string | null | undefined): string | null {
-    const s = value?.trim();
-    return s ? s : null;
-  }
 }
 
 function ok(message: string): VehicleStatementResponse {

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CdkMenuModule } from '@angular/cdk/menu';
 
 import { AdminShell } from '../../../shared/layout/admin-shell/admin-shell';
 import {
@@ -8,7 +7,7 @@ import {
   UiButton,
   UiIcon,
   UiInputSearch,
-  UiSegmented,
+  UiDataTable,
   UiStatusBadge,
   UiToast,
 } from '../../../shared/ui';
@@ -16,7 +15,6 @@ import { PopulateVehiclesResponse, VehicleRow } from './vehicles.models';
 import { VehiclesService } from './vehicles.service';
 
 type SortField = 'plate_num' | 'brand' | 'facilityName' | 'capacity' | 'status';
-type ViewMode = 'Grid' | 'Table';
 
 @Component({
   selector: 'app-vehicles',
@@ -27,10 +25,9 @@ type ViewMode = 'Grid' | 'Table';
     UiButton,
     UiIcon,
     UiInputSearch,
-    UiSegmented,
+    UiDataTable,
     UiStatusBadge,
     UiToast,
-    CdkMenuModule,
   ],
   templateUrl: './vehicles.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,11 +42,8 @@ export class Vehicles {
   protected readonly showToast = signal(false);
   protected readonly toastMessage = signal('');
   protected readonly toastSuccess = signal(false);
-  protected readonly viewModes: ViewMode[] = ['Grid', 'Table'];
-  protected readonly viewMode = signal<ViewMode>('Grid');
   protected readonly sortField = signal<SortField>('plate_num');
   protected readonly sortDirection = signal<'asc' | 'desc'>('asc');
-  protected readonly selectedImage = signal<{ url: string; label: string } | null>(null);
 
   protected readonly filtered = computed(() => {
     const q = this.search().trim().toLowerCase();
@@ -113,10 +107,6 @@ export class Vehicles {
     this.search.set(value);
   }
 
-  protected selectViewMode(mode: ViewMode): void {
-    this.viewMode.set(mode);
-  }
-
   protected sortBy(field: SortField): void {
     if (this.sortField() === field) {
       this.sortDirection.set(this.sortDirection() === 'asc' ? 'desc' : 'asc');
@@ -124,33 +114,6 @@ export class Vehicles {
       this.sortField.set(field);
       this.sortDirection.set('asc');
     }
-  }
-
-  protected vehicleImageUrl(vehicle: VehicleRow): string | null {
-    return this.api.imageUrl(
-      vehicle.image ??
-        vehicle.vehicleImage ??
-        vehicle.imageUrl ??
-        vehicle.imagePath ??
-        vehicle.photo,
-    );
-  }
-
-  protected openImage(vehicle: VehicleRow): void {
-    const url = this.vehicleImageUrl(vehicle);
-
-    if (!url) {
-      return;
-    }
-
-    this.selectedImage.set({
-      url,
-      label: vehicle.plate_num || vehicle.brand || 'Vehicle image',
-    });
-  }
-
-  protected closeImage(): void {
-    this.selectedImage.set(null);
   }
 
   protected remove(vehicle: VehicleRow): void {

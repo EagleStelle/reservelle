@@ -65,6 +65,51 @@ export const routes: Routes = [
       import('./features/admin/reservations/flt/flt-reservations').then((m) => m.FltReservations),
   },
   {
+    path: 'reservation/boardroom',
+    canActivate: [authGuard],
+    data: { facilityName: 'Boardroom', icon: 'groups' },
+    loadComponent: () =>
+      import('./features/admin/reservations/reservation-placeholder').then(
+        (m) => m.ReservationPlaceholder,
+      ),
+  },
+  {
+    path: 'reservation/conference-room',
+    canActivate: [authGuard],
+    data: { facilityName: 'Conference Room', icon: 'meeting_room' },
+    loadComponent: () =>
+      import('./features/admin/reservations/reservation-placeholder').then(
+        (m) => m.ReservationPlaceholder,
+      ),
+  },
+  {
+    path: 'reservation/gymnasium',
+    canActivate: [authGuard],
+    data: { facilityName: 'Gymnasium', icon: 'sports_basketball' },
+    loadComponent: () =>
+      import('./features/admin/reservations/reservation-placeholder').then(
+        (m) => m.ReservationPlaceholder,
+      ),
+  },
+  {
+    path: 'reservation/nexus-room',
+    canActivate: [authGuard],
+    data: { facilityName: 'Nexus Room', icon: 'co_present' },
+    loadComponent: () =>
+      import('./features/admin/reservations/reservation-placeholder').then(
+        (m) => m.ReservationPlaceholder,
+      ),
+  },
+  {
+    path: 'reservation/van',
+    canActivate: [authGuard],
+    data: { facilityName: 'University Van', icon: 'airport_shuttle' },
+    loadComponent: () =>
+      import('./features/admin/reservations/reservation-placeholder').then(
+        (m) => m.ReservationPlaceholder,
+      ),
+  },
+  {
     path: 'customer',
     loadChildren: () =>
       import('./features/customer/customer.routes').then((m) => m.CUSTOMER_ROUTES),

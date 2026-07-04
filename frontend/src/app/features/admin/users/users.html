@@ -7,9 +7,7 @@
     </a>
   </section>
 
-  <section class="card-surface animate-rise flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg">
-    <div class="min-h-0 flex-1 overflow-auto">
-      <table class="w-full min-w-215 border-collapse text-left text-sm">
+  <ui-data-table minWidthClass="min-w-215">
         <thead class="sticky top-0 z-10">
           <tr class="bg-primary text-xs font-bold uppercase tracking-wide text-white">
             <th class="px-5 py-4">Employee ID</th>
@@ -23,7 +21,6 @@
         </thead>
         <tbody uiAutoAnimate>
           @if (loading()) {
-           @if (loading()) {
   @for (row of [1,2,3,4,5,6,7,8]; track row) {
     <tr class="border-b border-gray-100 dark:border-zinc-800">
       <td class="px-5 py-4">
@@ -61,7 +58,6 @@
       </td>
     </tr>
   }
-}
           } @else if (error()) {
             <tr>
               <td colspan="7" class="px-4 py-8 text-center text-red-600">{{ error() }}</td>
@@ -118,9 +114,7 @@
             }
           }
         </tbody>
-      </table>
-    </div>
-  </section>
+  </ui-data-table>
 
   <ui-toast
     class="contents"

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -23,7 +23,7 @@ import { VehiclesService } from './vehicles.service';
   templateUrl: './add-vehicle.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddVehicle implements OnDestroy {
+export class AddVehicle {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(VehiclesService);
   private readonly router = inject(Router);
@@ -31,8 +31,6 @@ export class AddVehicle implements OnDestroy {
   protected readonly statuses = VEHICLE_STATUS_OPTIONS;
   protected readonly saving = signal(false);
   protected readonly error = signal<string | null>(null);
-  protected readonly imagePreview = signal<string | null>(null);
-  private imageObjectUrl: string | null = null;
 
   protected readonly form = this.fb.nonNullable.group({
     brand: ['', [Validators.required]],
@@ -40,18 +38,7 @@ export class AddVehicle implements OnDestroy {
     capacity: [1, [Validators.required, Validators.min(1)]],
     status: ['AVAILABLE', [Validators.required]],
     vehicleDescription: ['', [Validators.required]],
-    image: [null as File | null],
   });
-
-  protected onImageSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
-    this.form.controls.image.setValue(file);
-    this.setImagePreview(file ? URL.createObjectURL(file) : null, Boolean(file));
-  }
-
-  ngOnDestroy(): void {
-    this.revokeImageObjectUrl();
-  }
 
   protected save(): void {
     if (this.form.invalid) {
@@ -72,7 +59,6 @@ export class AddVehicle implements OnDestroy {
         vehicleDescription: v.vehicleDescription,
         status: v.status,
         id: VAN_FACILITY_ID,
-        image: v.image,
       })
       .subscribe({
         next: (res) => {
@@ -107,20 +93,5 @@ export class AddVehicle implements OnDestroy {
     }
 
     return 'Unable to reach the server';
-  }
-
-  private setImagePreview(value: string | null, isObjectUrl = false): void {
-    this.revokeImageObjectUrl();
-    this.imageObjectUrl = isObjectUrl ? value : null;
-    this.imagePreview.set(value);
-  }
-
-  private revokeImageObjectUrl(): void {
-    if (!this.imageObjectUrl) {
-      return;
-    }
-
-    URL.revokeObjectURL(this.imageObjectUrl);
-    this.imageObjectUrl = null;
   }
 }
