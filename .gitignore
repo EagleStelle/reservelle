@@ -47,22 +47,24 @@ testem.log
 frontend/typings/
 __screenshots__/
 
-# Backend - Eclipse workspace metadata (never commit)
-backend/.metadata/
-**/.metadata/
+# Backend - .NET build output
+**/bin/
+**/obj/
+[Dd]ebug/
+[Rr]elease/
+**/publish/
+*.dll
+*.pdb
 
-# Backend - Maven build output
-backend/**/target/
-**/target/
-*.war
-*.ear
+# Backend - .NET user / IDE files
+*.user
+*.suo
+.vs/
+*.userprefs
 
-# Backend - Eclipse project files
-**/.classpath
-**/.project
-**/.settings/
-*.class
+# Backend - .NET local secrets (keep appsettings.json + appsettings.Development.json tracked)
+backend/appsettings.*.local.json
+**/appsettings.Production.json
 
 # Backend - logs / runtime
 *.log
-hs_err_pid*
