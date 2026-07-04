@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid username or password" });
 
         // 403: credentials were correct, but the account is disabled.
-        if (user.Status != "active")
+        if (!string.Equals(user.Status, "active", StringComparison.OrdinalIgnoreCase))
             return StatusCode(StatusCodes.Status403Forbidden, new { message = "Account is inactive" });
 
         return Ok(new LoginResponse
