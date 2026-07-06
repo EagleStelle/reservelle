@@ -12,7 +12,7 @@
     </a>
   </section>
 
-  <ui-data-table minWidthClass="min-w-150">
+  <ui-data-table minWidthClass="min-w-150" [loading]="loading()">
         <thead class="sticky top-0 z-10">
           <tr class="bg-primary text-sm font-semibold text-white">
            <th
@@ -39,26 +39,11 @@
           </tr>
         </thead>
         <tbody uiAutoAnimate>
-          @if (loading()) {
-            @for (row of [1,2,3,4,5,6,7,8]; track row) {
-              <tr class="border-b border-gray-100 dark:border-zinc-800">
-                <td class="px-3.5 py-2.5"><div class="h-4 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></td>
-                <td class="px-3 py-2.5"><div class="h-4 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></td>
-                <td class="px-3 py-2.5 text-center"><div class="mx-auto h-5 w-16 animate-pulse rounded-full bg-gray-200 dark:bg-zinc-700"></div></td>
-                <td class="px-3 py-2.5">
-                  <div class="flex items-center justify-center gap-2">
-                    <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
-                    <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
-                    <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
-                  </div>
-                </td>
-              </tr>
-            }
-          } @else if (error()) {
+          @if (error()) {
             <tr>
               <td colspan="4" class="px-3 py-6 text-center text-red-600">{{ error() }}</td>
             </tr>
-          } @else if (filtered().length === 0) {
+          } @else if (!loading() && filtered().length === 0) {
             <tr>
               <td colspan="4" class="px-3 py-6 text-center text-gray-500 dark:text-zinc-400">
                 No equipments found.

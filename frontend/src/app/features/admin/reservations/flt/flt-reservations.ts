@@ -81,7 +81,7 @@ interface ConfirmState {
       </div>
 
       <!-- Table -->
-        <ui-data-table minWidthClass="min-w-[92rem]">
+        <ui-data-table minWidthClass="min-w-[92rem]" [loading]="loading()">
             <thead class="sticky top-0 z-10">
               <tr class="bg-primary text-sm font-semibold text-white">
                 <th class="w-[4%] px-3.5 py-2.5">#</th>
@@ -96,67 +96,7 @@ interface ConfirmState {
               </tr>
             </thead>
             <tbody uiAutoAnimate>
-              @if (loading()) {
-                @for (row of [1,2,3,4,5,6,7,8]; track row) {
-                  <tr class="border-b border-gray-100 align-top dark:border-zinc-800">
-                    <!-- # -->
-                    <td class="px-3.5 py-2.5"><div class="h-3 w-6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></td>
-                    <!-- Event -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex flex-col gap-1.5">
-                        <div class="h-4 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                      </div>
-                    </td>
-                    <!-- Dept / Org -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex flex-col gap-1.5">
-                        <div class="h-3 w-4/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                      </div>
-                    </td>
-                    <!-- Contact -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex flex-col gap-1.5">
-                        <div class="h-3 w-2/3 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                      </div>
-                    </td>
-                    <!-- Dates -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex flex-col gap-1.5">
-                        <div class="h-3 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                      </div>
-                    </td>
-                    <!-- Room / Pax -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex flex-col gap-1.5">
-                        <div class="h-3 w-4/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                      </div>
-                    </td>
-                    <!-- Equipment -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex flex-col gap-1.5">
-                        <div class="h-3 w-4/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                        <div class="h-3 w-3/5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div>
-                      </div>
-                    </td>
-                    <!-- Status -->
-                    <td class="px-3 py-2.5 text-center"><div class="mx-auto h-5 w-16 animate-pulse rounded-full bg-gray-200 dark:bg-zinc-700"></div></td>
-                    <!-- Actions -->
-                    <td class="px-3 py-2.5">
-                      <div class="flex items-center justify-center gap-2">
-                        <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
-                        <div class="p-1"><div class="h-5 w-5 animate-pulse rounded bg-gray-200 dark:bg-zinc-700"></div></div>
-                      </div>
-                    </td>
-                  </tr>
-                }
-              } @else if (apiError()) {
+              @if (apiError()) {
                 <tr>
                   <td colspan="9" class="px-3 py-6 text-center">
                     <div class="flex flex-col items-center gap-3">
@@ -168,7 +108,7 @@ interface ConfirmState {
                     </div>
                   </td>
                 </tr>
-              } @else if (filtered().length === 0) {
+              } @else if (!loading() && filtered().length === 0) {
                 <tr>
                   <td colspan="9" class="px-3 py-6 text-center text-gray-500 dark:text-zinc-400">
                     No reservations found.
